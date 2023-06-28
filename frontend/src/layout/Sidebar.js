@@ -1,12 +1,15 @@
 import React from 'react';
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
+import { Outlet } from 'react-router-dom';
+import { 
+  Box, 
+  CssBaseline, 
+  Divider, 
+  Drawer, 
+  IconButton, 
+  Toolbar, 
+  Typography 
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 
 import SidebarDisplay from './SidebarDisplay';
 import { drawerWidth } from '../utils/constants'
@@ -22,7 +25,7 @@ const Sidebar = (props) => {
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box >
       <CssBaseline />
       <Box
         component="nav"
@@ -31,7 +34,7 @@ const Sidebar = (props) => {
         <Drawer
           variant="permanent"
           sx={{
-            display: { xs: 'none', sm: 'block' },
+            display: { xs: 'none', md: 'block' },
             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
           }}
           open
@@ -55,7 +58,10 @@ const Sidebar = (props) => {
       </Box>
 
       <Box
-        sx={{ flexGrow: 1, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+        sx={{ flexGrow: 1, 
+              width: { md: `calc(100% - ${drawerWidth}px)`},
+              marginLeft: {sm: 0, md: `${drawerWidth}px`}
+            }}
       >
         <Toolbar >
           <Typography variant='h2' fontSize='55px' p={2}>
@@ -64,15 +70,16 @@ const Sidebar = (props) => {
           <Box sx={{ flexGrow: '1' }} />
           <IconButton aria-label="open drawer"
             edge="start" onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }} >
+            sx={{ mr: 2, display: { md: 'none' } }} >
             <MenuIcon />
           </IconButton>
         </Toolbar>
         <Divider />
       </Box>
-      
+      <Box ml={`${drawerWidth}px`} p={3}>
+        <Outlet />
+      </Box>
     </Box>
-    
   );
 }
 
