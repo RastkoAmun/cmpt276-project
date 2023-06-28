@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { 
   Box, 
+  Button, 
   CssBaseline, 
   Divider, 
   Drawer, 
@@ -10,6 +11,7 @@ import {
   Typography 
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import SidebarDisplay from './SidebarDisplay';
 import { drawerWidth } from '../utils/constants'
@@ -57,6 +59,7 @@ const Sidebar = (props) => {
         </Drawer>
       </Box>
 
+      {/* Navigation bar */}
       <Box
         sx={{ flexGrow: 1, 
               width: { md: `calc(100% - ${drawerWidth}px)`},
@@ -64,14 +67,23 @@ const Sidebar = (props) => {
             }}
       >
         <Toolbar >
-          <Typography variant='h2' fontSize='55px' p={2}>
-            Dashboard
-          </Typography>
-          <Box sx={{ flexGrow: '1' }} />
           <IconButton aria-label="open drawer"
             edge="start" onClick={handleDrawerToggle}
             sx={{ mr: 2, display: { md: 'none' } }} >
             <MenuIcon />
+          </IconButton>
+          <Typography variant='h4' p={2}>
+            HealthTrackr
+          </Typography>
+
+          <Box sx={{ flexGrow: '1' }} />
+
+          <Button variant='contained' color='inherit' 
+            sx={{ marginX: 3 }}>LogIn</Button>
+          <IconButton aria-label="open drawer"
+            edge="start" onClick={handleDrawerToggle}
+            >
+            <AccountCircleIcon fontSize='large' />
           </IconButton>
         </Toolbar>
         <Divider />

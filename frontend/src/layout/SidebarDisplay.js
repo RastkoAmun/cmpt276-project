@@ -58,8 +58,9 @@ const SidebarDisplay = () => {
         </ListItem>
       </List>
       <Box sx={{ display: 'flex', justifyContent: 'center' }} p={6}>
-        <Button variant='contained' size='large' color='info'
-          sx={{ backgroundColor: 'black' }}> Logout </Button>
+        <Button variant='contained' size='large' color='inherit'> 
+          Logout 
+        </Button>
       </Box>
     </>
   )
