@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import { 
   Box, 
   Button, 
@@ -79,7 +79,10 @@ const Sidebar = (props) => {
           <Box sx={{ flexGrow: '1' }} />
 
           <Button variant='contained' color='inherit' 
-            sx={{ marginX: 3 }}>LogIn</Button>
+            component={Link} to={'/login'}
+            sx={{ marginX: 3 }}>
+            LogIn
+          </Button>
           <IconButton aria-label="open drawer"
             edge="start" onClick={handleDrawerToggle}
             >
