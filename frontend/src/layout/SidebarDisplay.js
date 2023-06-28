@@ -1,17 +1,19 @@
 import React from 'react'
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Typography from '@mui/material/Typography';
+import { 
+  Box, 
+  Button, 
+  List, 
+  ListItem, 
+  ListItemButton, 
+  ListItemIcon, 
+  ListItemText, 
+  Typography 
+} from '@mui/material';
 import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import BedtimeIcon from '@mui/icons-material/Bedtime';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import WaterDropIcon from '@mui/icons-material/WaterDrop';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { Button } from '@mui/material';
 
 const list = [
   { title: 'Food', icon: <LocalDiningIcon /> },

@@ -1,13 +1,15 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
+import { 
+  Box, 
+  CssBaseline, 
+  Divider, 
+  Drawer, 
+  IconButton, 
+  Toolbar, 
+  Typography 
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 
 import SidebarDisplay from './SidebarDisplay';
 import { drawerWidth } from '../utils/constants'
@@ -77,9 +79,7 @@ const Sidebar = (props) => {
       <Box ml={`${drawerWidth}px`} p={3}>
         <Outlet />
       </Box>
-      
     </Box>
-    
   );
 }
 
