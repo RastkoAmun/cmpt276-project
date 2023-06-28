@@ -6,7 +6,13 @@ import {
 } from 'react-router-dom'
 import './index.css';
 import App from './App';
-import Test from './routes/Test';
+import Food from './pages/Food';
+import Sleep from './pages/Sleep';
+import Exercise from './pages/Exercise';
+import Hydration from './pages/Hydration';
+import Settings from './pages/Settings';
+
+
 
 const router = createBrowserRouter([
   {
@@ -14,8 +20,24 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: 'a',
-        element: <Test />
+        path: 'food',
+        element: <Food />
+      },
+      {
+        path: 'sleep',
+        element: <Sleep />
+      },
+      {
+        path: 'exercise',
+        element: <Exercise />
+      },
+      {
+        path: 'hydration',
+        element: <Hydration />
+      },
+      {
+        path: 'settings',
+        element: <Settings />
       },
     ]
   }

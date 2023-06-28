@@ -14,12 +14,13 @@ import BedtimeIcon from '@mui/icons-material/Bedtime';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import WaterDropIcon from '@mui/icons-material/WaterDrop';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { Link } from 'react-router-dom';
 
 const list = [
-  { title: 'Food', icon: <LocalDiningIcon /> },
-  { title: 'Sleep', icon: <BedtimeIcon /> },
-  { title: 'Exercise', icon: <FitnessCenterIcon /> },
-  { title: 'Hydration', icon: <WaterDropIcon /> }
+  { title: 'Food', icon: <LocalDiningIcon />, path: '/food' },
+  { title: 'Sleep', icon: <BedtimeIcon />, path: '/sleep' },
+  { title: 'Exercise', icon: <FitnessCenterIcon />, path: '/exercise' },
+  { title: 'Hydration', icon: <WaterDropIcon />, path: '/hydration' }
 ]
 
 const SidebarDisplay = () => {
@@ -33,7 +34,9 @@ const SidebarDisplay = () => {
       <List sx={{ py: 0 }}>
         {list.map((item, index) => (
           <ListItem key={`${item.title}-${index}`} disablePadding>
-            <ListItemButton sx={{ borderBottom: '1px solid black ' }}>
+            <ListItemButton 
+              component={Link} to={item.path}
+              sx={{ borderBottom: '1px solid black ' }}>
               <ListItemIcon> {item.icon} </ListItemIcon>
               <ListItemText primary={item.title} />
             </ListItemButton>
@@ -44,6 +47,7 @@ const SidebarDisplay = () => {
       <List>
         <ListItem disablePadding>
           <ListItemButton
+            component={Link} to='/settings'
             sx={{
               borderBottom: '1px solid black',
               borderTop: '1px solid black'
