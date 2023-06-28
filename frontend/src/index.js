@@ -11,14 +11,18 @@ import Sleep from './pages/Sleep';
 import Exercise from './pages/Exercise';
 import Hydration from './pages/Hydration';
 import Settings from './pages/Settings';
-
-
+import MainPage from './pages/MainPage';
+import Login from './pages/Login';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
     children: [
+      {
+        path: '/',
+        element: <MainPage />
+      },
       {
         path: 'food',
         element: <Food />
@@ -40,6 +44,10 @@ const router = createBrowserRouter([
         element: <Settings />
       },
     ]
+  },
+  {
+    path: 'login',
+    element: <Login />
   }
 ])
 
