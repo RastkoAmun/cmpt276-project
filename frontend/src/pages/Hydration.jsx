@@ -4,7 +4,7 @@ import { Box, Button, Stack, TextField, Typography } from '@mui/material'
 
 const Hydration = () => {
   const [goal, setGoal] = useState(0);
-  // const [goalValidation, setGoalValidation] = useState(false);
+  const [goalValidation, setGoalValidation] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   const handleGoal = (event) => {
@@ -12,11 +12,14 @@ const Hydration = () => {
   }
 
   const submitGoal = () => {
-    // if (goal > 15 || goal < 5) {
-    //   setGoalValidation(true);
-    // }
-    // setGoal(goal)
-    setSubmitted(true);
+    if (goal > 20 || goal < 6) {
+      setGoalValidation(true);
+    }
+    else {
+      setGoal(goal)
+      setSubmitted(true);
+      setGoalValidation(false);
+    }
   }
 
 
@@ -27,14 +30,14 @@ const Hydration = () => {
       </Typography>
       <Stack direction='row' mt={5}>
         <Box width='50%' p={5}>
-          {!submitted 
+          {!submitted
             ?
             <>
               <Box display='flex' alignItems='center' width='80%'>
                 <Typography variant='h5' mr={3}> GOAL: </Typography>
                 <TextField type='number' variant="outlined" size='small'
                   value={goal} onChange={handleGoal}
-                  // error={goalValidation ? true : false}
+                  error={goalValidation ? true : false}
                   sx={{ flexGrow: 1 }}
                 />
 
@@ -45,6 +48,9 @@ const Hydration = () => {
                   Submit
                 </Button>
               </Box>
+              {goalValidation && <Typography variant='subtitle2' color='error' width='80%' mt={2}>
+                * INVALID: Recommended water intake is at least 6 glasses, up to 20 glasses
+              </Typography>}
             </>
             :
             <>
@@ -56,17 +62,13 @@ const Hydration = () => {
             </>}
           <Box display='flex' alignItems='center' mt={8}>
             <Typography variant='h5' mr={3}> Current: {0}</Typography>
-            {/* <Typography */}
           </Box>
         </Box>
-
 
         <Box display='flex' flexDirection='column' alignItems='center' width='20%'>
           <Typography variant='body2' mb={3}> {10} more cups to go! </Typography>
           <Box width='100px' height='320px'
             sx={{ border: '1px solid black', borderRadius: 2 }}>
-            { }
-
           </Box>
         </Box>
 
