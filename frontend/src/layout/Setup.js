@@ -56,14 +56,14 @@ const Setup = () => {
       cardContent = null;
   };
 
-  const backGround = {
+  const backGroundStyle = {
     backgroundColor: 'white',
     height: '100vh',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
   };
-  const cardBox = {
+  const cardBoxStyle = {
     bgcolor: 'white',
     borderRadius: '8px',
     width: '65vw',
@@ -72,8 +72,8 @@ const Setup = () => {
   }
 
   return (
-    <div style={backGround}>
-      <Box style={cardBox}>
+    <div style={backGroundStyle}>
+      <Box style={cardBoxStyle}>
         <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
         {/* Container for the progress bar + forwards and backwards arrow buttons */}
           <IconButton onClick={handlePrevPage} disabled={currentPage===1} color="primary" aria-label="back">
