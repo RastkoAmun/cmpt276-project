@@ -3,8 +3,7 @@ import { Typography, Button, Box, Slider, Input } from '@mui/material';
 import SliderMetric from './Sliders/WeightSliderMetric'
 import SliderImperial from './Sliders/WeightSliderImperial.jsx'
 
-const Weight = ({selectedWeight, setSelectedWeight, handleNextPage}) => {
-  const [currentSlider, setCurrentSlider] = useState(0);
+const Weight = ({selectedWeight, setSelectedWeight, handleNextPage, handleWeightUnitToggle, currentWeightUnit}) => {
 
   const handleNextButtonClick = () => {
     if (selectedWeight) {
@@ -12,16 +11,17 @@ const Weight = ({selectedWeight, setSelectedWeight, handleNextPage}) => {
     }
   };
 
+
   let sliderContent;
-  switch (currentSlider) {
-    case 0:
+  switch (currentWeightUnit) {
+    case 'metric':
       sliderContent = (
-        <SliderMetric selectedWeight={selectedWeight} setSelectedWeight={setSelectedWeight} handleNextPage={handleNextPage}/>
+        <SliderMetric selectedWeight={selectedWeight} setSelectedWeight={setSelectedWeight} handleWeightUnitToggle={handleWeightUnitToggle}/>
       );
       break;
-    case 1:
+    case 'imperial':
       sliderContent = (
-        <SliderImperial />
+        <SliderImperial selectedWeight={selectedWeight} setSelectedWeight={setSelectedWeight} handleWeightUnitToggle={handleWeightUnitToggle}/>
       );
       break;
     default:

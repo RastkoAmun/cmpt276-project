@@ -13,7 +13,7 @@ import Hydration from './pages/Hydration';
 import Settings from './pages/Settings';
 import MainPage from './pages/MainPage';
 import Login from './pages/Login';
-import Setup from './layout/Setup';
+import Setup from './pages/Setup/Setup';
 
 const router = createBrowserRouter([
   {

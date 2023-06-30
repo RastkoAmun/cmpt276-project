@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Box, IconButton } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForwardIos';
-import Gender from '../pages/Setup/Gender';
-import Age from '../pages/Setup/Age';
-import Weight from '../pages/Setup/Weight';
-import Height from '../pages/Setup/Height';
+import Gender from './Gender';
+import Age from './Age';
+import Weight from './Weight';
+import Height from './Height';
 
 const Setup = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -15,6 +15,8 @@ const Setup = () => {
 
   const handleNextPage = () => {
     setCurrentPage(currentPage + 1);
+    console.log(selectedAge + selectedGender + selectedWeight+currentWeightUnit);
+
     if (frontPage===currentPage) {
       setFrontPage(frontPage + 1);
     }
@@ -22,14 +24,29 @@ const Setup = () => {
   const handlePrevPage = () => {
     setCurrentPage(currentPage - 1);
   };
+
+
   
 
-  // Keeps track of all the user's input information, passed to cardContent
+  // Variables for all the user's input information
   const [selectedGender, setSelectedGender] = useState(null);
   const [selectedAge, setSelectedAge] = useState(null);
-  const [selectedWeight, setSelectedWeight] = useState(0);
+  const [selectedWeight, setSelectedWeight] = useState(null);
 
+  // User's preference for 'metric' or 'imperial' unit of measurement
+  const [currentWeightUnit, setCurrentWeightUnit] = useState('metric');
+  const [userHeightUnit, setUserHeightUnit] = useState(null);
 
+  const handleWeightUnitToggle = () => {
+    if (currentWeightUnit=='metric') {
+      setCurrentWeightUnit('imperial');
+      console.log('SWITCH TO IMPERIAL');
+    }
+    else if (currentWeightUnit=='imperial') {
+      setCurrentWeightUnit('metric');
+      console.log('SWITCH TO METRIC');
+    }
+  }
 
   let cardContent;
   switch (currentPage) {
@@ -45,7 +62,7 @@ const Setup = () => {
       break;
     case 3:
       cardContent = (
-        <Weight selectedWeight={selectedWeight} setSelectedWeight={setSelectedWeight} handleNextPage={handleNextPage}/>
+        <Weight selectedWeight={selectedWeight} setSelectedWeight={setSelectedWeight} handleNextPage={handleNextPage} handleWeightUnitToggle={handleWeightUnitToggle} currentWeightUnit={currentWeightUnit}/>
       );
       break;
     case 4:
@@ -84,7 +101,7 @@ const Setup = () => {
             <ArrowForwardIcon />
           </IconButton>
         </Box>
-        <Box sx={{ display: 'flex', flexDirection:'column', justifyContent:'center', height:'80%' }}>
+        <Box style={{ display: 'flex', flexDirection:'column', justifyContent:'center', height:'80%' }}>
         {/* This container holds the different card contents */}
           {cardContent}
         </Box>
