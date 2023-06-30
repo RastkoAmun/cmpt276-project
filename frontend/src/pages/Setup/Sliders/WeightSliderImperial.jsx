@@ -37,7 +37,7 @@ const WeightSliderImperial = ({selectedWeight, setSelectedWeight, handleWeightUn
         />
       </Box>
 
-      <Box style={{ display: 'flex', justifyContent: 'center', marginLeft: '35px'}}>
+      <Box style={{ display: 'flex', justifyContent: 'center', marginLeft: '40px'}}>
         <Input
           style={{ width:'10vw', backgroundColor:'#F5F5F5' }}
           value={selectedWeight}
@@ -52,6 +52,7 @@ const WeightSliderImperial = ({selectedWeight, setSelectedWeight, handleWeightUn
               textAlign: 'center',
               fontSize: '22px',
               fontWeight: 'bold',
+              paddingLeft: '5px'
             }
           }}
         />

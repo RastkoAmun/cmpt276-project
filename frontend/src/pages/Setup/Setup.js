@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, IconButton } from '@mui/material';
+import { Box, IconButton, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForwardIos';
 import Gender from './Gender';
@@ -28,12 +28,12 @@ const Setup = () => {
 
   
 
-  // Variables for all the user's input information
+  // Variables for all the user's input information -- save to db
   const [selectedGender, setSelectedGender] = useState(null);
   const [selectedAge, setSelectedAge] = useState(null);
   const [selectedWeight, setSelectedWeight] = useState(null);
 
-  // User's preference for 'metric' or 'imperial' unit of measurement
+  // User's preference for 'metric' or 'imperial' unit of measurement -- save to db 
   const [currentWeightUnit, setCurrentWeightUnit] = useState('metric');
   const [userHeightUnit, setUserHeightUnit] = useState(null);
 
@@ -86,7 +86,7 @@ const Setup = () => {
     borderRadius: '8px',
     width: '65vw',
     height: '75vh',
-    boxShadow: '0px 0px 50px 0px rgba(0,0,0,0.25)'
+    // boxShadow: '0px 0px 50px 0px rgba(0,0,0,0.25)'
   }
 
   return (
@@ -103,6 +103,9 @@ const Setup = () => {
         </Box>
         <Box style={{ display: 'flex', flexDirection:'column', justifyContent:'center', height:'80%' }}>
         {/* This container holds the different card contents */}
+          <Typography variant="body2" style={{margin:'10px auto', color:'#4169e1'}}>
+            {currentPage} of 8
+          </Typography>
           {cardContent}
         </Box>
       </Box>

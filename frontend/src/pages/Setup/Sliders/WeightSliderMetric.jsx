@@ -39,7 +39,7 @@ const WeightSliderMetric = ({selectedWeight, setSelectedWeight, handleWeightUnit
 
       <Box style={{ display: 'flex', justifyContent: 'center', marginLeft: '35px'}}>
         <Input
-          style={{ width:'10vw', backgroundColor:'#F5F5F5' }}
+          style={{ width:'11em', backgroundColor:'#F5F5F5' }}
           value={selectedWeight}
           onChange={handleInputChange}
           onBlur={handleBlur}
@@ -52,10 +52,11 @@ const WeightSliderMetric = ({selectedWeight, setSelectedWeight, handleWeightUnit
               textAlign: 'center',
               fontSize: '22px',
               fontWeight: 'bold',
+              paddingLeft: '8px',
             }
           }}
         />
-        <h3 style={{display:'flex',flexDirection:'column',justifyContent:'center', marginLeft:'10px'}}>
+        <h3 style={{ display:'flex',flexDirection:'column',justifyContent:'center', marginLeft:'10px'}}>
           kg
         </h3>
       </Box>

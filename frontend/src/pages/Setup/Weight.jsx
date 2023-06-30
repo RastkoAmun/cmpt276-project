@@ -44,7 +44,7 @@ const Weight = ({selectedWeight, setSelectedWeight, handleNextPage, handleWeight
         <Typography variant="h5" align="center" mb={2} fontWeight="bold" style={{ marginBottom: '5px' }}>
           Choose your weight
         </Typography>
-        <Typography variant="body2" align="center" mb={2} style={{ margin: '0 auto 16px', maxWidth: '250px'}}>
+        <Typography variant="body2" align="center" mb={2} style={{ margin: '0 auto 16px', maxWidth: '250px', color: '#696969'}}>
           Tell us more about you so we can tailor the experience to suit your needs.
         </Typography>
       </Box>
