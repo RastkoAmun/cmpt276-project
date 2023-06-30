@@ -13,7 +13,6 @@ import Hydration from './pages/Hydration';
 import Settings from './pages/Settings';
 import MainPage from './pages/MainPage';
 import Login from './pages/Login';
-import Placeholder from './pages/Placeholder';
 import Setup from './layout/Setup';
 
 const router = createBrowserRouter([
@@ -50,10 +49,6 @@ const router = createBrowserRouter([
   {
     path: 'login',
     element: <Login />
-  },
-  {
-    path: 'placeholder',
-    element: <Placeholder />
   },
   {
     path: 'setup',
