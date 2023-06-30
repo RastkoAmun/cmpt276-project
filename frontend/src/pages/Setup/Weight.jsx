@@ -5,22 +5,6 @@ import SliderImperial from './Sliders/WeightSliderImperial.jsx'
 
 const Weight = ({selectedWeight, setSelectedWeight, handleNextPage}) => {
   const [currentSlider, setCurrentSlider] = useState(0);
-  
-  const handleWeightChange = (event, weight) => {
-    setSelectedWeight(weight);
-  };
-
-  const handleInputChange = (event) => {
-    setSelectedWeight(event.target.value === '' ? '' : Number(event.target.value));
-  };
-
-  const handleBlur = () => {
-    if (selectedWeight < 20) {
-      setSelectedWeight(20);
-    } else if (selectedWeight > 500) {
-      setSelectedWeight(500);
-    }
-  }
 
   const handleNextButtonClick = () => {
     if (selectedWeight) {
@@ -32,7 +16,7 @@ const Weight = ({selectedWeight, setSelectedWeight, handleNextPage}) => {
   switch (currentSlider) {
     case 0:
       sliderContent = (
-        <SliderMetric />
+        <SliderMetric selectedWeight={selectedWeight} setSelectedWeight={setSelectedWeight} handleNextPage={handleNextPage}/>
       );
       break;
     case 1:
@@ -66,34 +50,7 @@ const Weight = ({selectedWeight, setSelectedWeight, handleNextPage}) => {
       </Box>
 
       {/* #2 Container for sliders and inputs */}
-      <Box style={{ display: 'flex', justifyContent: 'center', padding: '0 12vw' }}>
-        <Slider
-          value={selectedWeight}
-          onChange={handleWeightChange}
-          min={20}
-          max={500}
-          step={1}
-          marks={[
-            {value: 20, label: '20'},
-            {value: 500, label: '500'},
-          ]}
-        >
-        </Slider>
-      </Box>
-      <Box>
-        <Input
-          value={selectedWeight}
-          onChange={handleInputChange}
-          onBlur={handleBlur}
-          type="number"
-          inputProps={{
-            min: 20,
-            max: 500,
-            step: 1,
-          }}
-        >
-        </Input>
-      </Box>
+      {sliderContent}
 
       {/* #3 Container for 'next' button */}
       <Box style={{ marginTop: '10px', display: 'flex', justifyContent: 'center' }}>
