@@ -27,6 +27,7 @@ const Setup = () => {
   // Keeps track of all the user's input information, passed to cardContent
   const [selectedGender, setSelectedGender] = useState(null);
   const [selectedAge, setSelectedAge] = useState(null);
+  const [selectedWeight, setSelectedWeight] = useState(0);
 
 
 
@@ -44,7 +45,7 @@ const Setup = () => {
       break;
     case 3:
       cardContent = (
-        <Weight />
+        <Weight selectedWeight={selectedWeight} setSelectedWeight={setSelectedWeight} handleNextPage={handleNextPage}/>
       );
       break;
     case 4:

@@ -26,8 +26,8 @@ const Gender = ({ selectedGender, setSelectedGender, handleNextPage }) => {
     
   return (
     <Box>
+      {/* #1 Container for text */}
       <Box style={{ paddingLeft: '10vw', paddingRight: '10vw' }}>
-      {/* Container for text */}
         <Typography variant="h5" align="center" mb={2} fontWeight="bold" style={{ marginBottom: '5px' }}>
           Choose your gender
         </Typography>
@@ -35,8 +35,9 @@ const Gender = ({ selectedGender, setSelectedGender, handleNextPage }) => {
           Tell us more about you so we can tailor the experience to suit your needs.
         </Typography>
       </Box>
+
+      {/* #2 Container for gender buttons */}
       <Box style={{ display: 'flex', justifyContent: 'center' }}>
-      {/* Container for gender buttons */}
         <Button
           style={genderButtonStyle}
           sx={{
@@ -63,8 +64,9 @@ const Gender = ({ selectedGender, setSelectedGender, handleNextPage }) => {
           Female
         </Button>
       </Box>
+
+      {/* #3 Container for 'next' button */}
       <Box style={{ marginTop: '10px', display: 'flex', justifyContent: 'center' }}>
-      {/* Container for 'next' button */}
         <Button
           style={{textTransform: 'none', minWidth: '15em',color: 'white'}}
           sx={{
