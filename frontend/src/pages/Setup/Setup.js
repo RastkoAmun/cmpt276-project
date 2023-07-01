@@ -15,7 +15,7 @@ const Setup = () => {
 
   const handleNextPage = () => {
     setCurrentPage(currentPage + 1);
-    console.log(selectedAge + selectedGender + selectedWeight+currentWeightUnit);
+    console.log(selectedAge+', '+selectedGender+', '+selectedWeight+currentWeightUnit+', '+selectedHeight+currentHeightUnit);
 
     if (frontPage===currentPage) {
       setFrontPage(frontPage + 1);
@@ -31,20 +31,31 @@ const Setup = () => {
   // Variables for all the user's input information -- save to db
   const [selectedGender, setSelectedGender] = useState(null);
   const [selectedAge, setSelectedAge] = useState(null);
-  const [selectedWeight, setSelectedWeight] = useState(null);
+  const [selectedWeight, setSelectedWeight] = useState(0);
+  const [selectedHeight, setSelectedHeight] = useState(0);
 
   // User's preference for 'metric' or 'imperial' unit of measurement -- save to db 
   const [currentWeightUnit, setCurrentWeightUnit] = useState('metric');
-  const [userHeightUnit, setUserHeightUnit] = useState(null);
+  const [currentHeightUnit, setCurrentHeightUnit] = useState('metric');
 
   const handleWeightUnitToggle = () => {
-    if (currentWeightUnit=='metric') {
+    if (currentWeightUnit==='metric') {
       setCurrentWeightUnit('imperial');
       console.log('SWITCH TO IMPERIAL');
     }
-    else if (currentWeightUnit=='imperial') {
+    else if (currentWeightUnit==='imperial') {
       setCurrentWeightUnit('metric');
       console.log('SWITCH TO METRIC');
+    }
+  }
+  const handleHeightUnitToggle = () => {
+    if (currentHeightUnit==='metric') {
+      setCurrentHeightUnit('imperial');
+      console.log('SWITCHING TO IMPERIAL (HEIGHT)');
+    }
+    else if (currentHeightUnit==='imperial') {
+      setCurrentHeightUnit('metric');
+      console.log('SWITCHING TO METRIC (HEIGHT)');
     }
   }
 
@@ -67,7 +78,7 @@ const Setup = () => {
       break;
     case 4:
       cardContent = (
-        <Height />
+        <Height selectedHeight={selectedHeight} setSelectedHeight={setSelectedHeight} handleNextPage={handleNextPage} handleHeightUnitToggle={handleHeightUnitToggle} currentHeightUnit={currentHeightUnit}/>
       );
       break;
     default:

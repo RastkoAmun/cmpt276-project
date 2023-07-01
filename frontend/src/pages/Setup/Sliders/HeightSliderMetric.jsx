@@ -1,23 +1,22 @@
 import React from 'react'
 import { Link, Box, Slider, Input } from '@mui/material';
-import { InputContainerStyle } from '../SetupStyles';
 
-const WeightSliderMetric = ({selectedWeight, setSelectedWeight, handleWeightUnitToggle}) => {
+const HeightSliderMetric = ({selectedHeight, setSelectedHeight, handleHeightUnitToggle}) => {
 
 
-  const handleWeightChange = (event, weight) => {
-    setSelectedWeight(weight);
+  const handleHeightChange = (event, Height) => {
+    setSelectedHeight(Height);
   };
 
   const handleInputChange = (event) => {
-    setSelectedWeight(event.target.value === '' ? '' : Number(event.target.value));
+    setSelectedHeight(event.target.value === '' ? '' : Number(event.target.value));
   };
 
   const handleBlur = () => {
-    if (selectedWeight < 9) {
-      setSelectedWeight(9);
-    } else if (selectedWeight > 227) {
-      setSelectedWeight(227);
+    if (selectedHeight < 9) {
+      setSelectedHeight(9);
+    } else if (selectedHeight > 227) {
+      setSelectedHeight(227);
     }
   }
 
@@ -26,11 +25,11 @@ const WeightSliderMetric = ({selectedWeight, setSelectedWeight, handleWeightUnit
 
       <Box style={{ display: 'flex', justifyContent: 'center', padding: '0 12vw' }}>
         <Slider
-          value={selectedWeight}
-          onChange={handleWeightChange}
+          value={selectedHeight}
+          onChange={handleHeightChange}
           min={9}
           max={227}
-          step={0.1}
+          step={1}
           marks={[
             {value: 9, label: '9'},
             {value: 227, label: '227'},
@@ -38,17 +37,17 @@ const WeightSliderMetric = ({selectedWeight, setSelectedWeight, handleWeightUnit
         />
       </Box>
 
-      <Box style={InputContainerStyle}>
+      <Box style={{ display: 'flex', justifyContent: 'center', marginLeft: '28px'}}>
         <Input
           style={{ width:'11em', backgroundColor:'#F5F5F5' }}
-          value={selectedWeight}
+          value={selectedHeight}
           onChange={handleInputChange}
           onBlur={handleBlur}
           type="number"
           inputProps={{
             min: 9,
             max: 227,
-            step: 0.1,
+            step: 1,
             style: {
               textAlign: 'center',
               fontSize: '22px',
@@ -58,7 +57,7 @@ const WeightSliderMetric = ({selectedWeight, setSelectedWeight, handleWeightUnit
           }}
         />
         <h3 style={{ display:'flex',flexDirection:'column',justifyContent:'center', marginLeft:'10px'}}>
-          kg
+          cm
         </h3>
       </Box>
 
@@ -67,7 +66,7 @@ const WeightSliderMetric = ({selectedWeight, setSelectedWeight, handleWeightUnit
           style={{fontSize:'0.7rem'}}
           component="button"
           variant="body2"
-          onClick={handleWeightUnitToggle}
+          onClick={handleHeightUnitToggle}
         >
         </Link>
       </Box>
@@ -76,4 +75,4 @@ const WeightSliderMetric = ({selectedWeight, setSelectedWeight, handleWeightUnit
   )
 }
 
-export default WeightSliderMetric
+export default HeightSliderMetric

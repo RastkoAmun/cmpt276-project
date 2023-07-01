@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { Typography, Button, Box, Slider, Input } from '@mui/material';
-import SliderMetric from './Sliders/WeightSliderMetric'
-import SliderImperial from './Sliders/WeightSliderImperial.jsx'
+import React from 'react';
+import { Typography, Button, Box } from '@mui/material';
+import SliderMetric from './Sliders/WeightSliderMetric';
+import SliderImperial from './Sliders/WeightSliderImperial.jsx';
+import { NextButtonStyle, NextButtonContainerStyle} from './SetupStyles';
 
 const Weight = ({selectedWeight, setSelectedWeight, handleNextPage, handleWeightUnitToggle, currentWeightUnit}) => {
 
@@ -10,6 +11,7 @@ const Weight = ({selectedWeight, setSelectedWeight, handleNextPage, handleWeight
       handleNextPage();
     }
   };
+  
 
 
   let sliderContent;
@@ -28,15 +30,6 @@ const Weight = ({selectedWeight, setSelectedWeight, handleNextPage, handleWeight
       sliderContent = null;
   };
 
-  const weightButtonStyle = {
-    width: '180px',
-    padding: '25px',
-    paddingBottom: '10px',
-    display: 'flex',
-    flexDirection: 'column',
-    textTransform: 'none',
-    color: 'black',
-  }
   return (
     <Box>
       {/* #1 Container for text */}
@@ -53,9 +46,9 @@ const Weight = ({selectedWeight, setSelectedWeight, handleNextPage, handleWeight
       {sliderContent}
 
       {/* #3 Container for 'next' button */}
-      <Box style={{ marginTop: '10px', display: 'flex', justifyContent: 'center' }}>
+      <Box style={NextButtonContainerStyle}>
         <Button
-          style={{textTransform: 'none', minWidth: '15em',color: 'white'}}
+          style={NextButtonStyle}
           sx={{
             backgroundColor: selectedWeight ? '#4169e1' : '#D3D3D3',
             mt: 2
