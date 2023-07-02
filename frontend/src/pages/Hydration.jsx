@@ -14,6 +14,10 @@ const Hydration = () => {
 
   const theme = useTheme();
 
+  console.log("Goal ", goal);
+  console.log("GlassesLeft ", glassesLeft);
+  console.log("Current", current);
+
   const handleGoal = (event) => {
     setGoal(event.target.value)
   }
