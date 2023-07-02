@@ -1,7 +1,8 @@
-import { Box, Button, Card, CardMedia, Checkbox, FormControlLabel, FormGroup, Grid, Stack, TextField, Typography } from '@mui/material'
 import React from 'react'
+import { Box, Button, Card, CardMedia, Checkbox, Fab, FormControlLabel, FormGroup, Grid, Stack, TextField, Typography } from '@mui/material'
 import { Link } from 'react-router-dom';
 import image from '../images/health.png'
+import CloseIcon from '@mui/icons-material/Close';
 
 const SignUp = () => {
   return (
@@ -22,10 +23,15 @@ const SignUp = () => {
           />
         {/* </Box> */}
         <Stack display='flex' flexDirection='column' justifyContent='center'
-          mt={5}
+          mt={2}
           sx={{
-            width: '55%',
+            width: '60%',
           }}>
+          <Fab size='small' component={Link} to={'/'}
+            sx={{ boxShadow: 0, alignSelf: 'flex-end', marginRight: 2,
+            marginBottom: 3 }}>
+            <CloseIcon />
+          </Fab>
           <Stack spacing={1} width='50%' ml={12}>
             <TextField label="Username" variant="outlined"
               size='small' 
