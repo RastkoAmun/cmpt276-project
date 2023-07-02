@@ -26,7 +26,11 @@ const Hydration = () => {
       setGoal(goal)
       setSubmitted(true);
       setGoalValidation(false);
-      setGlassesLeft(goal-current)
+      if (goal - current < 0) {
+        setGlassesLeft(0)
+      } else {
+        setGlassesLeft(goal-current)
+      }
     }
   }
 
@@ -34,8 +38,9 @@ const Hydration = () => {
     if(current < goal) {
       setCurrent(current + 1);
       setGlassesLeft(glassesLeft - 1)
+    } else {
+      setGlassesLeft(0);
     }
-    else setCurrent(goal);
   }
 
   let i = goal;
