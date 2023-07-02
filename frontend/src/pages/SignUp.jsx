@@ -20,19 +20,26 @@ import image from '../images/health.png'
 import CloseIcon from '@mui/icons-material/Close';
 
 const SignUp = () => {
-  const [username, setUserName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confPassword, setConfPassword] = useState('');
+  const [ username, setUserName ] = useState('');
+  const [ email, setEmail ] = useState('');
+  const [ password, setPassword ] = useState('');
+  const [ confPassword, setConfPassword ] = useState('');
 
-  const [invalidUsername, setInvalidUsername] = useState(false);
-  const [invalidEmail, setInvalidEmail] = useState(false);
-  const [invalidPassword, setInvalidPassword] = useState(false);
+  const [ invalidUsername, setInvalidUsername ] = useState(false);
+  const [ invalidEmail, setInvalidEmail ] = useState(false);
+  const [ invalidPassword, setInvalidPassword ] = useState(false);
+  const [ passwordMismatch, setPasswordMismatch ] = useState(false);
+
+  const [ foodCheckbox, setFoodCheckbox ] = useState(false);
+  const [ exerciseCheckbox, setExerciseCheckbox ] = useState(false);
+  const [ sleepCheckbox, setSleepCheckbox ] = useState(false);
+  const [ hydrationCheckbox, setHydrationCheckbox ] = useState(false);
 
   const submit = () => {
     let invUsername = false;
     let invEmail = false;
     let invPassword = false;
+    let passMismatch = false;
 
     //Username validation
     setInvalidUsername(false);
@@ -58,16 +65,22 @@ const SignUp = () => {
     }
 
     //Check if passwords are matching
+    setPasswordMismatch(false);
     if(password !== confPassword){
-      invPassword = true;
-      setInvalidPassword(true);
+      passMismatch = true;
+      setPasswordMismatch(true);
     }
 
-    if (!invUsername && !invEmail && !invPassword) {
+    if (!invUsername && !invEmail && !invPassword && !passMismatch) {
       console.log(username);
       console.log(email);
       console.log(password);
       console.log(confPassword);
+
+      console.log(foodCheckbox);
+      console.log(exerciseCheckbox);
+      console.log(sleepCheckbox);
+      console.log(hydrationCheckbox);
     }
 
   }
@@ -122,8 +135,15 @@ const SignUp = () => {
               type='password' label="Password" variant="outlined"
               size='small' value={password}
               onChange={(e) => { setPassword(e.target.value) }}
-              error={invalidPassword ? true : false}
-              helperText={invalidPassword &&
+              error={invalidPassword || passwordMismatch ? true : false}
+              required
+            />
+            <TextField
+              type='password' label="Confirm Password" variant="outlined"
+              size='small' value={confPassword}
+              onChange={(e) => { setConfPassword(e.target.value) }}
+              error={invalidPassword || passwordMismatch ? true : false}
+              helperText={invalidPassword ?
                 <span>
                   Please enter a valid password. Required:<br />
                   - 6 characters<br />
@@ -131,15 +151,9 @@ const SignUp = () => {
                   - 1 uppercase letter<br />
                   - 1 symbol character
                 </span>
+                :
+                passwordMismatch && 'Password mismatch'
               }
-              required
-            />
-            <TextField
-              type='text' label="Confirm Password" variant="outlined"
-              size='small' value={confPassword}
-              onChange={(e) => { setConfPassword(e.target.value) }}
-              error={invalidPassword ? true : false}
-              helperText={invalidPassword && 'Password mismatch'}
               required
             />
             <Box pt={2}>
@@ -150,19 +164,27 @@ const SignUp = () => {
                 <Grid container>
                   <Grid item xs={6}>
                     <FormControlLabel
-                      control={<Checkbox checked={false} />} label="Food" />
+                      control={<Checkbox checked={foodCheckbox} 
+                        onClick={() => setFoodCheckbox(!foodCheckbox) }
+                      />} label="Food" />
                   </Grid>
                   <Grid item xs={6}>
                     <FormControlLabel
-                      control={<Checkbox checked={false} />} label="Exercise" />
+                      control={<Checkbox checked={exerciseCheckbox} 
+                        onClick={() => setExerciseCheckbox(!exerciseCheckbox) }
+                      />} label="Exercise" />
                   </Grid>
                   <Grid item xs={6}>
                     <FormControlLabel
-                      control={<Checkbox checked={false} />} label="Sleep" />
+                      control={<Checkbox checked={sleepCheckbox} 
+                        onClick={() => setSleepCheckbox(!sleepCheckbox) }
+                      />} label="Sleep" />
                   </Grid>
                   <Grid item xs={6}>
                     <FormControlLabel
-                      control={<Checkbox checked={false} />} label="Hydration" />
+                      control={<Checkbox checked={hydrationCheckbox} 
+                        onClick={() => setHydrationCheckbox(!hydrationCheckbox) }
+                      />} label="Hydration" />
                   </Grid>
                 </Grid>
               </FormGroup>
