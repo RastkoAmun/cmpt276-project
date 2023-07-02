@@ -26,7 +26,7 @@ const Hydration = () => {
       setGoal(goal)
       setSubmitted(true);
       setGoalValidation(false);
-      setGlassesLeft(goal)
+      setGlassesLeft(goal-current)
     }
   }
 
