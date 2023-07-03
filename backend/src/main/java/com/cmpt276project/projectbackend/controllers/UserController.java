@@ -25,13 +25,6 @@ public class UserController {
     return testUser;
   }
 
-  @GetMapping("/test1")
-  public List<User> test1() {
-    List<User> viewAll = userRepo.findAll();
-
-    return viewAll;
-  }
-
   @PostMapping("/register")
   public User register(@RequestBody UserRequest request) {
     User existingUsername = userRepo.findByUsername(request.username());
