@@ -32,8 +32,9 @@ public class UserController {
   @DeleteMapping("/delete")
   public void delete(@RequestBody AdminRequest request) {
     User user = userRepo.findByUsername(request.username());
-    String admin = request.adminKey();
 
+    // TODO: implement admin permissions
+    String admin = request.adminKey();
     if (admin.equals("admin123")) {
       userRepo.delete(user);
     }
