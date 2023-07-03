@@ -14,6 +14,7 @@ import Settings from './pages/Settings';
 import MainPage from './pages/MainPage';
 import Login from './pages/Login';
 import Setup from './pages/Setup/Setup';
+import SignUp from './pages/SignUp';
 
 const router = createBrowserRouter([
   {
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
   },
   {
     path: 'setup',
+    element: <Setup />
+  },
+  {
+    path: 'signup',
     element: <Setup />
   }
 ])

@@ -8,6 +8,7 @@ import {
   Typography } 
 from '@mui/material';
 import image from '../images/health.png'
+import { Link } from 'react-router-dom';
 
 const Login = () => {
   return (
@@ -45,7 +46,8 @@ const Login = () => {
             <Box mt={4}>
               <Button variant='contained' color='info'
                 sx={{ marginRight: 3, backgroundColor: 'black' }}>Login</Button>
-              <Button variant='contained' color='inherit'>SignUp</Button>
+              <Button variant='contained' color='inherit'
+                component={Link} to={'/signup'}>SignUp</Button>
             </Box>
         </Box>
       </Card>

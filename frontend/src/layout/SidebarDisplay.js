@@ -1,22 +1,24 @@
 import React from 'react'
-import { 
-  Box, 
-  Button, 
-  List, 
-  ListItem, 
-  ListItemButton, 
-  ListItemIcon, 
-  ListItemText, 
-  Typography 
+import {
+  Box,
+  Button,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
 } from '@mui/material';
 import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import BedtimeIcon from '@mui/icons-material/Bedtime';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import WaterDropIcon from '@mui/icons-material/WaterDrop';
 import SettingsIcon from '@mui/icons-material/Settings';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import { Link } from 'react-router-dom';
+import { ReactComponent as Logo } from '../images/logo.svg';
 
 const list = [
+  { title: 'Dashboard', icon: <DashboardIcon />, path: '/'},
   { title: 'Food', icon: <LocalDiningIcon />, path: '/food' },
   { title: 'Sleep', icon: <BedtimeIcon />, path: '/sleep' },
   { title: 'Exercise', icon: <FitnessCenterIcon />, path: '/exercise' },
@@ -26,15 +28,14 @@ const list = [
 const SidebarDisplay = () => {
   return (
     <>
-      <Box sx={{ borderBottom: '1px solid black ' }}>
-        <Typography variant='h2' my={8} sx={{ textAlign: 'center' }}>
-          LOGO
-        </Typography>
+      <Box display='flex' justifyContent='center' py={2}
+        sx={ { borderBottom: '1px solid black ' }}>
+          <Logo width={150} />
       </Box>
       <List sx={{ py: 0 }}>
         {list.map((item, index) => (
           <ListItem key={`${item.title}-${index}`} disablePadding>
-            <ListItemButton 
+            <ListItemButton
               component={Link} to={item.path}
               sx={{ borderBottom: '1px solid black ' }}>
               <ListItemIcon> {item.icon} </ListItemIcon>
@@ -57,9 +58,9 @@ const SidebarDisplay = () => {
           </ListItemButton>
         </ListItem>
       </List>
-      <Box sx={{ display: 'flex', justifyContent: 'center' }} p={6}>
-        <Button variant='contained' size='large' color='inherit'> 
-          Logout 
+      <Box sx={{ display: 'flex', justifyContent: 'center' }} p={4}>
+        <Button variant='contained' size='large' color='inherit'>
+          Logout
         </Button>
       </Box>
     </>
