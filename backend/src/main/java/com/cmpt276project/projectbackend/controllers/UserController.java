@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.cmpt276project.projectbackend.customerrors.UserError;
 import com.cmpt276project.projectbackend.models.User;
 import com.cmpt276project.projectbackend.models.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
@@ -36,29 +35,6 @@ public class UserController {
     if (admin.equals("admin123")) {
       userRepo.delete(user);
     }
-  }
-
-  @PostMapping("/register")
-  public User register(@RequestBody UserRequest request) {
-    User existingUsername = userRepo.findByUsername(request.username());
-    User existingEmail = userRepo.findByEmail(request.email());
-
-    if (existingUsername != null) {
-      return new UserError("Username is taken");
-    }
-
-    if (existingEmail != null) {
-      return new UserError("Email already in use");
-    }
-
-    User newUser = new User();
-    newUser.setUsername(request.username());
-    newUser.setEmail(request.email());
-    newUser.setPassword(request.password());
-
-    userRepo.save(newUser);
-
-    return newUser;
   }
 
   @PostMapping("/login")
