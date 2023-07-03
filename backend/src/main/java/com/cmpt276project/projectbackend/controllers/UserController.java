@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.cmpt276project.projectbackend.models.User;
 import com.cmpt276project.projectbackend.models.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @RestController
 public class UserController {
@@ -37,8 +39,21 @@ public class UserController {
     }
   }
 
+  @GetMapping("/login")
+  public User getLogin(HttpServletRequest req, HttpSession session) {
+    User user = (User) session.getAttribute("session_user");
+
+    if (user == null) {
+      return null;
+    }
+
+    return user;
+  }
+
   @PostMapping("/login")
-  public User login(@RequestBody UserRequest request, HttpServletResponse res) throws IOException {
+  public User login(@RequestBody UserRequest request, HttpServletResponse res, HttpServletRequest req,
+      HttpSession session)
+      throws IOException {
     String username = request.username();
     String password = request.password();
 
@@ -55,6 +70,12 @@ public class UserController {
       return null;
     }
 
+    req.getSession().setAttribute("session_user", user);
     return user;
+  }
+
+  @GetMapping("/logout")
+  public void logout(HttpServletRequest req) {
+    req.getSession().invalidate();
   }
 }
