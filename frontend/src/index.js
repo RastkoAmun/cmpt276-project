@@ -13,6 +13,7 @@ import Hydration from './pages/Hydration';
 import Settings from './pages/Settings';
 import MainPage from './pages/MainPage';
 import Login from './pages/Login';
+import SignUp from './pages/SignUp';
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
   {
     path: 'login',
     element: <Login />
+  },
+  {
+    path: 'signup',
+    element: <SignUp />
   }
 ])
 
