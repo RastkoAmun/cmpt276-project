@@ -1,4 +1,4 @@
-package com.cmpt276project.customerrors;
+package com.cmpt276project.projectbackend.customerrors;
 
 import com.cmpt276project.projectbackend.models.User;
 

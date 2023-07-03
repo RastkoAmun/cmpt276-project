@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.cmpt276project.customerrors.UserError;
+import com.cmpt276project.projectbackend.customerrors.UserError;
 import com.cmpt276project.projectbackend.models.User;
 import com.cmpt276project.projectbackend.models.UserRepository;
 
