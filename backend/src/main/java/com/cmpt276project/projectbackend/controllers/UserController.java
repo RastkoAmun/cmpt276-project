@@ -1,13 +1,15 @@
 package com.cmpt276project.projectbackend.controllers;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.cmpt276project.customerrors.UserError;
 import com.cmpt276project.projectbackend.models.User;
 import com.cmpt276project.projectbackend.models.UserRepository;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 public class UserController {
@@ -33,16 +35,18 @@ public class UserController {
   }
 
   @PostMapping("/register")
-  public User register(@RequestBody UserRequest request) {
+  public User register(@RequestBody UserRequest request, HttpServletResponse res) throws IOException {
     User existingUsername = userRepo.findByUsername(request.username());
     User existingEmail = userRepo.findByEmail(request.email());
 
     if (existingUsername != null) {
-      return new UserError("Username is taken");
+      res.sendError(400, "Username is already taken");
+      return null;
     }
 
     if (existingEmail != null) {
-      return new UserError("Email already in use");
+      res.sendError(400, "Email is already in use");
+      return null;
     }
 
     User newUser = new User();
@@ -51,25 +55,8 @@ public class UserController {
     newUser.setPassword(request.password());
 
     userRepo.save(newUser);
+    res.setStatus(201);
 
     return newUser;
-  }
-
-  @PostMapping("/login")
-  public User login(@RequestBody UserRequest request) {
-    String username = request.username();
-    String password = request.password();
-
-    User user = userRepo.findByUsername(username);
-
-    if (user == null) {
-      return new UserError("User does not exist");
-    }
-
-    if (!password.equals(user.getPassword())) {
-      return new UserError("User password is incorrect");
-    }
-
-    return user;
   }
 }
