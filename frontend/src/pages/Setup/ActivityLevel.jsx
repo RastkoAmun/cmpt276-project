@@ -2,13 +2,13 @@ import React from 'react';
 import { Typography, Button, Box } from '@mui/material';
 import { NextButtonContainerStyle, NextButtonStyle, SelectionButtonStyle } from './SetupStyles';
 
-const Age = ({selectedAge, setSelectedAge, handleNextPage}) => {
-  const handleAgeSelection = (age) => {
-    setSelectedAge(age);
+const ActivityLevel = ({selectedActivityLevel, setSelectedActivityLevel, handleNextPage}) => {
+  const handleActivityLevelSelection = (activitylevel) => {
+    setSelectedActivityLevel(activitylevel);
   };
 
   const handleNextButtonClick = () => {
-    if (selectedAge) {
+    if (selectedActivityLevel) {
       handleNextPage();
     };
   };
@@ -18,89 +18,85 @@ const Age = ({selectedAge, setSelectedAge, handleNextPage}) => {
       <Box style={{ paddingLeft: '10vw', paddingRight: '10vw' }}>
       {/* Container for text */}
         <Typography variant="h5" align="center" mb={2} fontWeight="bold" style={{ marginBottom: '5px' }}>
-          Choose your age group
+          Choose your activity level
         </Typography>
         <Typography variant="body2" align="center" mb={2} style={{ margin: '0 auto 16px', maxWidth: '250px'}}>
           Tell us more about you so we can tailor the experience to suit your needs.
         </Typography>
       </Box>
       <Box style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+
+
         <Button 
         style = {SelectionButtonStyle}
         sx={{
           border: '2px solid',
-          borderColor: selectedAge === 'child' ? '#4169e1' : '#ebebeb',
-          boxShadow: selectedAge === 'child' ? '0px 0px 10px #4169e1' : 'none',
+          borderColor: selectedActivityLevel === 'sedentary' ? '#4169e1' : '#ebebeb',
+          boxShadow: selectedActivityLevel === 'sedentary' ? '0px 0px 10px #4169e1' : 'none',
           mr: 1,
         }}
-        onClick={() => handleAgeSelection('child')}
+        onClick={() => handleActivityLevelSelection('sedentary')}
         >
           <h3 style={{fontSize: '20px'}}>
-            4-11
+            Sedentary
           </h3>
         </Button>
+
+
         <Button
         style = {SelectionButtonStyle}
         sx={{
           border: '2px solid',
-          borderColor: selectedAge === 'teenager' ? '#4169e1' : '#ebebeb',
-          boxShadow: selectedAge === 'teenager' ? '0px 0px 10px #4169e1' : 'none',
+          borderColor: selectedActivityLevel === 'light' ? '#4169e1' : '#ebebeb',
+          boxShadow: selectedActivityLevel === 'light' ? '0px 0px 10px #4169e1' : 'none',
           mr: 1,
         }}
-        onClick={() => handleAgeSelection('teenager')}
+        onClick={() => handleActivityLevelSelection('light')}
         >
           <h3 style={{fontSize: '20px'}}>
-            12-18
+            Light Activity
           </h3>
         </Button>
+
+
         <Button
         style = {SelectionButtonStyle}
         sx={{
           border: '2px solid',
-          borderColor: selectedAge === 'earlyadult' ? '#4169e1' : '#ebebeb',
-          boxShadow: selectedAge === 'earlyadult' ? '0px 0px 10px #4169e1' : 'none',
+          borderColor: selectedActivityLevel === 'moderate' ? '#4169e1' : '#ebebeb',
+          boxShadow: selectedActivityLevel === 'moderate' ? '0px 0px 10px #4169e1' : 'none',
           mr: 1,
         }}
-        onClick={() => handleAgeSelection('earlyadult')}
+        onClick={() => handleActivityLevelSelection('moderate')}
         >
           <h3 style={{fontSize: '20px'}}>
-            19-29
+            Moderate Activity
           </h3>
         </Button>
+
+
         <Button
         style = {SelectionButtonStyle}
         sx={{
           border: '2px solid',
-          borderColor: selectedAge === 'lateadult' ? '#4169e1' : '#ebebeb',
-          boxShadow: selectedAge === 'lateadult' ? '0px 0px 10px #4169e1' : 'none',
+          borderColor: selectedActivityLevel === 'heavy' ? '#4169e1' : '#ebebeb',
+          boxShadow: selectedActivityLevel === 'heavy' ? '0px 0px 10px #4169e1' : 'none',
           mr: 1,
         }}
-        onClick={() => handleAgeSelection('lateadult')}
+        onClick={() => handleActivityLevelSelection('heavy')}
         >
           <h3 style={{fontSize: '20px'}}>
-            30-49
+            Heavy Activity
           </h3>
         </Button>
-        <Button
-        style = {SelectionButtonStyle}
-        sx={{
-          border: '2px solid',
-          borderColor: selectedAge === 'elder' ? '#4169e1' : '#ebebeb',
-          boxShadow: selectedAge === 'elder' ? '0px 0px 10px #4169e1' : 'none',
-          mr: 1,
-        }}
-        onClick={() => handleAgeSelection('elder')}
-        >
-          <h3 style={{fontSize: '20px'}}>
-            50+
-          </h3>
-        </Button>
+
+
       </Box>
       <Box style={NextButtonContainerStyle}>
         {/* Container for next button */}
-          <Button style={NextButtonStyle} sx={{backgroundColor: selectedAge ? '#4169e1' : '#D3D3D3', mt: 2}}
+          <Button style={NextButtonStyle} sx={{backgroundColor: selectedActivityLevel ? '#4169e1' : '#D3D3D3', mt: 2}}
           onClick={handleNextButtonClick}
-          disabled={!selectedAge}
+          disabled={!selectedActivityLevel}
           >
             Next
           </Button>
@@ -110,4 +106,4 @@ const Age = ({selectedAge, setSelectedAge, handleNextPage}) => {
   )
 }
 
-export default Age
+export default ActivityLevel

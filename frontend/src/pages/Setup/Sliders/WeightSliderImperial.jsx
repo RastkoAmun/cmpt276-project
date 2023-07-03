@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Button, Link, Box, Slider, Input } from '@mui/material';
+import { Link, Box, Slider, Input } from '@mui/material';
 
 const WeightSliderImperial = ({selectedWeight, setSelectedWeight, handleWeightUnitToggle}) => {
 

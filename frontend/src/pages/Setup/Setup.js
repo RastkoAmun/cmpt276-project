@@ -6,6 +6,9 @@ import Gender from './Gender';
 import Age from './Age';
 import Weight from './Weight';
 import Height from './Height';
+import ActivityLevel from './ActivityLevel';
+import Climate from './Climate';
+import Final from './Final';
 
 const Setup = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -15,7 +18,7 @@ const Setup = () => {
 
   const handleNextPage = () => {
     setCurrentPage(currentPage + 1);
-    console.log(selectedAge+', '+selectedGender+', '+selectedWeight+currentWeightUnit+', '+selectedHeight+currentHeightUnit);
+    console.log(selectedAge+', '+selectedGender+', '+selectedWeight+currentWeightUnit+', '+selectedHeight+currentHeightUnit+', '+selectedActivityLevel+', '+selectedClimate);
 
     if (frontPage===currentPage) {
       setFrontPage(frontPage + 1);
@@ -25,18 +28,94 @@ const Setup = () => {
     setCurrentPage(currentPage - 1);
   };
 
+  // BACKEND NEEDS TO IMPLEMENT
+  const finishSetup = () => {
+    // 1. SAVE VARIABLES TO DB
+    // 2. REDIRECT USER BACK TO MAIN PAGE
+    console.log('OK')
+  };
 
   
 
-  // Variables for all the user's input information -- save to db
+  // Variables for all the user's input information
   const [selectedGender, setSelectedGender] = useState(null);
-  const [selectedAge, setSelectedAge] = useState(null);
+  const [selectedAge, setSelectedAge] = useState(null);                       //child, teenager, earlyadult, lateadult, elder
   const [selectedWeight, setSelectedWeight] = useState(0);
   const [selectedHeight, setSelectedHeight] = useState(0);
+  const [selectedActivityLevel, setSelectedActivityLevel] = useState(null);   //sedentary, light, moderate, heavy
+  const [selectedClimate, setSelectedClimate] = useState(null);               //hot, temperate, cold
 
-  // User's preference for 'metric' or 'imperial' unit of measurement -- save to db 
+  // User's preference for 'metric' or 'imperial' unit of measurement
   const [currentWeightUnit, setCurrentWeightUnit] = useState('metric');
   const [currentHeightUnit, setCurrentHeightUnit] = useState('metric');
+
+  // Final calculated goal based on user input info 
+  const [estimatedGoal, setEstimatedGoal] = useState(null);
+  
+  function calculateGoal(gender, age, weight, height, activityLevel, climate) {
+    const BWF = gender === 'male' ? 35 : 31;
+
+    let ageAdjustment = 0;
+    switch (age) {
+      case 'child':
+        ageAdjustment=100;
+        break;
+      case 'teenager':
+        ageAdjustment=70;
+        break;
+      case 'earlyadult':
+        ageAdjustment=-35;
+        break;
+      case 'lateadult':
+        ageAdjustment=-30;
+        break;
+      case 'elderly':
+        ageAdjustment=-25;
+        break;
+      default:
+        ageAdjustment=0;
+    }
+    
+    const BWN = weight * BWF;
+
+    let activityAdjustment = 0;
+    switch (activityLevel) {
+      case 'sedentary':
+        activityAdjustment=0;
+        break;
+      case 'light':
+        activityAdjustment=250;
+        break;
+      case 'moderate':
+        activityAdjustment=500;
+        break;
+      case 'heavy':
+        activityAdjustment=750;
+        break;
+      default:
+        activityAdjustment=0;
+    }
+
+
+    let climateAdjustment = 0;
+    switch (climate) {
+      case 'hot':
+        climateAdjustment=500;
+        break;
+      case 'temperate':
+        climateAdjustment=0;
+        break;
+      case 'cold':
+        climateAdjustment=-250;
+        break;
+      default:
+        climateAdjustment=0;
+    }
+
+    const totalWaterGoal = (BWN+ageAdjustment+activityAdjustment+climateAdjustment);
+    return Math.round(totalWaterGoal);
+  }
+
 
   const handleWeightUnitToggle = () => {
     if (currentWeightUnit==='metric') {
@@ -81,6 +160,27 @@ const Setup = () => {
         <Height selectedHeight={selectedHeight} setSelectedHeight={setSelectedHeight} handleNextPage={handleNextPage} handleHeightUnitToggle={handleHeightUnitToggle} currentHeightUnit={currentHeightUnit}/>
       );
       break;
+    case 5:
+      cardContent = (
+        <ActivityLevel selectedActivityLevel={selectedActivityLevel} setSelectedActivityLevel={setSelectedActivityLevel} handleNextPage={handleNextPage}/>
+      );
+      break;
+    case 6:
+      if (estimatedGoal) {
+        setEstimatedGoal(null);
+      }
+      cardContent = (
+        <Climate selectedClimate={selectedClimate} setSelectedClimate={setSelectedClimate} handleNextPage={handleNextPage}/>
+      );
+      break;
+    case 7:
+      if (!estimatedGoal) {
+        setEstimatedGoal(calculateGoal(selectedGender,selectedAge,selectedWeight,selectedHeight,selectedActivityLevel,selectedClimate));
+      }
+      cardContent = (
+        <Final estimatedGoal={estimatedGoal} finishSetup={finishSetup}/>
+      );
+      break;
     default:
       cardContent = null;
   };
@@ -115,7 +215,11 @@ const Setup = () => {
         <Box style={{ display: 'flex', flexDirection:'column', justifyContent:'center', height:'80%' }}>
         {/* This container holds the different card contents */}
           <Typography variant="body2" style={{margin:'10px auto', color:'#4169e1'}}>
-            {currentPage} of 8
+            {currentPage <= 6 && (
+              <Typography>
+                {currentPage} of 6
+              </Typography>
+            )}
           </Typography>
           {cardContent}
         </Box>
