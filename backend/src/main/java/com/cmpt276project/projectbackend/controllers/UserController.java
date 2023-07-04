@@ -1,6 +1,7 @@
 package com.cmpt276project.projectbackend.controllers;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+@CrossOrigin
 @RestController
 public class UserController {
 
@@ -29,6 +31,13 @@ public class UserController {
   @GetMapping("/test")
   public User test() {
     return testUser;
+  }
+
+  @GetMapping("/users")
+  public List<User> test1() {
+    List<User> viewAll = userRepo.findAll();
+
+    return viewAll;
   }
 
   @DeleteMapping("/delete")
