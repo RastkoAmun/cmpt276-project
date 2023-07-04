@@ -16,6 +16,7 @@ import {
 }
   from '@mui/material'
 import { Link } from 'react-router-dom';
+import { useNavigate  } from 'react-router-dom';
 import image from '../images/health.png'
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -34,6 +35,8 @@ const SignUp = () => {
   const [ exerciseCheckbox, setExerciseCheckbox ] = useState(false);
   const [ sleepCheckbox, setSleepCheckbox ] = useState(false);
   const [ hydrationCheckbox, setHydrationCheckbox ] = useState(false);
+
+  const navigate = useNavigate();
 
   const submit = () => {
     let invUsername = false;
@@ -81,8 +84,10 @@ const SignUp = () => {
       console.log(exerciseCheckbox);
       console.log(sleepCheckbox);
       console.log(hydrationCheckbox);
+      // navigate('/setup')
     }
 
+    
   }
 
   return (

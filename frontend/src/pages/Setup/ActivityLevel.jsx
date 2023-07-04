@@ -11,6 +11,7 @@ const ActivityLevel = ({selectedActivityLevel, setSelectedActivityLevel, handleN
     if (selectedActivityLevel) {
       handleNextPage();
     };
+    console.log('That is it')
   };
 
   return (
