@@ -16,7 +16,7 @@ import { UserContext } from '../index'
 const Login = () => {
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
-  const { globalUser, setGlobalUser } = useContext(UserContext);
+  const { setGlobalUser } = useContext(UserContext);
 
   const navigate = useNavigate();
 

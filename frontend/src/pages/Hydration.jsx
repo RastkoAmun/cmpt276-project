@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Box, Button, Fab, Stack, TextField, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
+import { UserContext } from '../index'
 
 
 const Hydration = () => {
@@ -33,13 +34,13 @@ const Hydration = () => {
       if (goal - current < 0) {
         setGlassesLeft(0)
       } else {
-        setGlassesLeft(goal-current)
+        setGlassesLeft(goal - current)
       }
     }
   }
 
   const addWater = () => {
-    if(current < goal) {
+    if (current < goal) {
       setCurrent(current + 1);
       setGlassesLeft(glassesLeft - 1)
     } else {

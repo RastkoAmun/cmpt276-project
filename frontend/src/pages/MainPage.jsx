@@ -17,7 +17,7 @@ const buttonStyle = {
 }
 
 const MainPage = () => {
-  const { globalUser, setGlobalUser } = useContext(UserContext);
+  const { globalUser } = useContext(UserContext);
 
   return (
     <Box>
