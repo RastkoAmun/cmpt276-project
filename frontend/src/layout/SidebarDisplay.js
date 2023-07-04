@@ -14,7 +14,7 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import WaterDropIcon from '@mui/icons-material/WaterDrop';
 import SettingsIcon from '@mui/icons-material/Settings';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ReactComponent as Logo } from '../images/logo.svg';
 import { UserContext } from '../index'
 
@@ -27,7 +27,21 @@ const list = [
 ]
 
 const SidebarDisplay = () => {
-  const { globalUser } = useContext(UserContext);
+  const { globalUser, setGlobalUser } = useContext(UserContext);
+
+  const navigate = useNavigate();
+  const logout = async () => {
+    try {
+      await fetch('http://localhost:8080/user/logout', {
+        method: "GET",
+        credentials: "include"
+      })
+      setGlobalUser(null);
+      navigate('/');
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
   return (
     <>
@@ -64,7 +78,7 @@ const SidebarDisplay = () => {
       {
         globalUser ?
           <Box sx={{ display: 'flex', justifyContent: 'center' }} p={4}>
-            <Button variant='contained' size='large' color='inherit'>
+            <Button variant='contained' size='large' color='inherit' onClick={logout}>
               Logout
             </Button>
           </Box>
