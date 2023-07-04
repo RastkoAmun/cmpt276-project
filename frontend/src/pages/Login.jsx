@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useState } from 'react';
 import {
   Box,
@@ -12,7 +12,6 @@ import {
 import image from '../images/health.png'
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../index'
-import { red } from '@mui/material/colors';
 
 const Login = () => {
   const [username, setUserName] = useState('');
@@ -28,7 +27,8 @@ const Login = () => {
       const user = await fetch('http://localhost:8080/user/login', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
+        credentials: "include"
       })
       const userCredentials = await user.json();
 
@@ -42,6 +42,29 @@ const Login = () => {
       console.log(error)
     }
   }
+
+  const sessionLogin = async () => {
+    try {
+      const user = await fetch('http://localhost:8080/user/login', {
+        method: "GET",
+        credentials: "include"
+      })
+      const userCredentials = await user.json();
+
+      if (userCredentials.username) {
+        console.log(userCredentials);
+        setGlobalUser(userCredentials);
+        navigate('/');
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  useEffect(() => {
+    sessionLogin()
+  })
+
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center' }} mt={15}>

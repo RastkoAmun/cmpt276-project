@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@CrossOrigin
+@CrossOrigin(origins = { "http://localhost:3000" }, allowedHeaders = "*", allowCredentials = "true")
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -41,7 +41,7 @@ public class UserController {
     User user = (User) session.getAttribute("session_user");
 
     if (user == null) {
-      return null;
+      return new User();
     }
 
     return user;

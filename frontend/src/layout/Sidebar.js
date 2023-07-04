@@ -21,7 +21,7 @@ import { UserContext } from '../index'
 const Sidebar = (props) => {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { globalUser, setGlobalUser } = useContext(UserContext);
+  const { globalUser } = useContext(UserContext);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);

@@ -28,7 +28,7 @@ const CustomRouterProvider = () => {
       children: [
         {
           path: '/',
-          element: <MainPage props={globalUser} />
+          element: <MainPage />
         },
         {
           path: 'food',
