@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.cmpt276project.projectbackend.models.User;
 import com.cmpt276project.projectbackend.models.UserRepository;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -34,7 +35,6 @@ public class UserController {
   public void delete(@RequestBody AdminRequest request) {
     User user = userRepo.findByUsername(request.username());
 
-    // TODO: implement admin permissions
     String admin = request.adminKey();
     if (admin.equals("admin123")) {
       userRepo.delete(user);
@@ -79,5 +79,31 @@ public class UserController {
   @GetMapping("/logout")
   public void logout(HttpServletRequest req) {
     req.getSession().invalidate();
+  }
+
+  @PostMapping("/register")
+  public User register(@RequestBody UserRequest request, HttpServletResponse res) throws IOException {
+    User existingUsername = userRepo.findByUsername(request.username());
+    User existingEmail = userRepo.findByEmail(request.email());
+
+    if (existingUsername != null) {
+      res.sendError(400, "Username is already taken");
+      return null;
+    }
+
+    if (existingEmail != null) {
+      res.sendError(400, "Email is already in use");
+      return null;
+    }
+
+    User newUser = new User();
+    newUser.setUsername(request.username());
+    newUser.setEmail(request.email());
+    newUser.setPassword(request.password());
+
+    userRepo.save(newUser);
+    res.setStatus(201);
+
+    return newUser;
   }
 }
