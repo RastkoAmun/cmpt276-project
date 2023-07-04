@@ -21,6 +21,8 @@ const Hydration = () => {
 
   const navigate = useNavigate();
 
+
+
   useEffect(() => {
     if (globalUser) {
       // Fetch the user's goal if it is already set
@@ -28,22 +30,27 @@ const Hydration = () => {
         try {
           const response = await fetch(`http://localhost:8080/hydration/goal?uid=${globalUser.uid}`);
           if (!response.ok) {
-            throw new Error(`Error! status: ${response.status}`);
-          }
-          const data = await response.json();
-          if (data.goal > 0) {
-
-            setGoal(data.goal);
-            setSubmitted(true);
-            setGoalValidation(false);
-            const dif = data.goal - data.intake;
-            setGlassesLeft(dif);
+            if (response.status === 404) {
+              setGoalValidation(true); // Set goalValidation to true if response is not found
+            } else {
+              throw new Error(`Error! status: ${response.status}`);
+            }
+          } else {
+            const data = await response.json();
+            if (data.goal > 0) {
+              setGoal(data.goal);
+              setSubmitted(true);
+              setGoalValidation(false);
+              const dif = data.goal - data.intake;
+              setGlassesLeft(dif);
+              setCurrent(data.intake);
+            }
           }
         } catch (error) {
           console.error('Error:', error);
         }
       };
-
+  
       fetchGoal();
     } else {
       navigate("/login");
@@ -97,6 +104,8 @@ const Hydration = () => {
     if (current < goal) {
       setCurrent(current + 1);
       setGlassesLeft(glassesLeft - 1);
+      
+      console.log("useridg", globalUser.uid);
 
       const today = new Date();
       const intakeDate = today.toISOString().slice(0, 10);
