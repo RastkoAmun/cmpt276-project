@@ -16,25 +16,27 @@ import {
 }
   from '@mui/material'
 import { Link } from 'react-router-dom';
-import { useNavigate  } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import image from '../images/health.png'
 import CloseIcon from '@mui/icons-material/Close';
 
 const SignUp = () => {
-  const [ username, setUserName ] = useState('');
-  const [ email, setEmail ] = useState('');
-  const [ password, setPassword ] = useState('');
-  const [ confPassword, setConfPassword ] = useState('');
+  const [username, setUserName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confPassword, setConfPassword] = useState('');
 
-  const [ invalidUsername, setInvalidUsername ] = useState(false);
-  const [ invalidEmail, setInvalidEmail ] = useState(false);
-  const [ invalidPassword, setInvalidPassword ] = useState(false);
-  const [ passwordMismatch, setPasswordMismatch ] = useState(false);
+  const [invalidUsername, setInvalidUsername] = useState(false);
+  const [invalidEmail, setInvalidEmail] = useState(false);
+  const [invalidPassword, setInvalidPassword] = useState(false);
+  const [passwordMismatch, setPasswordMismatch] = useState(false);
 
-  const [ foodCheckbox, setFoodCheckbox ] = useState(false);
-  const [ exerciseCheckbox, setExerciseCheckbox ] = useState(false);
-  const [ sleepCheckbox, setSleepCheckbox ] = useState(false);
-  const [ hydrationCheckbox, setHydrationCheckbox ] = useState(false);
+  const [foodCheckbox, setFoodCheckbox] = useState(false);
+  const [exerciseCheckbox, setExerciseCheckbox] = useState(false);
+  const [sleepCheckbox, setSleepCheckbox] = useState(false);
+  const [hydrationCheckbox, setHydrationCheckbox] = useState(false);
+
+  const [registrationError, setRegistrationError] = useState(null);
 
   const navigate = useNavigate();
 
@@ -69,7 +71,7 @@ const SignUp = () => {
 
     //Check if passwords are matching
     setPasswordMismatch(false);
-    if(password !== confPassword){
+    if (password !== confPassword) {
       passMismatch = true;
       setPasswordMismatch(true);
     }
@@ -77,12 +79,17 @@ const SignUp = () => {
     if (!invUsername && !invEmail && !invPassword && !passMismatch) {
       try {
         const body = { username, email, password }
-        await fetch('http://localhost:8080/register', {
+        const res = await fetch('http://localhost:8080/user/register', {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body)
         })
-        navigate('/')
+        const resJson = await res.json();
+        if (resJson.status) {
+          setRegistrationError(resJson.message);
+        } else {
+          navigate('/login')
+        }
       } catch (error) {
         console.log(error)
       }
@@ -168,32 +175,37 @@ const SignUp = () => {
                 <Grid container>
                   <Grid item xs={6}>
                     <FormControlLabel
-                      control={<Checkbox checked={foodCheckbox} 
-                        onClick={() => setFoodCheckbox(!foodCheckbox) }
+                      control={<Checkbox checked={foodCheckbox}
+                        onClick={() => setFoodCheckbox(!foodCheckbox)}
                       />} label="Food" />
                   </Grid>
                   <Grid item xs={6}>
                     <FormControlLabel
-                      control={<Checkbox checked={exerciseCheckbox} 
-                        onClick={() => setExerciseCheckbox(!exerciseCheckbox) }
+                      control={<Checkbox checked={exerciseCheckbox}
+                        onClick={() => setExerciseCheckbox(!exerciseCheckbox)}
                       />} label="Exercise" />
                   </Grid>
                   <Grid item xs={6}>
                     <FormControlLabel
-                      control={<Checkbox checked={sleepCheckbox} 
-                        onClick={() => setSleepCheckbox(!sleepCheckbox) }
+                      control={<Checkbox checked={sleepCheckbox}
+                        onClick={() => setSleepCheckbox(!sleepCheckbox)}
                       />} label="Sleep" />
                   </Grid>
                   <Grid item xs={6}>
                     <FormControlLabel
-                      control={<Checkbox checked={hydrationCheckbox} 
-                        onClick={() => setHydrationCheckbox(!hydrationCheckbox) }
+                      control={<Checkbox checked={hydrationCheckbox}
+                        onClick={() => setHydrationCheckbox(!hydrationCheckbox)}
                       />} label="Hydration" />
                   </Grid>
                 </Grid>
               </FormGroup>
               {/* <Box sx={{ flexGrow: 1 }} /> */}
-              <Button variant='contained' color='primary'
+              {
+                registrationError ?
+                  <div style={{ color: "red", marginBottom: "1rem" }}>{registrationError}</div>
+                  : null
+              }
+              <Button variant='contained' color='primary' mt={1}
                 onClick={submit}
                 sx={{ mb: 5, display: 'flex' }}>
                 Submit

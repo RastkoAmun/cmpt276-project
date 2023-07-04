@@ -12,7 +12,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+@CrossOrigin(origins = { "http://localhost:3000" }, allowedHeaders = "*", allowCredentials = "true")
 @RestController
+@RequestMapping("/user")
 public class UserController {
 
   @Autowired
@@ -24,14 +26,7 @@ public class UserController {
   record AdminRequest(String username, String adminKey) {
   }
 
-  private User testUser = new User("testUsername", "testEmail", "testPassword");
-
-  @GetMapping("/test")
-  public User test() {
-    return testUser;
-  }
-
-  @DeleteMapping("/delete")
+  @DeleteMapping
   public void delete(@RequestBody AdminRequest request) {
     User user = userRepo.findByUsername(request.username());
 
@@ -46,7 +41,7 @@ public class UserController {
     User user = (User) session.getAttribute("session_user");
 
     if (user == null) {
-      return null;
+      return new User();
     }
 
     return user;

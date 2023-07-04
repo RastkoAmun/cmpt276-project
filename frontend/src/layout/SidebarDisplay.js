@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   Box,
   Button,
@@ -14,11 +14,12 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import WaterDropIcon from '@mui/icons-material/WaterDrop';
 import SettingsIcon from '@mui/icons-material/Settings';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ReactComponent as Logo } from '../images/logo.svg';
+import { UserContext } from '../index'
 
 const list = [
-  { title: 'Dashboard', icon: <DashboardIcon />, path: '/'},
+  { title: 'Dashboard', icon: <DashboardIcon />, path: '/' },
   { title: 'Food', icon: <LocalDiningIcon />, path: '/food' },
   { title: 'Sleep', icon: <BedtimeIcon />, path: '/sleep' },
   { title: 'Exercise', icon: <FitnessCenterIcon />, path: '/exercise' },
@@ -26,11 +27,27 @@ const list = [
 ]
 
 const SidebarDisplay = () => {
+  const { globalUser, setGlobalUser } = useContext(UserContext);
+
+  const navigate = useNavigate();
+  const logout = async () => {
+    try {
+      await fetch('http://localhost:8080/user/logout', {
+        method: "GET",
+        credentials: "include"
+      })
+      setGlobalUser(null);
+      navigate('/');
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   return (
     <>
       <Box display='flex' justifyContent='center' py={2}
-        sx={ { borderBottom: '1px solid black ' }}>
-          <Logo width={150} />
+        sx={{ borderBottom: '1px solid black ' }}>
+        <Logo width={150} />
       </Box>
       <List sx={{ py: 0 }}>
         {list.map((item, index) => (
@@ -58,11 +75,15 @@ const SidebarDisplay = () => {
           </ListItemButton>
         </ListItem>
       </List>
-      <Box sx={{ display: 'flex', justifyContent: 'center' }} p={4}>
-        <Button variant='contained' size='large' color='inherit'>
-          Logout
-        </Button>
-      </Box>
+      {
+        globalUser ?
+          <Box sx={{ display: 'flex', justifyContent: 'center' }} p={4}>
+            <Button variant='contained' size='large' color='inherit' onClick={logout}>
+              Logout
+            </Button>
+          </Box>
+          : null
+      }
     </>
   )
 }

@@ -26,6 +26,10 @@ public class User {
     this.password = password;
   }
 
+  public int getUid() {
+    return uid;
+  }
+
   public String getUsername() {
     return username;
   }
