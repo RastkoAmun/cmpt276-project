@@ -5,20 +5,23 @@ import jakarta.persistence.*;
 @Entity
 @Table(name="hydration")
 public class Hydration {
-     @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Integer user_id;
-    private Date intake_date;
+    private Integer uid;
     private Integer goal;
     private Integer intake;
+
+    @Column(name="intake_date")
+    private Date intakeDate;
+
 
      public Hydration() { 
     }
 
-    public Hydration(Integer user_id, Integer goal, Integer intake, Date intake_date) {
-    this.user_id = user_id;
-    this.intake_date=intake_date;
+    public Hydration(Integer uid, Integer goal, Integer intake, Date intakeDate) {
+    this.uid = uid;
+    this.intakeDate=intakeDate;
     this.goal = goal;
     this.intake = intake;
     
@@ -33,20 +36,20 @@ public class Hydration {
         this.id = id;
     }
 
-    public Integer getUser_id() {
-        return user_id;
+    public Integer getUid() {
+        return uid;
     }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+    public void setUid(Integer uid) {
+        this.uid = uid;
     }
 
-      public Date getIntake_date() {
-        return intake_date;
+      public Date getintakeDate() {
+        return intakeDate;
     }
 
-    public void setIntake_date(Date intake_date) {
-        this.intake_date = intake_date;
+    public void setintakeDate(Date intakeDate) {
+        this.intakeDate = intakeDate;
     }
 
     public Integer getGoal() {
@@ -67,5 +70,15 @@ public class Hydration {
 
 
 }
+
+
+
+
+
+
+  
+
+
+
 
 
