@@ -1,15 +1,15 @@
 package com.cmpt276project.projectbackend.controllers;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.cmpt276project.projectbackend.models.User;
 import com.cmpt276project.projectbackend.models.UserRepository;
-
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @RestController
 public class UserController {
@@ -20,6 +20,9 @@ public class UserController {
   record UserRequest(String username, String password, String email) {
   }
 
+  record AdminRequest(String username, String adminKey) {
+  }
+
   private User testUser = new User("testUsername", "testEmail", "testPassword");
 
   @GetMapping("/test")
@@ -27,36 +30,54 @@ public class UserController {
     return testUser;
   }
 
-  @GetMapping("/test1")
-  public List<User> test1() {
-    List<User> viewAll = userRepo.findAll();
+  @DeleteMapping("/delete")
+  public void delete(@RequestBody AdminRequest request) {
+    User user = userRepo.findByUsername(request.username());
 
-    return viewAll;
+    // TODO: implement admin permissions
+    String admin = request.adminKey();
+    if (admin.equals("admin123")) {
+      userRepo.delete(user);
+    }
   }
 
-  @PostMapping("/register")
-  public User register(@RequestBody UserRequest request, HttpServletResponse res) throws IOException {
-    User existingUsername = userRepo.findByUsername(request.username());
-    User existingEmail = userRepo.findByEmail(request.email());
+  @GetMapping("/login")
+  public User getLogin(HttpServletRequest req, HttpSession session) {
+    User user = (User) session.getAttribute("session_user");
 
-    if (existingUsername != null) {
-      res.sendError(400, "Username is already taken");
+    if (user == null) {
       return null;
     }
 
-    if (existingEmail != null) {
-      res.sendError(400, "Email is already in use");
+    return user;
+  }
+
+  @PostMapping("/login")
+  public User login(@RequestBody UserRequest request, HttpServletResponse res, HttpServletRequest req,
+      HttpSession session)
+      throws IOException {
+    String username = request.username();
+    String password = request.password();
+
+    User user = userRepo.findByUsername(username);
+
+    if (user == null) {
+      res.sendError(400, "User does not exist");
       return null;
     }
 
-    User newUser = new User();
-    newUser.setUsername(request.username());
-    newUser.setEmail(request.email());
-    newUser.setPassword(request.password());
+    if (!password.equals(user.getPassword())) {
+      res.sendError(401, "User password is wrong");
+      // return new UserError("User password is incorrect");
+      return null;
+    }
 
-    userRepo.save(newUser);
-    res.setStatus(201);
+    req.getSession().setAttribute("session_user", user);
+    return user;
+  }
 
-    return newUser;
+  @GetMapping("/logout")
+  public void logout(HttpServletRequest req) {
+    req.getSession().invalidate();
   }
 }
