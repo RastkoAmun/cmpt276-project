@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Box, Button, Fab, Stack, TextField, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
+import { UserContext } from '../index'
 
 
 const Hydration = () => {
@@ -12,7 +13,14 @@ const Hydration = () => {
   const [glassesLeft, setGlassesLeft] = useState(goal);
   const [current, setCurrent] = useState(0);
 
+  const { globalUser } = useContext(UserContext);
+
   const theme = useTheme();
+
+  console.log("Goal ", goal);
+  console.log("GlassesLeft ", glassesLeft);
+  console.log("Current", current);
+  console.log("User", globalUser);
 
   const handleGoal = (event) => {
     setGoal(event.target.value)
@@ -26,16 +34,21 @@ const Hydration = () => {
       setGoal(goal)
       setSubmitted(true);
       setGoalValidation(false);
-      setGlassesLeft(goal)
+      if (goal - current < 0) {
+        setGlassesLeft(0)
+      } else {
+        setGlassesLeft(goal - current)
+      }
     }
   }
 
   const addWater = () => {
-    if(current < goal) {
+    if (current < goal) {
       setCurrent(current + 1);
       setGlassesLeft(glassesLeft - 1)
+    } else {
+      setGlassesLeft(0);
     }
-    else setCurrent(goal);
   }
 
   let i = goal;
