@@ -13,7 +13,7 @@ public interface HydrationRepository extends JpaRepository<Hydration, Long> {
    
 
   
-    List<Hydration> findByUid(Long id);
+    Hydration findByUid(Long id);
 
     List<Hydration> findByIntakeDate(Date sellDate);
 

@@ -1,9 +1,11 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react';
 import { Box, Button, Fab, Stack, TextField, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
-import { UserContext } from '../index'
+import { UserContext } from '../index';
+import { useNavigate } from 'react-router-dom';
+
 
 
 const Hydration = () => {
@@ -13,43 +15,129 @@ const Hydration = () => {
   const [glassesLeft, setGlassesLeft] = useState(goal);
   const [current, setCurrent] = useState(0);
 
-  const { globalUser } = useContext(UserContext);
+const theme = useTheme();
 
-  const theme = useTheme();
+const { globalUser } = useContext(UserContext);
 
-  console.log("Goal ", goal);
-  console.log("GlassesLeft ", glassesLeft);
-  console.log("Current", current);
-  console.log("User", globalUser);
+
+
+
+
+
+ 
+
+
+  useEffect(() => {
+
+    let userID=0;
+const navigate = useNavigate();
+if (!globalUser) {
+  navigate("/login");
+  return ;
+}else{
+   userId = globalUser.uid;
+  console.log("userId",userId);
+}
+    // Fetch the user's goal if it is already set
+    const fetchGoal = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/hydration/goal?uid=${userId}`);
+        if (!response.ok) {
+          throw new Error(`Error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        if (data.goal > 0) {
+      
+          setGoal(data.goal);
+          setSubmitted(true);
+          setGoalValidation(false);
+          const dif=data.goal - data.intake;
+          setGlassesLeft(dif);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+  
+    fetchGoal();
+  }, [userId]);
 
   const handleGoal = (event) => {
     setGoal(event.target.value)
   }
 
-  const submitGoal = () => {
+  const submitGoal = async () => {
     if (goal > 20 || goal < 6) {
       setGoalValidation(true);
-    }
-    else {
-      setGoal(goal)
+    } else {
+      setGoal(goal);
       setSubmitted(true);
       setGoalValidation(false);
-      if (goal - current < 0) {
-        setGlassesLeft(0)
-      } else {
-        setGlassesLeft(goal - current)
+      setGlassesLeft(goal);
+
+      const today = new Date();
+      const intakeDate = today.toISOString().slice(0, 10);
+
+      try {
+
+        const myData=
+        {
+          "uid":globalUser.uid,
+          "goal": goal,
+          "intake": 0,
+          "intakeDate": intakeDate
+      }
+        const response = await fetch('http://localhost:8080/hydration', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(myData),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error! status: ${response.status}`);
+        }
+
+      } catch (error) {
+        console.error('Error:', error);
       }
     }
-  }
+  };
 
-  const addWater = () => {
+  const addWater = async () => {
     if (current < goal) {
       setCurrent(current + 1);
-      setGlassesLeft(glassesLeft - 1)
+      setGlassesLeft(glassesLeft - 1);
+
+      const today = new Date();
+      const intakeDate = today.toISOString().slice(0, 10);
+
+      try {
+        const myData = {
+          uid: globalUser.uid,
+          intake: current + 1,
+          intakeDate: intakeDate
+        };
+
+        const response = await fetch('http://localhost:8080/hydration/update', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(myData),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error! status: ${response.status}`);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
     } else {
-      setGlassesLeft(0);
+      setCurrent(goal);
     }
-  }
+  };
 
   let i = goal;
   const height = 320 / i;

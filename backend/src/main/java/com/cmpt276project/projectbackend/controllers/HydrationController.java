@@ -8,17 +8,21 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
+@CrossOrigin
 @RestController
 @RequestMapping("/hydration")
 public class HydrationController {
@@ -61,16 +65,38 @@ public ResponseEntity<Hydration> updateHydrationRecord(@RequestBody Hydration hy
         String formattedIntakeDate = dateFormat.format(intakeDate) + " 00:00:00";
         intakeDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(formattedIntakeDate);
             
-        // Check if the hydration record exists for the given user ID and intake date
         Hydration existingRecord = hydrationRepo.findByUidAndIntakeDate(uid, intakeDate);
 
         if (existingRecord!=null) {
-            // Update the intake value
             existingRecord.setIntake(hydrationRequest.getIntake());
             Hydration updatedHydration = hydrationRepo.save(existingRecord);
             return ResponseEntity.ok(updatedHydration);
         } else {
-            // No record found for the given user ID and intake date
+            return ResponseEntity.notFound().build();
+        }
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+}
+
+@GetMapping("/goal")
+public ResponseEntity<Map<String, Object>> getUserGoal(@RequestParam("uid") Long uid) {
+    try {
+        System.out.println("getting goal and intake"+uid);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date intakeDate = new Date();
+        String formattedIntakeDate = dateFormat.format(intakeDate) + " 00:00:00";
+        intakeDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(formattedIntakeDate);
+
+        Hydration hydration = hydrationRepo.findByUidAndIntakeDate(uid, intakeDate);
+        if (hydration != null) {
+            Map<String, Object> response = new HashMap<>();
+            System.out.println("goal"+hydration.getIntake());
+            response.put("goal", hydration.getGoal());
+            response.put("intake", hydration.getIntake());
+            return ResponseEntity.ok(response);
+        } else {
             return ResponseEntity.notFound().build();
         }
     } catch (Exception e) {
