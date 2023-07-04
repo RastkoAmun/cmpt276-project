@@ -77,7 +77,7 @@ const SignUp = () => {
     if (!invUsername && !invEmail && !invPassword && !passMismatch) {
       try {
         const body = { username, email, password }
-        await fetch('http://localhost:8080/register', {
+        await fetch('http://localhost:8080/user/register', {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body)

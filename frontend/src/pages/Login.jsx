@@ -1,16 +1,39 @@
 import React from 'react';
-import { 
+import { useState } from 'react';
+import {
   Box,
   Button,
   Card,
-  CardMedia, 
-  TextField, 
-  Typography } 
-from '@mui/material';
+  CardMedia,
+  TextField,
+  Typography
+}
+  from '@mui/material';
 import image from '../images/health.png'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const [username, setUserName] = useState('');
+  const [password, setPassword] = useState('');
+
+  const navigate = useNavigate();
+
+  const submit = async () => {
+    try {
+      const body = { username, password }
+      const user = await fetch('http://localhost:8080/user/login', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      })
+      const userCredentials = await user.json();
+      console.log(userCredentials);
+      navigate('/')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center' }} mt={15}>
       <Card
@@ -27,28 +50,30 @@ const Login = () => {
           alt="Live from space album cover"
         />
         <Box mx={5}
-        sx={{
-          display: 'flex', flexDirection: 'column',
-          justifyContent: 'center',
-          width: '70%',
-        }}>
-            <Typography variant='h6' component='div' p={1}
-              sx={{ alignSelf: 'flex-start'}}> 
-              Username 
-            </Typography>
-            <TextField id="outlined-basic1" label="Username" variant="outlined" 
-              size='small' 
-            />
-            <Typography variant='h6' component='div' p={1} mt={1.5}> Password </Typography>
-            <TextField id="outlined-basic2" label="Password" variant="outlined" 
-              size='small' 
-            />
-            <Box mt={4}>
-              <Button variant='contained' color='info'
-                sx={{ marginRight: 3, backgroundColor: 'black' }}>Login</Button>
-              <Button variant='contained' color='inherit'
-                component={Link} to={'/signup'}>SignUp</Button>
-            </Box>
+          sx={{
+            display: 'flex', flexDirection: 'column',
+            justifyContent: 'center',
+            width: '70%',
+          }}>
+          <Typography variant='h6' component='div' p={1}
+            sx={{ alignSelf: 'flex-start' }}>
+            Username
+          </Typography>
+          <TextField id="outlined-basic1" label="Username" variant="outlined"
+            size='small' value={username} onChange={(e) => { setUserName(e.target.value) }}
+          />
+          <Typography variant='h6' component='div' p={1} mt={1.5}> Password </Typography>
+          <TextField id="outlined-basic2" label="Password" variant="outlined"
+            size='small' value={password} onChange={(e) => { setPassword(e.target.value) }}
+          />
+          <Box mt={4}>
+            <Button variant='contained' color='info' onClick={submit}
+              sx={{ marginRight: 3, backgroundColor: 'black' }}>
+              Login
+            </Button>
+            <Button variant='contained' color='inherit'
+              component={Link} to={'/signup'}>SignUp</Button>
+          </Box>
         </Box>
       </Card>
     </Box>
