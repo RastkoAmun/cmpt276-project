@@ -36,6 +36,8 @@ const SignUp = () => {
   const [sleepCheckbox, setSleepCheckbox] = useState(false);
   const [hydrationCheckbox, setHydrationCheckbox] = useState(false);
 
+  const [registrationError, setRegistrationError] = useState(null);
+
   const navigate = useNavigate();
 
   const submit = async () => {
@@ -77,12 +79,17 @@ const SignUp = () => {
     if (!invUsername && !invEmail && !invPassword && !passMismatch) {
       try {
         const body = { username, email, password }
-        await fetch('http://localhost:8080/user/register', {
+        const res = await fetch('http://localhost:8080/user/register', {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body)
         })
-        navigate('/login')
+        const resJson = await res.json();
+        if (resJson.status) {
+          setRegistrationError(resJson.message);
+        } else {
+          navigate('/login')
+        }
       } catch (error) {
         console.log(error)
       }
@@ -193,7 +200,12 @@ const SignUp = () => {
                 </Grid>
               </FormGroup>
               {/* <Box sx={{ flexGrow: 1 }} /> */}
-              <Button variant='contained' color='primary'
+              {
+                registrationError ?
+                  <div style={{ color: "red", marginBottom: "1rem" }}>{registrationError}</div>
+                  : null
+              }
+              <Button variant='contained' color='primary' mt={1}
                 onClick={submit}
                 sx={{ mb: 5, display: 'flex' }}>
                 Submit
