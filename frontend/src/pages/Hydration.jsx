@@ -13,11 +13,14 @@ const Hydration = () => {
   const [glassesLeft, setGlassesLeft] = useState(goal);
   const [current, setCurrent] = useState(0);
 
+  const { globalUser } = useContext(UserContext);
+
   const theme = useTheme();
 
   console.log("Goal ", goal);
   console.log("GlassesLeft ", glassesLeft);
   console.log("Current", current);
+  console.log("User", globalUser);
 
   const handleGoal = (event) => {
     setGoal(event.target.value)
