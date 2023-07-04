@@ -1,0 +1,273 @@
+{
+	"info": {
+		"_postman_id": "faab19fb-cd23-428c-b205-c694d24a16dd",
+		"name": "COMP276-Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20770622"
+	},
+	"item": [
+		{
+			"name": "Echo Test User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"User grabbed from test endpoint\", () => {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.username).to.eql(\"testUsername\");\r",
+							"    pm.expect(response.password).to.eql(\"testPassword\");\r",
+							"    pm.expect(response.email).to.eql(\"testEmail\");\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL}}test",
+					"host": [
+						"{{LOCAL}}test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Created User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"User credentials are echoed\", () => {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.username).to.eql(\"user1\");\r",
+							"    pm.expect(response.email).to.eql(\"user1@email.com\");\r",
+							"    pm.expect(response.password).to.eql(\"user1password\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"user1\",\r\n    \"email\": \"user1@email.com\",\r\n    \"password\": \"user1password\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL}}register",
+					"host": [
+						"{{LOCAL}}register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Login Not Found",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Login user not found\", () => {\r",
+							"    const res = pm.response.json();\r",
+							"    pm.expect(res.status).to.eql(400);\r",
+							"    pm.expect(res.message).to.eql(\"User does not exist\");\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"user123\",\r\n    \"email\": \"user1@email.com\",\r\n    \"password\": \"user1password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL}}login",
+					"host": [
+						"{{LOCAL}}login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Login Wrong Password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Login wrong password\", () => {\r",
+							"    const res = pm.response.json();\r",
+							"    pm.expect(res.status).to.eql(401);\r",
+							"    pm.expect(res.message).to.eql(\"User password is wrong\");\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"user1\",\r\n    \"email\": \"user1@email.com\",\r\n    \"password\": \"user1passwordwrong\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL}}login",
+					"host": [
+						"{{LOCAL}}login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"User login\", () => {\r",
+							"    const res = pm.response.json();\r",
+							"    pm.expect(res.username).to.eql(\"user1\");\r",
+							"    pm.expect(res.email).to.eql(\"user1@email.com\");\r",
+							"    pm.expect(res.password).to.eql(\"user1password\");\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"user1\",\r\n    \"email\": \"user1@email.com\",\r\n    \"password\": \"user1password\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL}}login",
+					"host": [
+						"{{LOCAL}}login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Session Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"User login\", () => {\r",
+							"    const res = pm.response.json();\r",
+							"    pm.expect(res.username).to.eql(\"user1\");\r",
+							"    pm.expect(res.email).to.eql(\"user1@email.com\");\r",
+							"    pm.expect(res.password).to.eql(\"user1password\");\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL}}login",
+					"host": [
+						"{{LOCAL}}login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL}}logout",
+					"host": [
+						"{{LOCAL}}logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"user1\",\r\n    \"adminKey\": \"admin123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL}}delete",
+					"host": [
+						"{{LOCAL}}delete"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "LOCAL",
+			"value": "http://localhost:8080/"
+		}
+	]
+}
