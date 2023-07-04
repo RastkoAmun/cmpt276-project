@@ -15,52 +15,40 @@ const Hydration = () => {
   const [glassesLeft, setGlassesLeft] = useState(goal);
   const [current, setCurrent] = useState(0);
 
-const theme = useTheme();
+  const theme = useTheme();
 
-const { globalUser } = useContext(UserContext);
+  const { globalUser } = useContext(UserContext);
 
-
-
-
-
-
- 
-
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (globalUser) {
+      // Fetch the user's goal if it is already set
+      const fetchGoal = async () => {
+        try {
+          const response = await fetch(`http://localhost:8080/hydration/goal?uid=${globalUser.uid}`);
+          if (!response.ok) {
+            throw new Error(`Error! status: ${response.status}`);
+          }
+          const data = await response.json();
+          if (data.goal > 0) {
 
-    let userID=0;
-const navigate = useNavigate();
-if (!globalUser) {
-  navigate("/login");
-  return ;
-}else{
-   userId = globalUser.uid;
-  console.log("userId",userId);
-}
-    // Fetch the user's goal if it is already set
-    const fetchGoal = async () => {
-      try {
-        const response = await fetch(`http://localhost:8080/hydration/goal?uid=${userId}`);
-        if (!response.ok) {
-          throw new Error(`Error! status: ${response.status}`);
+            setGoal(data.goal);
+            setSubmitted(true);
+            setGoalValidation(false);
+            const dif = data.goal - data.intake;
+            setGlassesLeft(dif);
+          }
+        } catch (error) {
+          console.error('Error:', error);
         }
-        const data = await response.json();
-        if (data.goal > 0) {
-      
-          setGoal(data.goal);
-          setSubmitted(true);
-          setGoalValidation(false);
-          const dif=data.goal - data.intake;
-          setGlassesLeft(dif);
-        }
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    };
-  
-    fetchGoal();
-  }, [userId]);
+      };
+
+      fetchGoal();
+    } else {
+      navigate("/login");
+    }
+  }, [globalUser]);
 
   const handleGoal = (event) => {
     setGoal(event.target.value)
@@ -80,13 +68,13 @@ if (!globalUser) {
 
       try {
 
-        const myData=
+        const myData =
         {
-          "uid":globalUser.uid,
+          "uid": globalUser.uid,
           "goal": goal,
           "intake": 0,
           "intakeDate": intakeDate
-      }
+        }
         const response = await fetch('http://localhost:8080/hydration', {
           method: 'POST',
           headers: {
