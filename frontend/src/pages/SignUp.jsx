@@ -38,7 +38,7 @@ const SignUp = () => {
 
   const navigate = useNavigate();
 
-  const submit = () => {
+  const submit = async () => {
     let invUsername = false;
     let invEmail = false;
     let invPassword = false;
@@ -75,19 +75,18 @@ const SignUp = () => {
     }
 
     if (!invUsername && !invEmail && !invPassword && !passMismatch) {
-      console.log(username);
-      console.log(email);
-      console.log(password);
-      console.log(confPassword);
-
-      console.log(foodCheckbox);
-      console.log(exerciseCheckbox);
-      console.log(sleepCheckbox);
-      console.log(hydrationCheckbox);
-      // navigate('/setup')
+      try {
+        const body = { username, email, password }
+        await fetch('http://localhost:8080/register', {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        })
+        navigate('/')
+      } catch (error) {
+        console.log(error)
+      }
     }
-
-    
   }
 
   return (
