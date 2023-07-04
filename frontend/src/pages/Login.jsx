@@ -12,10 +12,12 @@ import {
 import image from '../images/health.png'
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../index'
+import { red } from '@mui/material/colors';
 
 const Login = () => {
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
   const { setGlobalUser } = useContext(UserContext);
 
   const navigate = useNavigate();
@@ -29,8 +31,13 @@ const Login = () => {
         body: JSON.stringify(body)
       })
       const userCredentials = await user.json();
-      setGlobalUser(userCredentials.username);
-      navigate('/')
+
+      if (userCredentials.status) {
+        setLoginError(userCredentials.message);
+      } else {
+        setGlobalUser(userCredentials);
+        navigate('/');
+      }
     } catch (error) {
       console.log(error)
     }
@@ -68,6 +75,11 @@ const Login = () => {
           <TextField id="outlined-basic2" label="Password" variant="outlined"
             size='small' value={password} onChange={(e) => { setPassword(e.target.value) }}
           />
+          {
+            loginError ?
+              <div style={{ color: "red" }}>{loginError}</div>
+              : null
+          }
           <Box mt={4}>
             <Button variant='contained' color='info' onClick={submit}
               sx={{ marginRight: 3, backgroundColor: 'black' }}>

@@ -38,7 +38,7 @@ const MainPage = () => {
               <Button variant='contained' sx={buttonStyle}>Edit</Button>
             </Box>
             <Box sx={{ height: 300 }} >
-              <Typography pt={2}>Name: {globalUser}</Typography>
+              <Typography pt={2}>Name: {globalUser ? globalUser.username : null}</Typography>
               <Typography pt={2}>Height: </Typography>
               <Typography pt={2}>Weight: </Typography>
             </Box>
