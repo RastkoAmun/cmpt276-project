@@ -16,6 +16,7 @@ import {
 }
   from '@mui/material'
 import { Link } from 'react-router-dom';
+import { useNavigate  } from 'react-router-dom';
 import image from '../images/health.png'
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -35,7 +36,9 @@ const SignUp = () => {
   const [ sleepCheckbox, setSleepCheckbox ] = useState(false);
   const [ hydrationCheckbox, setHydrationCheckbox ] = useState(false);
 
-  const submit = () => {
+  const navigate = useNavigate();
+
+  const submit = async () => {
     let invUsername = false;
     let invEmail = false;
     let invPassword = false;
@@ -72,17 +75,18 @@ const SignUp = () => {
     }
 
     if (!invUsername && !invEmail && !invPassword && !passMismatch) {
-      console.log(username);
-      console.log(email);
-      console.log(password);
-      console.log(confPassword);
-
-      console.log(foodCheckbox);
-      console.log(exerciseCheckbox);
-      console.log(sleepCheckbox);
-      console.log(hydrationCheckbox);
+      try {
+        const body = { username, email, password }
+        await fetch('http://localhost:8080/register', {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        })
+        navigate('/')
+      } catch (error) {
+        console.log(error)
+      }
     }
-
   }
 
   return (
