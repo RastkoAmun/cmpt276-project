@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, Outlet } from 'react-router-dom';
-import { 
-  Box, 
-  Button, 
-  CssBaseline, 
-  Divider, 
-  Drawer, 
-  IconButton, 
-  Toolbar, 
-  Typography 
+import {
+  Box,
+  Button,
+  CssBaseline,
+  Divider,
+  Drawer,
+  IconButton,
+  Toolbar,
+  Typography
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -16,9 +16,12 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SidebarDisplay from './SidebarDisplay';
 import { drawerWidth } from '../utils/constants'
 
+import { UserContext } from '../index'
+
 const Sidebar = (props) => {
   const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const { globalUser, setGlobalUser } = useContext(UserContext);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -61,10 +64,11 @@ const Sidebar = (props) => {
 
       {/* Navigation bar */}
       <Box
-        sx={{ flexGrow: 1, 
-              width: { md: `calc(100% - ${drawerWidth}px)`},
-              marginLeft: {sm: 0, md: `${drawerWidth}px`}
-            }}
+        sx={{
+          flexGrow: 1,
+          width: { md: `calc(100% - ${drawerWidth}px)` },
+          marginLeft: { sm: 0, md: `${drawerWidth}px` }
+        }}
       >
         <Toolbar >
           <IconButton aria-label="open drawer"
@@ -78,14 +82,20 @@ const Sidebar = (props) => {
 
           <Box sx={{ flexGrow: '1' }} />
 
-          <Button variant='contained' color='inherit' 
-            component={Link} to={'/login'}
-            sx={{ marginX: 3 }}>
-            LogIn
-          </Button>
+          {
+            !globalUser ?
+              <Button variant='contained' color='inherit'
+                component={Link} to={'/login'}
+                sx={{ marginX: 3 }}>
+                LogIn
+              </Button>
+              :
+              null
+          }
+
           <IconButton aria-label="open drawer"
             edge="start" onClick={handleDrawerToggle}
-            >
+          >
             <AccountCircleIcon fontSize='large' />
           </IconButton>
         </Toolbar>

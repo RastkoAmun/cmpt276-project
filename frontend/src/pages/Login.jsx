@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useState } from 'react';
 import {
   Box,
@@ -11,10 +11,12 @@ import {
   from '@mui/material';
 import image from '../images/health.png'
 import { Link, useNavigate } from 'react-router-dom';
+import { UserContext } from '../index'
 
 const Login = () => {
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const { globalUser, setGlobalUser } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -27,7 +29,7 @@ const Login = () => {
         body: JSON.stringify(body)
       })
       const userCredentials = await user.json();
-      console.log(userCredentials);
+      setGlobalUser(userCredentials.username);
       navigate('/')
     } catch (error) {
       console.log(error)
