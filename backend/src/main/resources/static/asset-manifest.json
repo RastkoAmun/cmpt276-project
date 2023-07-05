@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/static/css/main.af7b2066.css",
+    "main.js": "/static/js/main.9715f443.js",
+    "static/media/man-thinking-svgrepo-com.svg": "/static/media/man-thinking-svgrepo-com.d9e3c69d1b1cbe072d0df899ec9c6b50.svg",
+    "static/media/woman-with-hand-on-chin-svgrepo-com.svg": "/static/media/woman-with-hand-on-chin-svgrepo-com.a7e41f20e335b1c76a2d35cc77dbcac8.svg",
+    "static/media/health.png": "/static/media/health.7dfdb63574b528d23f0b.png",
+    "static/media/logo.svg": "/static/media/logo.cef1e589b3e25343290a3edf84a2eb39.svg",
+    "index.html": "/index.html",
+    "main.af7b2066.css.map": "/static/css/main.af7b2066.css.map",
+    "main.9715f443.js.map": "/static/js/main.9715f443.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.af7b2066.css",
+    "static/js/main.9715f443.js"
+  ]
+}

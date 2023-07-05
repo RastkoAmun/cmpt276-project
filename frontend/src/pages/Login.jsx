@@ -24,7 +24,8 @@ const Login = () => {
   const submit = async () => {
     try {
       const body = { username, password }
-      const user = await fetch('http://localhost:8080/user/login', {
+      // const user = await fetch('http://localhost:8080/user/login', {
+      const user = await fetch('/user/login', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
