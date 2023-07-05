@@ -28,8 +28,7 @@ const Hydration = () => {
       // Fetch the user's goal if it is already set
       const fetchGoal = async () => {
         try {
-          // const response = await fetch(`http://localhost:8080/hydration/goal?uid=${globalUser.uid}`);
-          const response = await fetch(`/hydration/goal?uid=${globalUser.uid}`);
+          const response = await fetch(`http://localhost:8080/hydration/goal?uid=${globalUser.uid}`);
           if (!response.ok) {
             if (response.status === 404) {
               setGoalValidation(true); // Set goalValidation to true if response is not found
@@ -83,8 +82,7 @@ const Hydration = () => {
           "intake": 0,
           "intakeDate": intakeDate
         }
-        // const response = await fetch('http://localhost:8080/hydration', {
-        const response = await fetch('/hydration', {
+        const response = await fetch('http://localhost:8080/hydration', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -119,8 +117,7 @@ const Hydration = () => {
           intakeDate: intakeDate
         };
 
-        // const response = await fetch('http://localhost:8080/hydration/update', {
-        const response = await fetch('/hydration/update', {
+        const response = await fetch('http://localhost:8080/hydration/update', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
