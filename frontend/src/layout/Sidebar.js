@@ -8,6 +8,8 @@ import {
   Drawer,
   IconButton,
   Toolbar,
+  Menu,
+  MenuItem,
   Typography
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -25,6 +27,14 @@ const Sidebar = (props) => {
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleProfileClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleMenuClose = () => {
+    setAnchorEl(null);
   };
 
   const container = window !== undefined ? () => window().document.body : undefined;
@@ -94,10 +104,28 @@ const Sidebar = (props) => {
           }
 
           <IconButton aria-label="open drawer"
-            edge="start" onClick={handleDrawerToggle}
+            edge="start" onClick={handleProfileClick}
           >
             <AccountCircleIcon fontSize='large' />
           </IconButton>
+
+          <Menu
+            anchorEl = {anchorEl}
+            open = {Boolean(anchorEl)}
+            onClose = {handleMenuClose}
+            PaperProps = {{
+              elevation: 0,
+              sx: {boxShadow: 'none', backgroundColor:'#233043', color: 'rgb(238, 238, 238)',},
+            }}
+          >
+            <Typography>USERNAME</Typography>
+            <MenuItem component={Link} to='/profile' onClick={handleMenuClose}>Edit Profile</MenuItem>
+            <MenuItem component={Link} to='/settings' onClick={handleMenuClose}>Settings</MenuItem>
+            <MenuItem component={Link} to='' onClick={handleMenuClose}>Help</MenuItem>
+            <MenuItem onClick={handleMenuClose}>Log out</MenuItem>
+
+          </Menu>
+          
         </Toolbar>
         <Divider />
       </Box>

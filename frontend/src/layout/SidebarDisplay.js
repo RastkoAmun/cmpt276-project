@@ -122,19 +122,7 @@ const SidebarDisplay = () => {
 
       <Box sx={{ flexGrow: 1 }} />
 
-      <List>
-        <ListItem disablePadding>
-          <ListItemButton
-            component={Link} to='/settings'
-            sx={{
-              /*borderBottom: '1px solid red',
-              borderTop: '1px solid red'*/
-            }}>
-            <ListItemIcon> {<SettingsIcon />} </ListItemIcon>
-            <ListItemText primary='Settings' />
-          </ListItemButton>
-        </ListItem>
-      </List>
+
       {
         globalUser ?
           <Box sx={{ display: 'flex', justifyContent: 'center' }} p={4}>
