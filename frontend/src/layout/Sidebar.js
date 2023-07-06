@@ -30,7 +30,7 @@ const Sidebar = (props) => {
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box >
+    <Box style={{backgroundColor: '#f8f9fd'}}>
       <CssBaseline />
       <Box
         component="nav"
@@ -40,7 +40,7 @@ const Sidebar = (props) => {
           variant="permanent"
           sx={{
             display: { xs: 'none', md: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, backgroundColor: '#233043'},
           }}
           open
         >
@@ -55,7 +55,6 @@ const Sidebar = (props) => {
           sx={{
             display: { xs: 'block', sm: 'none' },
             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-
           }}
         >
           {<SidebarDisplay />}
@@ -67,7 +66,8 @@ const Sidebar = (props) => {
         sx={{
           flexGrow: 1,
           width: { md: `calc(100% - ${drawerWidth}px)` },
-          marginLeft: { sm: 0, md: `${drawerWidth}px` }
+          marginLeft: { sm: 0, md: `${drawerWidth}px` },
+          backgroundColor: 'white'
         }}
       >
         <Toolbar >
@@ -76,9 +76,9 @@ const Sidebar = (props) => {
             sx={{ mr: 2, display: { md: 'none' } }} >
             <MenuIcon />
           </IconButton>
-          <Typography variant='h4' p={2}>
+          {/* <Typography variant='h4' p={2}>
             HealthTrackr
-          </Typography>
+          </Typography> */}
 
           <Box sx={{ flexGrow: '1' }} />
 
