@@ -4,12 +4,10 @@ import {
   Box,
   Button,
   Card,
-  CardMedia,
   TextField,
   Typography
 }
   from '@mui/material';
-import image from '../images/health.png'
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../index'
 
@@ -67,49 +65,63 @@ const Login = () => {
   })
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center' }} mt={15}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', height: '100vh' }}>
       <Card
         elevation={10}
         sx={{
           display: 'flex',
-          justifyContent: 'flex-start',
-          width: '70%',
+          justifyContent: 'center',
+          width: '40%',
+          boxShadow: 'none'
         }}>
-        <CardMedia
-          component="img"
-          sx={{ width: '40%' }}
-          image={image}
-          alt="Live from space album cover"
-        />
         <Box mx={5}
           sx={{
             display: 'flex', flexDirection: 'column',
             justifyContent: 'center',
             width: '70%',
           }}>
-          <Typography variant='h6' component='div' p={1}
-            sx={{ alignSelf: 'flex-start' }}>
+          <Typography variant="h4" style={{fontWeight:'bold', fontSize: '30px'}}>
+            Login
+          </Typography>
+
+          <Typography variant='h7' component='div' p={1}
+            sx={{ alignSelf: 'flex-start', padding: '12px', paddingLeft: '0', fontSize: '14px', color:'rgba(0,0,0,0.6)' }}>
             Username
           </Typography>
-          <TextField id="outlined-basic1" label="Username" variant="outlined"
+          <TextField id="outlined-basic1" variant="outlined"
             size='small' value={username} onChange={(e) => { setUserName(e.target.value) }}
           />
-          <Typography variant='h6' component='div' p={1} mt={1.5}> Password </Typography>
-          <TextField id="outlined-basic2" label="Password" variant="outlined"
+
+          <Typography variant='h7' component='div' p={1} mt={1.5} style={{padding:'12px', paddingLeft:'0',  fontSize: '14px', color:'rgba(0,0,0,0.6)'}}> Password </Typography>
+          <TextField id="outlined-basic2" type='password' variant="outlined"
             size='small' value={password} onChange={(e) => { setPassword(e.target.value) }}
           />
+
           {
             loginError ?
               <div style={{ color: "red" }}>{loginError}</div>
               : null
           }
-          <Box mt={4}>
+
+          <Box mt={4} style={{display: 'flex', flexDirection: 'column'}}>
             <Button variant='contained' color='info' onClick={submit}
-              sx={{ marginRight: 3, backgroundColor: 'black' }}>
+              sx={{ backgroundColor: '#4169e1', textTransform: 'none', padding: '10px'}}>
               Login
             </Button>
-            <Button variant='contained' color='inherit'
-              component={Link} to={'/signup'}>SignUp</Button>
+
+            <Box style={{flexDirection: 'row', display: 'flex', marginTop:'20px'}}>
+              <Typography style={{marginRight: '5px', fontSize: '14px'}}>
+                Don't have an account?
+              </Typography>
+              <Typography style={{fontSize: '14px', textDecoration: 'none'}} component={Link} to={'/signup'} color='#4169e1'>
+                Sign up
+              </Typography>
+            </Box>
+
+            <Typography style={{fontSize: '14px', textDecoration: 'none', marginTop:'5px'}} component={Link} to={''} color='#4169e1'>
+              Forgot password (TO BE IMPLEMENTED)
+            </Typography>
+
           </Box>
         </Box>
       </Card>
