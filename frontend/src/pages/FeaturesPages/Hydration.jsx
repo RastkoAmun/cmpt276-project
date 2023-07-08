@@ -1,38 +1,44 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Box, Button, Fab, Stack, TextField, Typography } from '@mui/material'
-import { useTheme } from '@mui/material/styles';
-import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
+import React, { useCallback } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../../index';
 import { useNavigate } from 'react-router-dom';
-
-
+import { useTheme } from '@mui/material/styles';
+import { 
+  Box, 
+  Button, 
+  Fab, 
+  Stack, 
+  TextField, 
+  Typography 
+} from '@mui/material'
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
 
 const Hydration = () => {
-  const [goal, setGoal] = useState(0);
-  const [goalValidation, setGoalValidation] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [glassesLeft, setGlassesLeft] = useState(goal);
-  const [current, setCurrent] = useState(0);
+  const [ goal, setGoal ] = useState(0);
+  const [ glassesLeft, setGlassesLeft ] = useState(goal);
+  const [ current, setCurrent ] = useState(0);
 
-  const theme = useTheme();
+  const [ invalidGoal, setInvalidGoal ] = useState(false);
+  const [ submitted, setSubmitted ] = useState(false);
 
   const { globalUser } = useContext(UserContext);
-
+  
+  const theme = useTheme();
   const navigate = useNavigate();
 
-
+  const handleGoal = useCallback((event) => {
+    setGoal(event.target.value)
+  }, [])
 
   useEffect(() => {
     if (globalUser) {
-      // Fetch the user's goal if it is already set
       const fetchGoal = async () => {
         try {
           const response = await fetch(`http://localhost:8080/hydration/goal?uid=${globalUser.uid}`);
-          // const response = await fetch(`/hydration/goal?uid=${globalUser.uid}`);
           if (!response.ok) {
             if (response.status === 404) {
-              setGoalValidation(true); // Set goalValidation to true if response is not found
+              setInvalidGoal(true); // Set invalidGoal to true if response is not found
             } else {
               throw new Error(`Error! status: ${response.status}`);
             }
@@ -41,7 +47,7 @@ const Hydration = () => {
             if (data.goal > 0) {
               setGoal(data.goal);
               setSubmitted(true);
-              setGoalValidation(false);
+              setInvalidGoal(false);
               const dif = data.goal - data.intake;
               setGlassesLeft(dif);
               setCurrent(data.intake);
@@ -56,26 +62,23 @@ const Hydration = () => {
     } else {
       navigate("/login");
     }
-  }, [globalUser]);
+  }, [globalUser, navigate]);
 
-  const handleGoal = (event) => {
-    setGoal(event.target.value)
-  }
+  
 
   const submitGoal = async () => {
     if (goal > 20 || goal < 6) {
-      setGoalValidation(true);
+      setInvalidGoal(true);
     } else {
       setGoal(goal);
       setSubmitted(true);
-      setGoalValidation(false);
+      setInvalidGoal(false);
       setGlassesLeft(goal);
 
       const today = new Date();
       const intakeDate = today.toISOString().slice(0, 10);
 
       try {
-
         const myData =
         {
           "uid": globalUser.uid,
@@ -83,8 +86,8 @@ const Hydration = () => {
           "intake": 0,
           "intakeDate": intakeDate
         }
+
         const response = await fetch('http://localhost:8080/hydration', {
-        // const response = await fetch('/hydration', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -120,7 +123,6 @@ const Hydration = () => {
         };
 
         const response = await fetch('http://localhost:8080/hydration/update', {
-        // const response = await fetch('/hydration/update', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -144,9 +146,7 @@ const Hydration = () => {
 
   return (
     <>
-      <Typography variant='h3'>
-        Hydration
-      </Typography>
+      <Typography variant='h2'> Hydration </Typography>
       <Stack direction='row' mt={5}>
         <Box width='50%' p={5}>
           {!submitted
@@ -154,32 +154,43 @@ const Hydration = () => {
             <>
               <Box display='flex' alignItems='center' width='80%'>
                 <Typography variant='h5' mr={3}> GOAL: </Typography>
-                <TextField type='number' variant="outlined" size='small'
-                  value={goal} onChange={handleGoal}
-                  error={goalValidation ? true : false}
+                <TextField 
+                  type='number' 
+                  size='small'
+                  value={goal} 
+                  onChange={handleGoal}
+                  error={invalidGoal ? true : false}
                   sx={{ flexGrow: 1 }}
                 />
-
-              </Box>
-              <Box display='flex' justifyContent='flex-end' mt={1} width='80%'>
+              </Box>  
+              <Box 
+                display='flex' 
+                justifyContent='flex-end' 
+                mt={1} width='80%'>
                 <Button variant='outlined' onClick={submitGoal}
                   sx={{ justifySelf: 'center' }}>
                   Submit
                 </Button>
               </Box>
-              {goalValidation && <Typography variant='subtitle2' color='error' width='80%' mt={2}>
+              {invalidGoal && <Typography variant='subtitle2' color='error' width='80%' mt={2}>
                 * INVALID: Recommended water intake is at least 6 glasses, up to 20 glasses
               </Typography>}
             </>
             :
             <>
-              <Box display='flex' alignItems='center' width='100%'
-                justifyContent='center'>
+              <Box 
+                display='flex' 
+                justifyContent='center'
+                alignItems='center'
+                width='100%'>
                 <>
                   <Typography variant='h5' mr={3}> Goal: </Typography>
                   <Typography variant='h4' mr={3} color='primary'> {goal} </Typography>
                 </>
-                <Fab color="primary" aria-label="add" size='small'
+                <Fab 
+                  color="primary" 
+                  aria-label="add" 
+                  size='small'
                   onClick={() => setSubmitted(false)}>
                   <EditIcon />
                 </Fab>
@@ -199,7 +210,6 @@ const Hydration = () => {
             </Box>}
         </Box>
 
-
         <Box display='flex' flexDirection='column' alignItems='center' width='20%'>
           <Typography variant='body2' mb={3}> {glassesLeft} more glasses to go! </Typography>
           <Box width='100px' height='320px' display='flex' flexDirection='column-reverse'
@@ -208,7 +218,6 @@ const Hydration = () => {
               Array.from({ length: i }).map((_, index) => {
                 const topBorderRadius = index === i - 1 ? '5px' : '0px';
                 const bottomBorderRadius = index === 0 ? '5px' : '0px';
-
                 const boxStyle = {
                   bgcolor: `${current > index ? theme.palette.primary.main : 'white'}`,
                   borderBottomLeftRadius: bottomBorderRadius,
@@ -216,7 +225,7 @@ const Hydration = () => {
                   borderTopLeftRadius: topBorderRadius,
                   borderTopRightRadius: topBorderRadius
                 }
-
+                
                 return (
                   <Box width='100%' height={`${height}px`} key={index}
                     sx={boxStyle}>
