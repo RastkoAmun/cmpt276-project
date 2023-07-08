@@ -1,4 +1,5 @@
 package com.cmpt276project.projectbackend.models;
+import java.time.LocalDate;
 import java.util.Date;
 import jakarta.persistence.*;
 
@@ -13,13 +14,13 @@ public class Hydration {
     private Integer intake;
 
     @Column(name="intake_date")
-    private Date intakeDate;
+    private LocalDate intakeDate;
 
 
      public Hydration() { 
     }
 
-    public Hydration(Integer uid, Integer goal, Integer intake, Date intakeDate) {
+    public Hydration(Integer uid, Integer goal, Integer intake, LocalDate intakeDate) {
     this.uid = uid;
     this.intakeDate=intakeDate;
     this.goal = goal;
@@ -44,11 +45,11 @@ public class Hydration {
         this.uid = uid;
     }
 
-      public Date getintakeDate() {
+      public LocalDate getintakeDate() {
         return intakeDate;
     }
 
-    public void setintakeDate(Date intakeDate) {
+    public void setintakeDate(LocalDate intakeDate) {
         this.intakeDate = intakeDate;
     }
 
