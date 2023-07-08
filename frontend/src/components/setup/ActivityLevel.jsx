@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography, Button, Box } from '@mui/material';
-import { NextButtonContainerStyle, NextButtonStyle, SelectionButtonStyle } from './SetupStyles';
+import { NextButtonContainerStyle, NextButtonStyle, SelectionButtonStyle } from '../../pages/SetupPages/SetupStyles';
 
 const ActivityLevel = ({selectedActivityLevel, setSelectedActivityLevel, handleNextPage}) => {
   const handleActivityLevelSelection = (activitylevel) => {
@@ -11,7 +11,6 @@ const ActivityLevel = ({selectedActivityLevel, setSelectedActivityLevel, handleN
     if (selectedActivityLevel) {
       handleNextPage();
     };
-    console.log('That is it')
   };
 
   return (

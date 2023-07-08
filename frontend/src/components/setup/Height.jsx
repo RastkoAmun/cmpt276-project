@@ -1,13 +1,13 @@
 import React from 'react';
 import { Typography, Button, Box } from '@mui/material';
-import SliderMetric from './Sliders/WeightSliderMetric';
-import SliderImperial from './Sliders/WeightSliderImperial.jsx';
-import { NextButtonStyle, NextButtonContainerStyle} from './SetupStyles';
+import SliderMetric from '../../components/setup/Sliders/HeightSliderMetric';
+import SliderImperial from '../../components/setup/Sliders/HeightSliderImperial';
+import { NextButtonStyle, NextButtonContainerStyle} from '../../pages/SetupPages/SetupStyles';
 
-const Weight = ({selectedWeight, setSelectedWeight, handleNextPage, handleWeightUnitToggle, currentWeightUnit}) => {
+const Height = ({selectedHeight, setSelectedHeight, handleNextPage, handleHeightUnitToggle, currentHeightUnit}) => {
 
   const handleNextButtonClick = () => {
-    if (selectedWeight) {
+    if (selectedHeight) {
       handleNextPage();
     }
   };
@@ -15,15 +15,15 @@ const Weight = ({selectedWeight, setSelectedWeight, handleNextPage, handleWeight
 
 
   let sliderContent;
-  switch (currentWeightUnit) {
+  switch (currentHeightUnit) {
     case 'metric':
       sliderContent = (
-        <SliderMetric selectedWeight={selectedWeight} setSelectedWeight={setSelectedWeight} handleWeightUnitToggle={handleWeightUnitToggle}/>
+        <SliderMetric selectedHeight={selectedHeight} setSelectedHeight={setSelectedHeight} handleHeightUnitToggle={handleHeightUnitToggle}/>
       );
       break;
     case 'imperial':
       sliderContent = (
-        <SliderImperial selectedWeight={selectedWeight} setSelectedWeight={setSelectedWeight} handleWeightUnitToggle={handleWeightUnitToggle}/>
+        <SliderImperial selectedHeight={selectedHeight} setSelectedHeight={setSelectedHeight} handleHeightUnitToggle={handleHeightUnitToggle}/>
       );
       break;
     default:
@@ -35,7 +35,7 @@ const Weight = ({selectedWeight, setSelectedWeight, handleNextPage, handleWeight
       {/* #1 Container for text */}
       <Box style={{ padding: '0 10vw' }}>
         <Typography variant="h5" align="center" mb={2} fontWeight="bold" style={{ marginBottom: '5px' }}>
-          Choose your weight
+          Choose your height
         </Typography>
         <Typography variant="body2" align="center" mb={2} style={{ margin: '0 auto 16px', maxWidth: '250px', color: '#696969'}}>
           Tell us more about you so we can tailor the experience to suit your needs.
@@ -50,11 +50,11 @@ const Weight = ({selectedWeight, setSelectedWeight, handleNextPage, handleWeight
         <Button
           style={NextButtonStyle}
           sx={{
-            backgroundColor: selectedWeight ? '#4169e1' : '#D3D3D3',
+            backgroundColor: selectedHeight ? '#4169e1' : '#D3D3D3',
             mt: 2
           }}
           onClick={handleNextButtonClick}
-          disabled={!selectedWeight}
+          disabled={!selectedHeight}
         >
           Next
         </Button>
@@ -63,4 +63,4 @@ const Weight = ({selectedWeight, setSelectedWeight, handleNextPage, handleWeight
   )
 }
 
-export default Weight
+export default Height

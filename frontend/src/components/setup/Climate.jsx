@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography, Button, Box } from '@mui/material';
-import { NextButtonContainerStyle, NextButtonStyle, SelectionButtonStyle } from './SetupStyles';
+import { NextButtonContainerStyle, NextButtonStyle, SelectionButtonStyle } from '../../pages/SetupPages/SetupStyles';
 
 const Climate = ({selectedClimate, setSelectedClimate, handleNextPage}) => {
   const handleClimateSelection = (climate) => {
