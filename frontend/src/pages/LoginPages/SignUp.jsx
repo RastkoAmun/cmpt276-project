@@ -17,6 +17,8 @@ import {
   from '@mui/material'
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { ThemeProvider } from '@emotion/react';
+import lightTheme from '../../utils/lightTheme';
 
 const SignUp = () => {
   const [username, setUserName] = useState('');
@@ -93,6 +95,7 @@ const SignUp = () => {
   }
 
   return (
+    <ThemeProvider theme={lightTheme}>
     <Box sx={{ display: 'flex', justifyContent: 'center' }} >
       <Card
         elevation={10}
@@ -114,7 +117,7 @@ const SignUp = () => {
           <Stack>
 
             <Typography variant='h7' component='div' p={1}
-              sx={{ alignSelf: 'flex-start', padding: '12px', paddingLeft: '0', fontSize: '14px', color:'rgba(0,0,0,0.6)' }}>
+              sx={{ alignSelf: 'flex-start', padding: '12px', paddingLeft: '0', fontSize: '14px', color:'lightText.main' }}>
               Username
             </Typography>
             <TextField
@@ -126,7 +129,7 @@ const SignUp = () => {
               required
             />
 
-            <Typography variant='h7' component='div' p={1} mt={1.5} style={{padding:'12px', paddingLeft:'0',  fontSize: '14px', color:'rgba(0,0,0,0.6)'}}> Email </Typography>
+            <Typography variant='h7' component='div' p={1} mt={1.5} style={{padding:'12px', paddingLeft:'0',  fontSize: '14px', color:'lightText.main'}}> Email </Typography>
             <TextField
               type='email' variant="outlined"
               size='small' value={email}
@@ -136,7 +139,7 @@ const SignUp = () => {
               required
             />
 
-            <Typography variant='h7' component='div' p={1} mt={1.5} style={{padding:'12px', paddingLeft:'0',  fontSize: '14px', color:'rgba(0,0,0,0.6)'}}> Password </Typography>
+            <Typography variant='h7' component='div' p={1} mt={1.5} style={{padding:'12px', paddingLeft:'0',  fontSize: '14px', color:'lightText.main'}}> Password </Typography>
             <TextField
               type='password' variant="outlined"
               size='small' value={password}
@@ -157,7 +160,7 @@ const SignUp = () => {
               }
             />
 
-            <Typography variant='h7' component='div' p={1} mt={1.5} style={{padding:'12px', paddingLeft:'0',  fontSize: '14px', color:'rgba(0,0,0,0.6)'}}> Confirm Password </Typography>
+            <Typography variant='h7' component='div' p={1} mt={1.5} style={{padding:'12px', paddingLeft:'0',  fontSize: '14px', color:'lightText.main'}}> Confirm Password </Typography>
             <TextField
               type='password' variant="outlined"
               size='small' value={confPassword}
@@ -178,7 +181,7 @@ const SignUp = () => {
               }
               <Button variant='contained' mt={1}
                 onClick={submit}
-                sx={{ display: 'flex', textTransform: 'none', padding: '10px', backgroundColor: '#4169e1'}}>
+                sx={{ display: 'flex', textTransform: 'none', padding: '10px', backgroundColor: 'primary.main'}}>
                 Sign up
               </Button>
 
@@ -186,7 +189,7 @@ const SignUp = () => {
               <Typography style={{marginRight: '5px', fontSize: '14px'}}>
                 Already have an account?
               </Typography>
-              <Typography style={{fontSize: '14px', textDecoration: 'none'}} component={Link} to={'/login'} color='#4169e1'>
+              <Typography style={{fontSize: '14px', textDecoration: 'none'}} component={Link} to={'/login'} color='primary.main'>
                 Log in
               </Typography>
               </Box>
@@ -196,6 +199,7 @@ const SignUp = () => {
         </Stack>
       </Card>
     </Box>
+  </ThemeProvider>
   );
 }
 
