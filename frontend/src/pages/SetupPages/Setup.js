@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { Box, IconButton, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForwardIos';
-import Gender from './Gender';
-import Age from './Age';
-import Weight from './Weight';
-import Height from './Height';
-import ActivityLevel from './ActivityLevel';
-import Climate from './Climate';
-import Final from './Final';
+import Gender from '../../components/setup/Gender';
+import Age from '../../components/setup/Age';
+import Weight from '../../components/setup/Weight';
+import Height from '../../components/setup/Height';
+import ActivityLevel from '../../components/setup/ActivityLevel';
+import Climate from '../../components/setup/Climate';
+import Final from '../../components/setup/Final';
 
 const Setup = () => {
   const [currentPage, setCurrentPage] = useState(1);

@@ -2,7 +2,7 @@ import React from 'react';
 import { Typography, Button, Box } from '@mui/material';
 import ManIcon from '../../images/man-thinking-svgrepo-com.svg';
 import WomanIcon from '../../images/woman-with-hand-on-chin-svgrepo-com.svg';
-import {NextButtonContainerStyle,NextButtonStyle} from './SetupStyles'
+import {NextButtonContainerStyle,NextButtonStyle} from '../../pages/SetupPages/SetupStyles'
 
 const Gender = ({ selectedGender, setSelectedGender, handleNextPage }) => {
 

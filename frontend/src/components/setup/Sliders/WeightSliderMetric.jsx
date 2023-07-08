@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, Box, Slider, Input } from '@mui/material';
-import { InputContainerStyle } from '../SetupStyles';
+import { InputContainerStyle } from '../../../pages/SetupPages/SetupStyles';
 
 const WeightSliderMetric = ({selectedWeight, setSelectedWeight, handleWeightUnitToggle}) => {
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography, Button, Box } from '@mui/material';
-import {NextButtonContainerStyle,NextButtonStyle} from './SetupStyles'
+import {NextButtonContainerStyle,NextButtonStyle} from '../../pages/SetupPages/SetupStyles'
 
 const Final = ({ estimatedGoal, finishSetup }) => {
 

@@ -17,8 +17,6 @@ import {
   from '@mui/material'
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import image from '../images/health.png'
-import CloseIcon from '@mui/icons-material/Close';
 
 const SignUp = () => {
   const [username, setUserName] = useState('');

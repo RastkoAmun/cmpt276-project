@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography, Button, Box } from '@mui/material';
-import { NextButtonContainerStyle, NextButtonStyle, SelectionButtonStyle } from './SetupStyles';
+import { NextButtonContainerStyle, NextButtonStyle, SelectionButtonStyle } from '../../pages/SetupPages/SetupStyles';
 
 const Age = ({selectedAge, setSelectedAge, handleNextPage}) => {
   const handleAgeSelection = (age) => {

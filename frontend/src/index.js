@@ -6,15 +6,15 @@ import {
 } from 'react-router-dom'
 import './index.css';
 import App from './App';
-import Food from './pages/Food';
-import Sleep from './pages/Sleep';
-import Exercise from './pages/Exercise';
-import Hydration from './pages/Hydration';
+import Food from './pages/FeaturesPages/Food';
+import Sleep from './pages/FeaturesPages/Sleep';
+import Exercise from './pages/FeaturesPages/Exercise';
+import Hydration from './pages/FeaturesPages/Hydration';
 import Settings from './pages/Settings';
 import MainPage from './pages/MainPage';
-import Login from './pages/Login';
-import Setup from './pages/Setup/Setup';
-import SignUp from './pages/SignUp';
+import Login from './pages/LoginPages/Login';
+import Setup from './pages/SetupPages/Setup';
+import SignUp from './pages/LoginPages/SignUp';
 
 export const UserContext = React.createContext(null);
 
