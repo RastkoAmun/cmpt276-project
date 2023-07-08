@@ -8,8 +8,6 @@ import {
   Drawer,
   IconButton,
   Toolbar,
-  Menu,
-  MenuItem,
   Typography
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -29,18 +27,10 @@ const Sidebar = (props) => {
     setMobileOpen(!mobileOpen);
   };
 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const handleProfileClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box style={{backgroundColor: '#f8f9fd'}}>
+    <Box >
       <CssBaseline />
       <Box
         component="nav"
@@ -50,7 +40,7 @@ const Sidebar = (props) => {
           variant="permanent"
           sx={{
             display: { xs: 'none', md: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, backgroundColor: '#233043'},
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
           }}
           open
         >
@@ -65,6 +55,7 @@ const Sidebar = (props) => {
           sx={{
             display: { xs: 'block', sm: 'none' },
             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+
           }}
         >
           {<SidebarDisplay />}
@@ -76,8 +67,7 @@ const Sidebar = (props) => {
         sx={{
           flexGrow: 1,
           width: { md: `calc(100% - ${drawerWidth}px)` },
-          marginLeft: { sm: 0, md: `${drawerWidth}px` },
-          backgroundColor: 'white'
+          marginLeft: { sm: 0, md: `${drawerWidth}px` }
         }}
       >
         <Toolbar >
@@ -86,9 +76,9 @@ const Sidebar = (props) => {
             sx={{ mr: 2, display: { md: 'none' } }} >
             <MenuIcon />
           </IconButton>
-          {/* <Typography variant='h4' p={2}>
+          <Typography variant='h4' p={2}>
             HealthTrackr
-          </Typography> */}
+          </Typography>
 
           <Box sx={{ flexGrow: '1' }} />
 
@@ -104,28 +94,10 @@ const Sidebar = (props) => {
           }
 
           <IconButton aria-label="open drawer"
-            edge="start" onClick={handleProfileClick}
+            edge="start" onClick={handleDrawerToggle}
           >
             <AccountCircleIcon fontSize='large' />
           </IconButton>
-
-          <Menu
-            anchorEl = {anchorEl}
-            open = {Boolean(anchorEl)}
-            onClose = {handleMenuClose}
-            PaperProps = {{
-              elevation: 0,
-              sx: {boxShadow: 'none', backgroundColor:'#233043', color: 'rgb(238, 238, 238)',},
-            }}
-          >
-            <Typography>USERNAME</Typography>
-            <MenuItem component={Link} to='/profile' onClick={handleMenuClose}>Edit Profile</MenuItem>
-            <MenuItem component={Link} to='/settings' onClick={handleMenuClose}>Settings</MenuItem>
-            <MenuItem component={Link} to='' onClick={handleMenuClose}>Help</MenuItem>
-            <MenuItem onClick={handleMenuClose}>Log out</MenuItem>
-
-          </Menu>
-          
         </Toolbar>
         <Divider />
       </Box>

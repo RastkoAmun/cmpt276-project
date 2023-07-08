@@ -4,7 +4,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { UserContext } from '../index';
 
 const paperStyle = {
-  // bgcolor: 'lightgray',
+  bgcolor: 'lightgray',
   p: 2,
 }
 
