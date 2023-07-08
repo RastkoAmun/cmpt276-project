@@ -31,10 +31,6 @@ const SignUp = () => {
   const [invalidPassword, setInvalidPassword] = useState(false);
   const [passwordMismatch, setPasswordMismatch] = useState(false);
 
-  const [foodCheckbox, setFoodCheckbox] = useState(false);
-  const [exerciseCheckbox, setExerciseCheckbox] = useState(false);
-  const [sleepCheckbox, setSleepCheckbox] = useState(false);
-  const [hydrationCheckbox, setHydrationCheckbox] = useState(false);
 
   const [registrationError, setRegistrationError] = useState(null);
 
@@ -79,8 +75,8 @@ const SignUp = () => {
     if (!invUsername && !invEmail && !invPassword && !passMismatch) {
       try {
         const body = { username, email, password }
-        // const res = await fetch('http://localhost:8080/user/register', {
-        const res = await fetch('/user/register', {
+        const res = await fetch('http://localhost:8080/user/register', {
+        // const res = await fetch('/user/register', {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body)
@@ -88,6 +84,7 @@ const SignUp = () => {
         const resJson = await res.json();
         if (resJson.status) {
           setRegistrationError(resJson.message);
+          console.log('error');
         } else {
           navigate('/login')
         }
@@ -98,64 +95,58 @@ const SignUp = () => {
   }
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center' }} mt={5}>
+    <Box sx={{ display: 'flex', justifyContent: 'center' }} >
       <Card
         elevation={10}
         sx={{
           display: 'flex',
-          justifyContent: 'flex-start',
-          width: '60%',
+          justifyContent: 'center',
+          width: '40%',
+          boxShadow: 'none'
         }}>
-        {/* <Box> */}
-        <CardMedia
-          component="img"
-          sx={{ width: '40%', height: 350, alignSelf: 'center', pl: 2 }}
-          image={image}
-          alt="Live from space album cover"
-        />
-        {/* </Box> */}
+
         <Stack display='flex' flexDirection='column' justifyContent='center'
-          mt={2}
           sx={{
-            width: '60%',
+            width: '70%',
+            height: '100vh'
           }}>
-          <Fab size='small' component={Link} to={'/'}
-            sx={{
-              boxShadow: 0, alignSelf: 'flex-end', marginRight: 2,
-              marginBottom: 3
-            }}>
-            <CloseIcon />
-          </Fab>
-          <Stack spacing={1} width='50%' ml={12}>
+          <Typography variant="h4" style={{fontWeight:'bold', fontSize: '30px'}}>
+            Create your account
+          </Typography>
+          <Stack>
+
+            <Typography variant='h7' component='div' p={1}
+              sx={{ alignSelf: 'flex-start', padding: '12px', paddingLeft: '0', fontSize: '14px', color:'rgba(0,0,0,0.6)' }}>
+              Username
+            </Typography>
             <TextField
-              type='text' label="Username" variant="outlined"
+              type='text' variant="outlined"
               size='small' value={username}
               onChange={(e) => { setUserName(e.target.value) }}
               error={invalidUsername ? true : false}
-              helperText={invalidUsername && 'Please enter your username'}
+              helperText={invalidUsername && 'Please enter a valid username'}
               required
             />
+
+            <Typography variant='h7' component='div' p={1} mt={1.5} style={{padding:'12px', paddingLeft:'0',  fontSize: '14px', color:'rgba(0,0,0,0.6)'}}> Email </Typography>
             <TextField
-              type='email' label="Email" variant="outlined"
+              type='email' variant="outlined"
               size='small' value={email}
               onChange={(e) => { setEmail(e.target.value) }}
               error={invalidEmail ? true : false}
-              helperText={invalidEmail && 'Please enter valid email'}
+              helperText={invalidEmail && 'Please enter a valid email address'}
               required
             />
+
+            <Typography variant='h7' component='div' p={1} mt={1.5} style={{padding:'12px', paddingLeft:'0',  fontSize: '14px', color:'rgba(0,0,0,0.6)'}}> Password </Typography>
             <TextField
-              type='password' label="Password" variant="outlined"
+              type='password' variant="outlined"
               size='small' value={password}
               onChange={(e) => { setPassword(e.target.value) }}
               error={invalidPassword || passwordMismatch ? true : false}
               required
-            />
-            <TextField
-              type='password' label="Confirm Password" variant="outlined"
-              size='small' value={confPassword}
-              onChange={(e) => { setConfPassword(e.target.value) }}
-              error={invalidPassword || passwordMismatch ? true : false}
-              helperText={invalidPassword ?
+              helperText = {
+                invalidPassword ?
                 <span>
                   Please enter a valid password. Required:<br />
                   - 6 characters<br />
@@ -164,53 +155,43 @@ const SignUp = () => {
                   - 1 symbol character
                 </span>
                 :
-                passwordMismatch && 'Password mismatch'
+                null
+              }
+            />
+
+            <Typography variant='h7' component='div' p={1} mt={1.5} style={{padding:'12px', paddingLeft:'0',  fontSize: '14px', color:'rgba(0,0,0,0.6)'}}> Confirm Password </Typography>
+            <TextField
+              type='password' variant="outlined"
+              size='small' value={confPassword}
+              onChange={(e) => { setConfPassword(e.target.value) }}
+              error={invalidPassword || passwordMismatch ? true : false}
+              helperText={
+                passwordMismatch && 'Password does not match'
               }
               required
             />
-            <Box pt={2}>
-              <Typography>
-                Select which features you would liketo have (can change later)
-              </Typography>
-              <FormGroup sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
-                <Grid container>
-                  <Grid item xs={6}>
-                    <FormControlLabel
-                      control={<Checkbox checked={foodCheckbox}
-                        onClick={() => setFoodCheckbox(!foodCheckbox)}
-                      />} label="Food" />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <FormControlLabel
-                      control={<Checkbox checked={exerciseCheckbox}
-                        onClick={() => setExerciseCheckbox(!exerciseCheckbox)}
-                      />} label="Exercise" />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <FormControlLabel
-                      control={<Checkbox checked={sleepCheckbox}
-                        onClick={() => setSleepCheckbox(!sleepCheckbox)}
-                      />} label="Sleep" />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <FormControlLabel
-                      control={<Checkbox checked={hydrationCheckbox}
-                        onClick={() => setHydrationCheckbox(!hydrationCheckbox)}
-                      />} label="Hydration" />
-                  </Grid>
-                </Grid>
-              </FormGroup>
+
+            <Box mt={4} style={{display: 'flex', flexDirection: 'column'}}>
               {/* <Box sx={{ flexGrow: 1 }} /> */}
               {
                 registrationError ?
                   <div style={{ color: "red", marginBottom: "1rem" }}>{registrationError}</div>
                   : null
               }
-              <Button variant='contained' color='primary' mt={1}
+              <Button variant='contained' mt={1}
                 onClick={submit}
-                sx={{ mb: 5, display: 'flex' }}>
-                Submit
+                sx={{ display: 'flex', textTransform: 'none', padding: '10px', backgroundColor: '#4169e1'}}>
+                Sign up
               </Button>
+
+              <Box style={{flexDirection: 'row', display: 'flex', marginTop:'20px'}}>
+              <Typography style={{marginRight: '5px', fontSize: '14px'}}>
+                Already have an account?
+              </Typography>
+              <Typography style={{fontSize: '14px', textDecoration: 'none'}} component={Link} to={'/login'} color='#4169e1'>
+                Log in
+              </Typography>
+              </Box>
             </Box>
           </Stack>
 
