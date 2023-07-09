@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Typography, Box, FormControl, InputLabel, Select, MenuItem, TextField, InputAdornment } from '@mui/material'
+import { Link, useNavigate } from 'react-router-dom';
+import { Typography, Box, FormControl, Button, Select, MenuItem, TextField, InputAdornment, Input } from '@mui/material'
 
 const SettingsProfile = () => {
   // Obtain default values from user !!
@@ -26,6 +27,14 @@ const SettingsProfile = () => {
     const { value} = event.target;
     setSelectedHeight(value);
   }
+
+
+
+  const navigate = useNavigate();
+  const handleEditClick = () => {
+    navigate('/weight');
+  };
+
 
 
   return (
@@ -62,8 +71,20 @@ const SettingsProfile = () => {
             type="text"
             value={selectedWeight}
             onChange={handleWeight}
-            InputProps={{endAdornment: <InputAdornment position="end">kg</InputAdornment>,}}
+            variant="standard"
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                border: 'none',
+              },
+              '& .MuiInputBase-input': {
+                borderBottom: 'none',
+              },
+            }}
+            InputProps={{disableUnderline: true, readOnly: true, endAdornment: <InputAdornment position="end">kg</InputAdornment>,}}
           />
+          <Button onClick={handleEditClick}>
+            Edit
+          </Button>
         </Box>
 
         <Box style={{display: 'flex'}}>

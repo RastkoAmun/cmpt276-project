@@ -10,6 +10,7 @@ import Food from './pages/FeaturesPages/Food';
 import Sleep from './pages/FeaturesPages/Sleep';
 import Exercise from './pages/FeaturesPages/Exercise';
 import Hydration from './pages/FeaturesPages/Hydration';
+import Weight from './pages/FeaturesPages/Weight';
 import SettingsMain from './pages/SettingsPages/SettingsMain';
 import SettingsGeneral from './pages/SettingsPages/SettingsGeneral';
 import SettingsProfile from './pages/SettingsPages/SettingsProfile';
@@ -53,6 +54,10 @@ const CustomRouterProvider = () => {
           element: <Hydration />
         },
         {
+          path: 'weight',
+          element: <Weight />
+        },
+        {
           path: 'settings',
           element: <SettingsMain />,
           children: [
@@ -82,6 +87,7 @@ const CustomRouterProvider = () => {
             },
           ]
         },
+        
       ]
     },
 
