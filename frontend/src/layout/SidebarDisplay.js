@@ -61,8 +61,8 @@ const SidebarDisplay = () => {
     borderWidth: '1px',
   }
   const drawerHeaderStyle = {
-    fontWeight: 'bold', 
-    color: 'rgba(238, 238, 238, 0.7)', 
+    fontWeight: '500', 
+    color: 'rgba(238, 238, 238, 0.8)', 
     marginTop: '20px', marginBottom: '10px',
     marginLeft: '8px'
   }
@@ -86,7 +86,7 @@ const SidebarDisplay = () => {
           Home
         </Typography>
       </Box>
-      <List style={{marginBottom: '10px', minWidth: '90%', marginLeft:'auto', marginRight: 'auto',}}>
+      <List style={{marginBottom: '10px', minWidth: '90%', marginLeft:'5%', }}>
         <ListItem disablePadding>
           <ListItemButton
             onClick={() => handleButtonClick('/')}
@@ -94,7 +94,7 @@ const SidebarDisplay = () => {
             component={Link} to='/'
             sx={{
               color: 'light.grey',
-              "&.Mui-selected": {color: 'light.main', backgroundColor: 'rgba(30,30,30,0.25)'}
+              "&.Mui-selected": {color: 'light.main', backgroundColor: 'rgba(30,30,30,0.25)', borderRight: '4px solid', borderColor: 'light.main'}
             }}>
             <ListItemIcon sx={{ color: selectedButton === '/' ? 'light.main' : 'inherit',}}> {<DashboardIcon />} </ListItemIcon>
             <ListItemText primary={<Typography variant='body2' style={{ color: selectedButton === '/' ? 'light.main' : 'inherit',}}>Dashboard</Typography>} />
@@ -109,14 +109,14 @@ const SidebarDisplay = () => {
           Apps
         </Typography>
       </Box>
-      <List sx={{ py: 0, marginBottom: '10px', minWidth: '90%', margin: 'auto' }}>
+      <List sx={{ py: 0, marginBottom: '10px', minWidth: '90%', marginLeft: '5%' }}>
         {list.map((item, index) => (
           <ListItem key={`${item.title}-${index}`} disablePadding>
             <ListItemButton 
               onClick={() => handleButtonClick(item.path)}
               selected = {selectedButton === item.path}
               component={Link} to={item.path}
-              sx={{ /*borderBottom: '1px solid black ',*/ "&.Mui-selected": { backgroundColor: 'rgba(30,30,30,0.25)'}, borderRadius:'10px', color: 'light.grey', padding: '8px 16px'}}>
+              sx={{ /*borderBottom: '1px solid black ',*/ "&.Mui-selected": { backgroundColor: 'rgba(30,30,30,0.25)', borderRight: '4px solid', borderColor: 'light.main'}, color: 'light.grey', padding: '8px 16px', }}>
               <ListItemIcon sx={{ color: selectedButton === item.path ? 'light.main' : 'inherit',}}> {item.icon} </ListItemIcon>
               <ListItemText primary={<Typography variant='body2' sx={{ color: selectedButton === item.path ? 'light.main' : 'inherit', fontWeight: '400'}}>{item.title}</Typography>} />
             </ListItemButton>

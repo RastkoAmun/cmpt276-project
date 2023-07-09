@@ -7,6 +7,7 @@ const lightTheme = createTheme({
     // blue
     primary: {
       main: '#4169e1',
+      opaque: 'rgba(65, 105, 225, 0.1)'
     },
 
     // dark blue
