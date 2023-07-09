@@ -14,11 +14,11 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-
 import SidebarDisplay from './SidebarDisplay';
 import { drawerWidth } from '../utils/constants'
-
 import { UserContext } from '../index'
+import { ThemeProvider } from '@emotion/react';
+import lightTheme from '../utils/lightTheme';
 
 const Sidebar = (props) => {
   const { window } = props;
@@ -40,7 +40,8 @@ const Sidebar = (props) => {
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box style={{backgroundColor: '#f8f9fd'}}>
+    <ThemeProvider theme={lightTheme}>
+    <Box bgcolor="bg.main">
       <CssBaseline />
       <Box
         component="nav"
@@ -50,7 +51,7 @@ const Sidebar = (props) => {
           variant="permanent"
           sx={{
             display: { xs: 'none', md: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, backgroundColor: '#233043'},
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, backgroundColor: 'secondary.main'},
           }}
           open
         >
@@ -115,7 +116,7 @@ const Sidebar = (props) => {
             onClose = {handleMenuClose}
             PaperProps = {{
               elevation: 0,
-              sx: {boxShadow: 'none', backgroundColor:'#233043', color: 'rgb(238, 238, 238)',},
+              sx: {boxShadow: 'none', backgroundColor:'secondary.main', color: 'rgb(238, 238, 238)',},
             }}
           >
             <Typography>USERNAME</Typography>
@@ -133,6 +134,7 @@ const Sidebar = (props) => {
         <Outlet />
       </Box>
     </Box>
+  </ThemeProvider>
   );
 }
 
