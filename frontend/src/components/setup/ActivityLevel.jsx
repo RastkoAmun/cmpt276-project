@@ -1,6 +1,8 @@
 import React from 'react';
 import { Typography, Button, Box } from '@mui/material';
 import { NextButtonContainerStyle, NextButtonStyle, SelectionButtonStyle } from '../../pages/SetupPages/SetupStyles';
+import { ThemeProvider } from '@emotion/react';
+import lightTheme from '../../utils/lightTheme';
 
 const ActivityLevel = ({selectedActivityLevel, setSelectedActivityLevel, handleNextPage}) => {
   const handleActivityLevelSelection = (activitylevel) => {
@@ -14,13 +16,14 @@ const ActivityLevel = ({selectedActivityLevel, setSelectedActivityLevel, handleN
   };
 
   return (
+    <ThemeProvider theme={lightTheme}>
     <Box>
       <Box style={{ paddingLeft: '10vw', paddingRight: '10vw' }}>
       {/* Container for text */}
         <Typography variant="h5" align="center" mb={2} fontWeight="bold" style={{ marginBottom: '5px' }}>
           Choose your activity level
         </Typography>
-        <Typography variant="body2" align="center" mb={2} style={{ margin: '0 auto 16px', maxWidth: '250px'}}>
+        <Typography color="lightText.main" variant="body2" align="center" mb={2} style={{ margin: '0 auto 16px', maxWidth: '250px'}}>
           Tell us more about you so we can tailor the experience to suit your needs.
         </Typography>
       </Box>
@@ -37,9 +40,9 @@ const ActivityLevel = ({selectedActivityLevel, setSelectedActivityLevel, handleN
         }}
         onClick={() => handleActivityLevelSelection('sedentary')}
         >
-          <h3 style={{fontSize: '20px'}}>
+          <Typography variant="h7">
             Sedentary
-          </h3>
+          </Typography>
         </Button>
 
 
@@ -53,9 +56,9 @@ const ActivityLevel = ({selectedActivityLevel, setSelectedActivityLevel, handleN
         }}
         onClick={() => handleActivityLevelSelection('light')}
         >
-          <h3 style={{fontSize: '20px'}}>
+          <Typography variant="h7">
             Light Activity
-          </h3>
+          </Typography>
         </Button>
 
 
@@ -69,9 +72,9 @@ const ActivityLevel = ({selectedActivityLevel, setSelectedActivityLevel, handleN
         }}
         onClick={() => handleActivityLevelSelection('moderate')}
         >
-          <h3 style={{fontSize: '20px'}}>
+          <Typography variant="h7">
             Moderate Activity
-          </h3>
+          </Typography>
         </Button>
 
 
@@ -85,9 +88,9 @@ const ActivityLevel = ({selectedActivityLevel, setSelectedActivityLevel, handleN
         }}
         onClick={() => handleActivityLevelSelection('heavy')}
         >
-          <h3 style={{fontSize: '20px'}}>
+          <Typography variant="h7">
             Heavy Activity
-          </h3>
+          </Typography>
         </Button>
 
 
@@ -102,7 +105,7 @@ const ActivityLevel = ({selectedActivityLevel, setSelectedActivityLevel, handleN
           </Button>
       </Box>
     </Box>
-
+    </ThemeProvider>
   )
 }
 

@@ -3,6 +3,8 @@ import { Typography, Button, Box } from '@mui/material';
 import SliderMetric from '../../components/setup/Sliders/HeightSliderMetric';
 import SliderImperial from '../../components/setup/Sliders/HeightSliderImperial';
 import { NextButtonStyle, NextButtonContainerStyle} from '../../pages/SetupPages/SetupStyles';
+import { ThemeProvider } from '@emotion/react';
+import lightTheme from '../../utils/lightTheme';
 
 const Height = ({selectedHeight, setSelectedHeight, handleNextPage, handleHeightUnitToggle, currentHeightUnit}) => {
 
@@ -31,13 +33,14 @@ const Height = ({selectedHeight, setSelectedHeight, handleNextPage, handleHeight
   };
 
   return (
+    <ThemeProvider theme={lightTheme}>
     <Box>
       {/* #1 Container for text */}
       <Box style={{ padding: '0 10vw' }}>
         <Typography variant="h5" align="center" mb={2} fontWeight="bold" style={{ marginBottom: '5px' }}>
           Choose your height
         </Typography>
-        <Typography variant="body2" align="center" mb={2} style={{ margin: '0 auto 16px', maxWidth: '250px', color: '#696969'}}>
+        <Typography color="lightText.main" variant="body2" align="center" mb={2} style={{ margin: '0 auto 16px', maxWidth: '250px'}}>
           Tell us more about you so we can tailor the experience to suit your needs.
         </Typography>
       </Box>
@@ -60,6 +63,7 @@ const Height = ({selectedHeight, setSelectedHeight, handleNextPage, handleHeight
         </Button>
       </Box>
     </Box>
+    </ThemeProvider>
   )
 }
 

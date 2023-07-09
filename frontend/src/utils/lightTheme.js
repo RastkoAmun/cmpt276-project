@@ -21,6 +21,7 @@ const lightTheme = createTheme({
 
     lightText: {
       main: 'rgba(0,0,0,0.6)'
+      // main: '#696969'
     },
     
     // white-ish

@@ -1,17 +1,20 @@
 import React from 'react';
 import { Typography, Button, Box } from '@mui/material';
 import {NextButtonContainerStyle,NextButtonStyle} from '../../pages/SetupPages/SetupStyles'
+import { ThemeProvider } from '@emotion/react';
+import lightTheme from '../../utils/lightTheme';
 
 const Final = ({ estimatedGoal, finishSetup }) => {
 
   return (
+    <ThemeProvider theme={lightTheme}>
     <Box>
       {/* #1 Container for text */}
       <Box style={{ padding:'0 10vw' }}>
         <Typography variant="h5" align="center" mb={2} fontWeight="bold" style={{ marginBottom: '5px' }}>
           Recommended daily goal
         </Typography>
-        <Typography variant="body2" align="center" mb={2} style={{margin: '0 auto 16px', maxWidth: '250px'}}>
+        <Typography color="lightText.main" variant="body2" align="center" mb={2} style={{margin: '0 auto 16px', maxWidth: '250px'}}>
           Estimated hydration target based on your personal parameters
         </Typography>
       </Box>
@@ -29,6 +32,7 @@ const Final = ({ estimatedGoal, finishSetup }) => {
         </Button>
       </Box>
     </Box>
+    </ThemeProvider>
   );
 };
 
