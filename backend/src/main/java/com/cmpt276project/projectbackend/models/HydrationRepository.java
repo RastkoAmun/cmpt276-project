@@ -9,7 +9,7 @@ import java.util.Date;
 
 
 public interface HydrationRepository extends JpaRepository<Hydration, Long> {
-    Hydration findByUid(Long id);
+    Hydration findByUid(Integer uid);
     List<Hydration> findByIntakeDate(String sellDate);
     List<Hydration> findByUidAndIntakeDate(int i, String sellDate);
     Hydration findByUidAndIntakeDate(long i, String sellDate);

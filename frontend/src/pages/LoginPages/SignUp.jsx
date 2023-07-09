@@ -70,7 +70,7 @@ const SignUp = () => {
       setPasswordMismatch(true);
     }
 
-    if (!invUsername && !invEmail && !invPassword && !passMismatch) {
+    // if (!invUsername && !invEmail && !invPassword && !passMismatch) {
       try {
         const body = { username, email, password }
         const res = await fetch('http://localhost:8080/user/register', {
@@ -89,7 +89,7 @@ const SignUp = () => {
       } catch (error) {
         console.log(error)
       }
-    }
+    // }
   }
 
   return (
@@ -121,8 +121,8 @@ const SignUp = () => {
               type='text' variant="outlined"
               size='small' value={username}
               onChange={(e) => { setUserName(e.target.value) }}
-              error={invalidUsername ? true : false}
-              helperText={invalidUsername && 'Please enter a valid username'}
+              // error={invalidUsername ? true : false}
+              // helperText={invalidUsername && 'Please enter a valid username'}
               required
             />
 
@@ -131,8 +131,8 @@ const SignUp = () => {
               type='email' variant="outlined"
               size='small' value={email}
               onChange={(e) => { setEmail(e.target.value) }}
-              error={invalidEmail ? true : false}
-              helperText={invalidEmail && 'Please enter a valid email address'}
+              // error={invalidEmail ? true : false}
+              // helperText={invalidEmail && 'Please enter a valid email address'}
               required
             />
 
@@ -141,7 +141,7 @@ const SignUp = () => {
               type='password' variant="outlined"
               size='small' value={password}
               onChange={(e) => { setPassword(e.target.value) }}
-              error={invalidPassword || passwordMismatch ? true : false}
+              // error={invalidPassword || passwordMismatch ? true : false}
               required
               helperText = {
                 invalidPassword ?
@@ -162,10 +162,10 @@ const SignUp = () => {
               type='password' variant="outlined"
               size='small' value={confPassword}
               onChange={(e) => { setConfPassword(e.target.value) }}
-              error={invalidPassword || passwordMismatch ? true : false}
-              helperText={
-                passwordMismatch && 'Password does not match'
-              }
+              // error={invalidPassword || passwordMismatch ? true : false}
+              // helperText={
+              //   passwordMismatch && 'Password does not match'
+              // }
               required
             />
 

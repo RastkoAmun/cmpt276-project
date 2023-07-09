@@ -35,15 +35,10 @@ const Hydration = () => {
     if (globalUser) {
       const fetchGoal = async () => {
         try {
-          const response = await fetch(`http://localhost:8080/hydration?uid=${globalUser.uid}`)
-          console.log(response)
-          if (!response.ok) {
-            if (response.status === 404) setInvalidGoal(true);
-            else throw new Error(`Error! status: ${response.status}`);
-          }
-          else {
-            const data = await response.json();
-            const user = data[0];
+          const uid = globalUser.uid;
+          const response = await fetch(`http://localhost:8080/data/hydration/${uid}`)
+          if (response.ok) {
+            const user = await response.json();
             const dif = user.goal - user.intake;
 
             setGoal(user.goal);
@@ -63,11 +58,6 @@ const Hydration = () => {
     }
   }, [globalUser, navigate]);
 
-
-
-
-  
-
   const submitGoal = async () => {
     if (goal > 20 || goal < 6) {
       setInvalidGoal(true);
@@ -82,7 +72,7 @@ const Hydration = () => {
       date = date.toLocaleDateString('en-US', options);
 
       try {
-        const myData =
+        const userData =
         {
           "uid": globalUser.uid,
           "goal": goal,
@@ -92,26 +82,27 @@ const Hydration = () => {
 
         let response;
         if (submitted === true) {
-          response = await fetch('http://localhost:8080/hydration', {
+          response = await fetch('http://localhost:8080/data/hydration', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify(myData),
+            body: JSON.stringify(userData),
           });
         } else {
-          response = await fetch(`http://localhost:8080/hydration/${globalUser.uid}`, {
-            method: 'PATCH',
+          console.log(globalUser.uid)
+          response = await fetch(`http://localhost:8080/data/hydration?uid=${globalUser.uid}`, {
+            method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify(myData),
+            body: JSON.stringify(userData),
           });
         }
 
-        // if (!response.ok) {
-        //   throw new Error(`Error! status: ${response.status}`);
-        // }
+        if (!response.ok) {
+          throw new Error(`Error! status: ${response.status}`);
+        }
 
       } catch (error) {
         console.error('Error:', error);

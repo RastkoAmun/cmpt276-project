@@ -13,7 +13,7 @@ public class Hydration {
     private Integer goal;
     private Integer intake;
 
-    @Column(name = "intake_date")
+    // @Column(name = "intake_date")
     private String intakeDate;
 
     public Hydration() {
