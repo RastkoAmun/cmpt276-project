@@ -10,6 +10,8 @@ import {
   from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../index'
+import { ThemeProvider } from '@emotion/react';
+import lightTheme from '../../utils/lightTheme';
 
 const Login = () => {
   const [username, setUserName] = useState('');
@@ -65,6 +67,7 @@ const Login = () => {
   })
 
   return (
+  <ThemeProvider theme={lightTheme}>
     <Box sx={{ display: 'flex', justifyContent: 'center', height: '100vh' }}>
       <Card
         elevation={10}
@@ -85,14 +88,14 @@ const Login = () => {
           </Typography>
 
           <Typography variant='h7' component='div' p={1}
-            sx={{ alignSelf: 'flex-start', padding: '12px', paddingLeft: '0', fontSize: '14px', color:'rgba(0,0,0,0.6)' }}>
+            sx={{ alignSelf: 'flex-start', padding: '12px', paddingLeft: '0', fontSize: '14px', color:'lightText.main' }}>
             Username
           </Typography>
           <TextField id="outlined-basic1" variant="outlined"
             size='small' value={username} onChange={(e) => { setUserName(e.target.value) }}
           />
 
-          <Typography variant='h7' component='div' p={1} mt={1.5} style={{padding:'12px', paddingLeft:'0',  fontSize: '14px', color:'rgba(0,0,0,0.6)'}}> Password </Typography>
+          <Typography variant='h7' component='div' p={1} mt={1.5} style={{padding:'12px', paddingLeft:'0',  fontSize: '14px', color:'lightText.main'}}> Password </Typography>
           <TextField id="outlined-basic2" type='password' variant="outlined"
             size='small' value={password} onChange={(e) => { setPassword(e.target.value) }}
           />
@@ -104,8 +107,8 @@ const Login = () => {
           }
 
           <Box mt={4} style={{display: 'flex', flexDirection: 'column'}}>
-            <Button variant='contained' color='info' onClick={submit}
-              sx={{ backgroundColor: '#4169e1', textTransform: 'none', padding: '10px'}}>
+            <Button variant='contained' color='primary' onClick={submit}
+              sx={{ textTransform: 'none', padding: '10px'}}>
               Login
             </Button>
 
@@ -113,12 +116,12 @@ const Login = () => {
               <Typography style={{marginRight: '5px', fontSize: '14px'}}>
                 Don't have an account?
               </Typography>
-              <Typography style={{fontSize: '14px', textDecoration: 'none'}} component={Link} to={'/signup'} color='#4169e1'>
+              <Typography style={{fontSize: '14px', textDecoration: 'none'}} component={Link} to={'/signup'} color='primary'>
                 Sign up
               </Typography>
             </Box>
 
-            <Typography style={{fontSize: '14px', textDecoration: 'none', marginTop:'5px'}} component={Link} to={''} color='#4169e1'>
+            <Typography style={{fontSize: '14px', textDecoration: 'none', marginTop:'5px'}} component={Link} to={''} color='primary'>
               Forgot password (TO BE IMPLEMENTED)
             </Typography>
 
@@ -126,6 +129,7 @@ const Login = () => {
         </Box>
       </Card>
     </Box>
+  </ThemeProvider>
   );
 }
 

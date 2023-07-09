@@ -20,6 +20,8 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import { Link, useNavigate } from 'react-router-dom';
 import { ReactComponent as Logo } from '../images/logo.svg';
 import { UserContext } from '../index'
+import { ThemeProvider } from '@emotion/react';
+import lightTheme from '../utils/lightTheme'
 
 const list = [
   { title: 'Food', icon: <LocalDiningIcon />, path: '/food' },
@@ -59,62 +61,64 @@ const SidebarDisplay = () => {
     borderWidth: '1px',
   }
   const drawerHeaderStyle = {
-    fontWeight: 'bold', 
-    color: 'rgba(238, 238, 238, 0.6)', 
+    fontWeight: '500', 
+    color: 'rgba(238, 238, 238, 0.8)', 
     marginTop: '20px', marginBottom: '10px',
     marginLeft: '8px'
   }
 
   return (
+  <ThemeProvider theme={lightTheme}>
     <>
+      {/* Header logo section */}
       <Box display='flex' justifyContent='center' py={2}
         sx={{ /*borderBottom: '1px solid black ', */ padding: '30px', }}>
         <Logo width={50} style={{marginRight: '15px',}}/>
-        <Typography variant="h6" style={{color: 'rgb(238, 238, 238)', flexDirection: 'column', display: 'flex', justifyContent: 'center'}}>
+        <Typography variant="h6" color='light.main' style={{ flexDirection: 'column', display: 'flex', justifyContent: 'center'}}>
           HealthTrackr
         </Typography>
       </Box>
 
+      {/* Home - dashboard section */}
       <Box style={{ minWidth: '90%', margin:'auto'}}>
         <Divider style={dividerStyle}/>
         <Typography style={drawerHeaderStyle}>
           Home
         </Typography>
       </Box>
-
-      <List style={{marginBottom: '10px', minWidth: '90%', marginLeft:'auto', marginRight: 'auto',}}>
+      <List style={{marginBottom: '10px', minWidth: '90%', marginLeft:'5%', }}>
         <ListItem disablePadding>
           <ListItemButton
             onClick={() => handleButtonClick('/')}
             selected = {selectedButton === '/'}
             component={Link} to='/'
             sx={{
-              color: 'rgb(177,182,189)',
-              "&.Mui-selected": {color: '#6941e1', backgroundColor: 'rgba(30,30,30,0.25)'}
+              color: 'light.grey',
+              "&.Mui-selected": {color: 'light.main', backgroundColor: 'rgba(30,30,30,0.25)', borderRight: '4px solid', borderColor: 'light.main'}
             }}>
-            <ListItemIcon sx={{ color: selectedButton === '/' ? 'rgb(238, 238, 238)' : 'inherit',}}> {<DashboardIcon />} </ListItemIcon>
-            <ListItemText primary={<Typography variant='body2' style={{ color: selectedButton === '/' ? 'rgb(238, 238, 238)' : 'inherit',}}>Dashboard</Typography>} />
+            <ListItemIcon sx={{ color: selectedButton === '/' ? 'light.main' : 'inherit',}}> {<DashboardIcon />} </ListItemIcon>
+            <ListItemText primary={<Typography variant='body2' style={{ color: selectedButton === '/' ? 'light.main' : 'inherit',}}>Dashboard</Typography>} />
           </ListItemButton>
         </ListItem>
       </List>
       
+      {/* Apps section */}
       <Box style={{ minWidth: '90%', margin:'auto'}}>
         <Divider style={dividerStyle}/>
         <Typography style={drawerHeaderStyle}>
           Apps
         </Typography>
       </Box>
-
-      <List sx={{ py: 0, marginBottom: '10px', minWidth: '90%', margin: 'auto' }}>
+      <List sx={{ py: 0, marginBottom: '10px', minWidth: '90%', marginLeft: '5%' }}>
         {list.map((item, index) => (
           <ListItem key={`${item.title}-${index}`} disablePadding>
             <ListItemButton 
               onClick={() => handleButtonClick(item.path)}
               selected = {selectedButton === item.path}
               component={Link} to={item.path}
-              sx={{ /*borderBottom: '1px solid black ',*/ "&.Mui-selected": {color: '#6941e1', backgroundColor: 'rgba(30,30,30,0.25)'}, borderRadius:'10px', color: 'rgb(177,182,189)', padding: '8px 16px'}}>
-              <ListItemIcon style={{ color: selectedButton === item.path ? 'rgb(238, 238, 238)' : 'inherit',}}> {item.icon} </ListItemIcon>
-              <ListItemText primary={<Typography variant='body2' style={{ color: selectedButton === item.path ? 'rgb(238, 238, 238)' : 'inherit', fontWeight: '400'}}>{item.title}</Typography>} />
+              sx={{ /*borderBottom: '1px solid black ',*/ "&.Mui-selected": { backgroundColor: 'rgba(30,30,30,0.25)', borderRight: '4px solid', borderColor: 'light.main'}, color: 'light.grey', padding: '8px 16px', }}>
+              <ListItemIcon sx={{ color: selectedButton === item.path ? 'light.main' : 'inherit',}}> {item.icon} </ListItemIcon>
+              <ListItemText primary={<Typography variant='body2' sx={{ color: selectedButton === item.path ? 'light.main' : 'inherit', fontWeight: '400'}}>{item.title}</Typography>} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -133,6 +137,7 @@ const SidebarDisplay = () => {
           : null
       }
     </>
+  </ThemeProvider>
   )
 }
 
