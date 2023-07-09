@@ -1,7 +1,5 @@
 package com.cmpt276project.projectbackend.models;
 
-import java.util.Optional;
-import org.springframework.lang.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
