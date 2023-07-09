@@ -1,5 +1,11 @@
-import React, { useCallback } from 'react';
-import { useState, useEffect, useContext } from 'react';
+import React from 'react';
+import {
+  useState,
+  useEffect,
+  useContext,
+  useCallback
+}
+  from 'react';
 import { UserContext } from '../../index';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
@@ -14,6 +20,7 @@ import {
 } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
+import getDate from '../../../src/services/helperFunctions'
 
 const Hydration = () => {
   const [goal, setGoal] = useState(0);
@@ -38,12 +45,11 @@ const Hydration = () => {
       const fetchGoal = async () => {
         try {
           const uid = globalUser.uid;
-          console.log(uid)
           axios
             .get(`http://localhost:8080/data/hydration/${uid}`)
             .then(results => {
               const data = results.data;
-              if(data){
+              if (data) {
                 const dif = data.goal - data.intake;
                 setGoal(data.goal);
                 setCurrent(data.intake);
@@ -72,23 +78,20 @@ const Hydration = () => {
       setInvalidGoal(false);
       setGlassesLeft(goal);
 
-      let date = new Date();
-      const options = { month: 'short', day: '2-digit', year: 'numeric' };
-      date = date.toLocaleDateString('en-US', options);
-
       try {
         const userData =
         {
           "uid": globalUser.uid,
           "goal": goal,
           "intake": current,
-          "intakeDate": date
+          "intakeDate": getDate()
         }
 
-        if(firstTimeSetup === true){
+        if (firstTimeSetup === true) {
           axios
             .post('http://localhost:8080/data/hydration', userData)
-        }else{
+        }
+        else {
           axios
             .put(`http://localhost:8080/data/hydration/${globalUser.uid}`, userData)
         }
@@ -101,28 +104,24 @@ const Hydration = () => {
 
   const addWater = async () => {
     if (current < goal) {
-      setCurrent(current + 1);
-      setGlassesLeft(glassesLeft - 1);
-
-      let date = new Date();
-      const options = { month: 'short', day: '2-digit', year: 'numeric' };
-      date = date.toLocaleDateString('en-US', options);
+      let currentIntake = current + 1;
+      let currentGlassesLeft = glassesLeft - 1;
 
       try {
         const userData =
         {
           "uid": globalUser.uid,
           "goal": goal,
-          "intake": current,
-          "intakeDate": date
+          "intake": currentIntake,
+          "intakeDate": getDate()
         }
-
-        axios.put(`http://localhost:8080/data/hydration/${globalUser.uid}`,
-          userData)
+        axios.put(`http://localhost:8080/data/hydration/${globalUser.uid}`, userData)
 
       } catch (error) {
         console.error('Error:', error);
       }
+      setCurrent(currentIntake);
+      setGlassesLeft(currentGlassesLeft);
     } else {
       setCurrent(goal);
     }
@@ -159,9 +158,11 @@ const Hydration = () => {
                   Submit
                 </Button>
               </Box>
-              {invalidGoal && <Typography variant='subtitle2' color='error' width='80%' mt={2}>
-                * INVALID: Recommended water intake is at least 6 glasses, up to 20 glasses
-              </Typography>}
+              {invalidGoal &&
+                <Typography variant='subtitle2' color='error' width='80%' mt={2}>
+                  * INVALID: Recommended water intake is at least 6 glasses, up to 20 glasses
+                </Typography>
+              }
             </>
             :
             <>
@@ -188,7 +189,10 @@ const Hydration = () => {
             <Box display='flex' flexDirection='column' mt={8}>
               <Box display='flex' flexDirection='row'
                 alignItems='center' justifyContent='center' mt={5}>
-                <Fab color="primary" aria-label="add" size='large'
+                <Fab
+                  color="primary"
+                  aria-label="add"
+                  size='large'
                   onClick={addWater}>
                   <AddIcon />
                 </Fab>
@@ -198,7 +202,9 @@ const Hydration = () => {
         </Box>
 
         <Box display='flex' flexDirection='column' alignItems='center' width='20%'>
-          <Typography variant='body2' mb={3}> {glassesLeft} more glasses to go! </Typography>
+          <Typography variant='body2' mb={3}>
+            {glassesLeft} more glasses to go!
+          </Typography>
           <Box width='100px' height='320px' display='flex' flexDirection='column-reverse'
             sx={{ border: '1px solid black', borderRadius: '5px' }}>
             {(
@@ -222,10 +228,9 @@ const Hydration = () => {
           </Box>
           <Typography variant='body2' mb={3}> Current: {current} </Typography>
         </Box>
-
       </Stack>
     </>
   )
 }
 
-export default Hydration
+export default Hydration;

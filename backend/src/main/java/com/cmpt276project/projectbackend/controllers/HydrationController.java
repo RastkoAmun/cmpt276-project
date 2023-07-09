@@ -44,6 +44,12 @@ public class HydrationController {
         return hydrationRepo.findByUid(uid);
     }
 
+    // @GetMapping("/{uid}/{intakeDate}")
+    // public Hydration getHydrationsByDate(@PathVariable Integer uid, 
+    //     @PathVariable Integer intakeDate) {
+    //     return hydrationRepo.findByUidAndIntakeDate(uid, intakeDate);
+    // }
+
     @PostMapping
     public ResponseEntity<Hydration> createHydrationRecord(@RequestBody Hydration hydrationRequest) {
         try {
