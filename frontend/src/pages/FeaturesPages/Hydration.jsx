@@ -3,27 +3,27 @@ import { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../../index';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
-import { 
-  Box, 
-  Button, 
-  Fab, 
-  Stack, 
-  TextField, 
-  Typography 
+import {
+  Box,
+  Button,
+  Fab,
+  Stack,
+  TextField,
+  Typography
 } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 
 const Hydration = () => {
-  const [ goal, setGoal ] = useState(0);
-  const [ glassesLeft, setGlassesLeft ] = useState(goal);
-  const [ current, setCurrent ] = useState(0);
+  const [goal, setGoal] = useState(0);
+  const [glassesLeft, setGlassesLeft] = useState(goal);
+  const [current, setCurrent] = useState(0);
 
-  const [ invalidGoal, setInvalidGoal ] = useState(false);
-  const [ submitted, setSubmitted ] = useState(false);
+  const [invalidGoal, setInvalidGoal] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const { globalUser } = useContext(UserContext);
-  
+
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -35,34 +35,36 @@ const Hydration = () => {
     if (globalUser) {
       const fetchGoal = async () => {
         try {
-          const response = await fetch(`http://localhost:8080/hydration/goal?uid=${globalUser.uid}`);
+          const response = await fetch(`http://localhost:8080/hydration?uid=${globalUser.uid}`)
+          console.log(response)
           if (!response.ok) {
-            if (response.status === 404) {
-              setInvalidGoal(true); // Set invalidGoal to true if response is not found
-            } else {
-              throw new Error(`Error! status: ${response.status}`);
-            }
-          } else {
+            if (response.status === 404) setInvalidGoal(true);
+            else throw new Error(`Error! status: ${response.status}`);
+          }
+          else {
             const data = await response.json();
-            if (data.goal > 0) {
-              setGoal(data.goal);
-              setSubmitted(true);
-              setInvalidGoal(false);
-              const dif = data.goal - data.intake;
-              setGlassesLeft(dif);
-              setCurrent(data.intake);
-            }
+            const user = data[0];
+            const dif = user.goal - user.intake;
+
+            setGoal(user.goal);
+            setCurrent(user.intake);
+            setGlassesLeft(dif);
+            setInvalidGoal(false);
+            setSubmitted(true);
           }
         } catch (error) {
           console.error('Error:', error);
         }
       };
-  
+
       fetchGoal();
     } else {
       navigate("/login");
     }
   }, [globalUser, navigate]);
+
+
+
 
   
 
@@ -75,29 +77,41 @@ const Hydration = () => {
       setInvalidGoal(false);
       setGlassesLeft(goal);
 
-      const today = new Date();
-      const intakeDate = today.toISOString().slice(0, 10);
+      let date = new Date();
+      const options = { month: 'short', day: '2-digit', year: 'numeric' };
+      date = date.toLocaleDateString('en-US', options);
 
       try {
         const myData =
         {
           "uid": globalUser.uid,
           "goal": goal,
-          "intake": 0,
-          "intakeDate": intakeDate
+          "intake": current,
+          "intakeDate": date
         }
 
-        const response = await fetch('http://localhost:8080/hydration', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(myData),
-        });
-
-        if (!response.ok) {
-          throw new Error(`Error! status: ${response.status}`);
+        let response;
+        if (submitted === true) {
+          response = await fetch('http://localhost:8080/hydration', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(myData),
+          });
+        } else {
+          response = await fetch(`http://localhost:8080/hydration/${globalUser.uid}`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(myData),
+          });
         }
+
+        // if (!response.ok) {
+        //   throw new Error(`Error! status: ${response.status}`);
+        // }
 
       } catch (error) {
         console.error('Error:', error);
@@ -109,17 +123,18 @@ const Hydration = () => {
     if (current < goal) {
       setCurrent(current + 1);
       setGlassesLeft(glassesLeft - 1);
-      
+
       console.log("useridg", globalUser.uid);
 
-      const today = new Date();
-      const intakeDate = today.toISOString().slice(0, 10);
+      let date = new Date();
+      const options = { month: 'short', day: '2-digit', year: 'numeric' };
+      date = date.toLocaleDateString('en-US', options);
 
       try {
         const myData = {
           uid: globalUser.uid,
           intake: current + 1,
-          intakeDate: intakeDate
+          intakeDate: date
         };
 
         const response = await fetch('http://localhost:8080/hydration/update', {
@@ -154,18 +169,18 @@ const Hydration = () => {
             <>
               <Box display='flex' alignItems='center' width='80%'>
                 <Typography variant='h5' mr={3}> GOAL: </Typography>
-                <TextField 
-                  type='number' 
+                <TextField
+                  type='number'
                   size='small'
-                  value={goal} 
+                  value={goal}
                   onChange={handleGoal}
                   error={invalidGoal ? true : false}
                   sx={{ flexGrow: 1 }}
                 />
-              </Box>  
-              <Box 
-                display='flex' 
-                justifyContent='flex-end' 
+              </Box>
+              <Box
+                display='flex'
+                justifyContent='flex-end'
                 mt={1} width='80%'>
                 <Button variant='outlined' onClick={submitGoal}
                   sx={{ justifySelf: 'center' }}>
@@ -178,8 +193,8 @@ const Hydration = () => {
             </>
             :
             <>
-              <Box 
-                display='flex' 
+              <Box
+                display='flex'
                 justifyContent='center'
                 alignItems='center'
                 width='100%'>
@@ -187,9 +202,9 @@ const Hydration = () => {
                   <Typography variant='h5' mr={3}> Goal: </Typography>
                   <Typography variant='h4' mr={3} color='primary'> {goal} </Typography>
                 </>
-                <Fab 
-                  color="primary" 
-                  aria-label="add" 
+                <Fab
+                  color="primary"
+                  aria-label="add"
                   size='small'
                   onClick={() => setSubmitted(false)}>
                   <EditIcon />
@@ -225,7 +240,7 @@ const Hydration = () => {
                   borderTopLeftRadius: topBorderRadius,
                   borderTopRightRadius: topBorderRadius
                 }
-                
+
                 return (
                   <Box width='100%' height={`${height}px`} key={index}
                     sx={boxStyle}>
