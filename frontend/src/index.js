@@ -46,12 +46,13 @@ const CustomRouterProvider = () => {
           path: 'hydration',
           element: <Hydration />
         },
+        {
+          path: 'settings',
+          element: <Settings />
+        },
       ]
     },
-    {
-      path: 'settings',
-      element: <Settings />
-    },
+
     {
       path: 'login',
       element: <Login />
