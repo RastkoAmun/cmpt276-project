@@ -7,10 +7,10 @@ import { Link, Outlet } from 'react-router-dom';
 const list = [
   { title: 'Profile', path: '/settings/profile' },
   { title: 'General', path: '/settings'},
-  { title: 'Exercise', path: '/settings/exercise'},
   { title: 'Food', path: '/settings/food'},
-  { title: 'Hydration', path: '/settings/hydration'},
   { title: 'Sleep', path: '/settings/sleep'},
+  { title: 'Exercise', path: '/settings/exercise'},
+  { title: 'Hydration', path: '/settings/hydration'},
 ]
 
 const SettingsMain = () => {
