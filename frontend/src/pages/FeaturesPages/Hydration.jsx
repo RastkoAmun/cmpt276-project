@@ -3,6 +3,7 @@ import { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../../index';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
+import axios from 'axios';
 import {
   Box,
   Button,
@@ -21,6 +22,7 @@ const Hydration = () => {
 
   const [invalidGoal, setInvalidGoal] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [firstTimeSetup, setFirstTimeSetup] = useState(true);
 
   const { globalUser } = useContext(UserContext);
 
@@ -36,22 +38,25 @@ const Hydration = () => {
       const fetchGoal = async () => {
         try {
           const uid = globalUser.uid;
-          const response = await fetch(`http://localhost:8080/data/hydration/${uid}`)
-          if (response.ok) {
-            const user = await response.json();
-            const dif = user.goal - user.intake;
-
-            setGoal(user.goal);
-            setCurrent(user.intake);
-            setGlassesLeft(dif);
-            setInvalidGoal(false);
-            setSubmitted(true);
-          }
+          console.log(uid)
+          axios
+            .get(`http://localhost:8080/data/hydration/${uid}`)
+            .then(results => {
+              const data = results.data;
+              if(data){
+                const dif = data.goal - data.intake;
+                setGoal(data.goal);
+                setCurrent(data.intake);
+                setGlassesLeft(dif);
+                setInvalidGoal(false);
+                setSubmitted(true);
+                setFirstTimeSetup(false);
+              }
+            });
         } catch (error) {
           console.error('Error:', error);
         }
       };
-
       fetchGoal();
     } else {
       navigate("/login");
@@ -80,28 +85,12 @@ const Hydration = () => {
           "intakeDate": date
         }
 
-        let response;
-        if (submitted === true) {
-          response = await fetch('http://localhost:8080/data/hydration', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(userData),
-          });
-        } else {
-          console.log(globalUser.uid)
-          response = await fetch(`http://localhost:8080/data/hydration?uid=${globalUser.uid}`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(userData),
-          });
-        }
-
-        if (!response.ok) {
-          throw new Error(`Error! status: ${response.status}`);
+        if(firstTimeSetup === true){
+          axios
+            .post('http://localhost:8080/data/hydration', userData)
+        }else{
+          axios
+            .put(`http://localhost:8080/data/hydration/${globalUser.uid}`, userData)
         }
 
       } catch (error) {
@@ -115,30 +104,22 @@ const Hydration = () => {
       setCurrent(current + 1);
       setGlassesLeft(glassesLeft - 1);
 
-      console.log("useridg", globalUser.uid);
-
       let date = new Date();
       const options = { month: 'short', day: '2-digit', year: 'numeric' };
       date = date.toLocaleDateString('en-US', options);
 
       try {
-        const myData = {
-          uid: globalUser.uid,
-          intake: current + 1,
-          intakeDate: date
-        };
-
-        const response = await fetch('http://localhost:8080/hydration/update', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(myData),
-        });
-
-        if (!response.ok) {
-          throw new Error(`Error! status: ${response.status}`);
+        const userData =
+        {
+          "uid": globalUser.uid,
+          "goal": goal,
+          "intake": current,
+          "intakeDate": date
         }
+
+        axios.put(`http://localhost:8080/data/hydration/${globalUser.uid}`,
+          userData)
+
       } catch (error) {
         console.error('Error:', error);
       }

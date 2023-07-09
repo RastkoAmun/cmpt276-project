@@ -63,7 +63,10 @@ public class HydrationController {
     public ResponseEntity<Hydration> updateHydrationRecord(@RequestBody Hydration hydrationRequest, @PathVariable int uid) {
         try {
             Hydration hydrationEntry = hydrationRepo.findByUid(uid);
+            hydrationEntry.setUid(hydrationRequest.getUid());
             hydrationEntry.setGoal(hydrationRequest.getGoal());
+            hydrationEntry.setIntake(hydrationRequest.getIntake());
+            hydrationEntry.setIntakeDate(hydrationRequest.getIntakeDate());
             hydrationRepo.save(hydrationEntry);
             return ResponseEntity.ok(hydrationEntry);
         } catch (Exception e) {
