@@ -28,7 +28,8 @@ const list = [
   { title: 'Sleep', icon: <BedtimeIcon />, path: '/sleep' },
   { title: 'Exercise', icon: <FitnessCenterIcon />, path: '/exercise' },
   { title: 'Hydration', icon: <WaterDropIcon />, path: '/hydration' },
-  { title: 'Settings', icon: <SettingsIcon />, path: '/settings'}
+  { title: 'Weight', icon: <SettingsIcon />, path: '/weight'},
+  { title: 'Settings', icon: <SettingsIcon />, path: '/settings'},
 ]
 
 const SidebarDisplay = () => {
