@@ -44,11 +44,11 @@ public class HydrationController {
         return hydrationRepo.findByUid(uid);
     }
 
-    // @GetMapping("/{uid}/{intakeDate}")
-    // public Hydration getHydrationsByDate(@PathVariable Integer uid, 
-    //     @PathVariable Integer intakeDate) {
-    //     return hydrationRepo.findByUidAndIntakeDate(uid, intakeDate);
-    // }
+    @GetMapping("/{uid}/{intakeDate}")
+    public Hydration getHydrationsByDate(@PathVariable Integer uid, 
+        @PathVariable String intakeDate) {
+        return hydrationRepo.findByUidAndIntakeDate(uid, intakeDate);
+    }
 
     @PostMapping
     public ResponseEntity<Hydration> createHydrationRecord(@RequestBody Hydration hydrationRequest) {
@@ -65,10 +65,11 @@ public class HydrationController {
         }
     }
 
-    @PutMapping("/{uid}")
-    public ResponseEntity<Hydration> updateHydrationRecord(@RequestBody Hydration hydrationRequest, @PathVariable int uid) {
+    @PutMapping("/{uid}/{intakeDate}")
+    public ResponseEntity<Hydration> updateHydrationRecord(@RequestBody Hydration hydrationRequest, 
+        @PathVariable Integer uid, @PathVariable String intakeDate) {
         try {
-            Hydration hydrationEntry = hydrationRepo.findByUid(uid);
+            Hydration hydrationEntry = hydrationRepo.findByUidAndIntakeDate(uid, intakeDate);
             hydrationEntry.setUid(hydrationRequest.getUid());
             hydrationEntry.setGoal(hydrationRequest.getGoal());
             hydrationEntry.setIntake(hydrationRequest.getIntake());

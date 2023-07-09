@@ -4,8 +4,7 @@ import {
   useEffect,
   useContext,
   useCallback
-}
-  from 'react';
+} from 'react';
 import { UserContext } from '../../index';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
@@ -26,6 +25,7 @@ const Hydration = () => {
   const [goal, setGoal] = useState(0);
   const [glassesLeft, setGlassesLeft] = useState(goal);
   const [current, setCurrent] = useState(0);
+  const [intakeDate, setIntakeDate] = useState('');
 
   const [invalidGoal, setInvalidGoal] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -45,8 +45,10 @@ const Hydration = () => {
       const fetchGoal = async () => {
         try {
           const uid = globalUser.uid;
+          let date = getDate();
+          date = date.replace(/\s/g, '%20');
           axios
-            .get(`http://localhost:8080/data/hydration/${uid}`)
+            .get(`http://localhost:8080/data/hydration/${uid}/${date}`)
             .then(results => {
               const data = results.data;
               if (data) {
@@ -55,6 +57,7 @@ const Hydration = () => {
                 setCurrent(data.intake);
                 setGlassesLeft(dif);
                 setInvalidGoal(false);
+                setIntakeDate(data.intakeDate)
                 setSubmitted(true);
                 setFirstTimeSetup(false);
               }
@@ -67,7 +70,7 @@ const Hydration = () => {
     } else {
       navigate("/login");
     }
-  }, [globalUser, navigate]);
+  }, [globalUser, navigate, intakeDate]);
 
   const submitGoal = async () => {
     if (goal > 20 || goal < 6) {
@@ -77,6 +80,7 @@ const Hydration = () => {
       setSubmitted(true);
       setInvalidGoal(false);
       setGlassesLeft(goal);
+      setIntakeDate(getDate())
 
       try {
         const userData =
@@ -93,7 +97,8 @@ const Hydration = () => {
         }
         else {
           axios
-            .put(`http://localhost:8080/data/hydration/${globalUser.uid}`, userData)
+            .put(`http://localhost:8080/data/hydration/${globalUser.uid}/${getDate()}`,
+               userData)
         }
 
       } catch (error) {
@@ -113,9 +118,10 @@ const Hydration = () => {
           "uid": globalUser.uid,
           "goal": goal,
           "intake": currentIntake,
-          "intakeDate": getDate()
+          "intakeDate": intakeDate
         }
-        axios.put(`http://localhost:8080/data/hydration/${globalUser.uid}`, userData)
+        axios.put(`http://localhost:8080/data/hydration/${globalUser.uid}/${getDate()}`, 
+          userData)
 
       } catch (error) {
         console.error('Error:', error);
