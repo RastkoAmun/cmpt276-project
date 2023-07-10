@@ -17,6 +17,7 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import WaterDropIcon from '@mui/icons-material/WaterDrop';
 import SettingsIcon from '@mui/icons-material/Settings';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import WeightIcon from '@mui/icons-material/MonitorWeight'
 import { Link, useNavigate } from 'react-router-dom';
 import { ReactComponent as Logo } from '../images/logo.svg';
 import { UserContext } from '../index'
@@ -28,7 +29,7 @@ const list = [
   { title: 'Sleep', icon: <BedtimeIcon />, path: '/sleep' },
   { title: 'Exercise', icon: <FitnessCenterIcon />, path: '/exercise' },
   { title: 'Hydration', icon: <WaterDropIcon />, path: '/hydration' },
-  { title: 'Weight', icon: <SettingsIcon />, path: '/weight'},
+  { title: 'Weight', icon: <WeightIcon />, path: '/weight'},
   { title: 'Settings', icon: <SettingsIcon />, path: '/settings'},
 ]
 

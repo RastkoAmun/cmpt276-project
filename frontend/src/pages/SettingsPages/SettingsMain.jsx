@@ -23,7 +23,7 @@ const SettingsMain = () => {
             <Typography color="light.grey" variant="h7" style={{fontWeight:'500', fontSize: '12px'}}>
               S E T T I N G S
             </Typography>
-            <Typography variant="h4" style={{fontWeight:'bold', fontSize: '35px', paddingBottom: '20px'}}>
+            <Typography variant="h4" style={{fontWeight:'500', fontSize: '30px', paddingBottom: '20px'}}>
               General Settings
             </Typography>
 
