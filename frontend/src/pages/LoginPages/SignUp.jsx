@@ -17,8 +17,6 @@ import {
   from '@mui/material'
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { ThemeProvider } from '@emotion/react';
-import lightTheme from '../../utils/lightTheme';
 
 const SignUp = () => {
   const [username, setUserName] = useState('');
@@ -95,7 +93,6 @@ const SignUp = () => {
   }
 
   return (
-    <ThemeProvider theme={lightTheme}>
     <Box sx={{ display: 'flex', justifyContent: 'center' }} >
       <Card
         elevation={10}
@@ -199,7 +196,6 @@ const SignUp = () => {
         </Stack>
       </Card>
     </Box>
-  </ThemeProvider>
   );
 }
 
