@@ -13,22 +13,31 @@ const list = [
   { title: 'Hydration', path: '/settings/hydration'},
 ]
 
+const headerSecondaryFont = {
+  fontWeight:'500',
+  fontSize: '12px'
+}
+const headerPrimaryFont = {
+  fontWeight:'500', 
+  fontSize: '30px',
+}
+
 const SettingsMain = () => {
   
   return (
     <ThemeProvider theme={lightTheme}>
       <>
-        <Box sx={{ display: 'flex', flexDirection:'column', height: '100vh' }}>
-          <Box sx={{width: '100%', borderBottom: '1px solid', borderColor: 'lightText.heavy',}}>
-            <Typography color="light.grey" variant="h7" style={{fontWeight:'500', fontSize: '12px'}}>
+        <Box display="flex" flexDirection="column">
+          <Box width="100%" borderBottom="1px solid" borderColor="lightText.heavy">
+            <Typography color="light.grey" variant="h7" sx={headerSecondaryFont}>
               S E T T I N G S
             </Typography>
-            <Typography variant="h4" style={{fontWeight:'500', fontSize: '30px', paddingBottom: '20px'}}>
+            <Typography variant="h4"  paddingBottom='20px' sx={headerPrimaryFont}>
               General Settings
             </Typography>
 
             <Box>
-              <List sx={{ display: 'flex', flexDirection: 'row', py: 0, minWidth: '90%'}}>
+              <List sx={{ display: 'flex', flexDirection: 'row', py: 0}}>
                 {list.map((item, index) => (
                   <ListItem key={`${item.title}-${index}`} disablePadding>
                     <ListItemButton 
