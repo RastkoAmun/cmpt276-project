@@ -24,14 +24,18 @@ const Weight = () => {
   const [selectedWeight, setSelectedWeight] = useState('500');
   const initialWeight = 500
   const weightChange = 5;
-  const handleWeight = (event) => {
-    const { value } = event.target;
-    setSelectedWeight(value);
-  };
 
   const cardStyle = {
     // bgcolor: 'lightgray',
     p: 2,
+  }
+
+  const titleContainerStyles = {
+    width: '100%', 
+    borderBottom: '1px solid', 
+    borderColor: 'lightText.heavy', 
+    paddingBottom: '10px', 
+    marginBottom: '50px'
   }
 
   const entries = [
@@ -63,14 +67,16 @@ const Weight = () => {
     setDate(event.target.value);
   };
 
+
+
   return (
     <Box>
-      <Box display="flex" sx={{width: '100%', borderBottom: '1px solid', borderColor: 'lightText.heavy', paddingBottom: '10px', marginBottom: '50px'}}>
+      <Box display="flex" sx={titleContainerStyles}>
         <Box>
-          <Typography color="light.grey" variant="h7" style={{fontWeight:'500', fontSize: '12px'}}>
+          <Typography color="light.grey" variant="h7" sx={{fontWeight:'500', fontSize: '12px'}}>
             W E I G H T
           </Typography>
-          <Typography variant="h4" style={{fontWeight:'500', fontSize: '30px', paddingBottom: '20px'}}>
+          <Typography variant="h4" sx={{fontWeight:'500', fontSize: '30px', paddingBottom: '20px'}}>
             Weight Progress
           </Typography>
         </Box>

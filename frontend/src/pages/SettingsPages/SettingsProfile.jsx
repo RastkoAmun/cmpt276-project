@@ -39,7 +39,7 @@ const SettingsProfile = () => {
 
   return (
     <Box>
-      <Box style={{backgroundColor: 'red', height:'300px'}}>
+      <Box sx={{backgroundColor: 'red', height:'300px'}}>
         <Typography variant="h1">
           PLACEHOLDER
         </Typography>
@@ -47,11 +47,11 @@ const SettingsProfile = () => {
       </Box>
       <Box>
 
-        <Box style={{display: 'flex'}}>
+        <Box display="flex">
           <Typography>
             Gender
           </Typography>
-          <FormControl style={{width:'100%'}}>
+          <FormControl>
             <Select
               id="dropdown-input"
               value={selectedGender}
@@ -63,32 +63,7 @@ const SettingsProfile = () => {
           </FormControl>
         </Box>
 
-{/*  
-        <Box style={{display: 'flex'}}>
-          <Typography>
-            Weight
-          </Typography>
-          <TextField
-            type="text"
-            value={selectedWeight}
-            variant="standard"
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                border: 'none',
-              },
-              '& .MuiInputBase-input': {
-                borderBottom: 'none',
-              },
-            }}
-            InputProps={{disableUnderline: true, readOnly: true, endAdornment: <InputAdornment position="end">kg</InputAdornment>,}}
-          />
-          <Button onClick={handleEditClick}>
-            Edit
-          </Button>
-        </Box>
-*/}
-
-        <Box style={{display: 'flex'}}>
+        <Box display='flex'>
           <Typography>
             Age
           </Typography>
@@ -99,7 +74,7 @@ const SettingsProfile = () => {
           />
         </Box>
 
-        <Box style={{display: 'flex'}}>
+        <Box display="flex">
           <Typography>
             Height
           </Typography>
@@ -111,11 +86,11 @@ const SettingsProfile = () => {
           />
         </Box>
 
-        <Box style={{display: 'flex'}}>
+        <Box display="flex">
           <Typography>
             Activity Level
           </Typography>
-          <FormControl style={{width:'100%'}}>
+          <FormControl>
             <Select
               id="dropdown-input"
               value={selectedActivityLevel}
@@ -129,11 +104,11 @@ const SettingsProfile = () => {
           </FormControl>
         </Box>
 
-        <Box style={{display: 'flex'}}>
+        <Box display="flex">
           <Typography>
             Climate
           </Typography>
-          <FormControl style={{width:'100%'}}>
+          <FormControl>
             <Select
               id="dropdown-input"
               value={selectedClimate}
@@ -151,7 +126,10 @@ const SettingsProfile = () => {
         </Button>
 
         <Typography>
-          Whenever user changes any of their info, we should recalculate their recommended water intake
+          *Whenever user changes any of their info, we should recalculate their recommended water intake
+        </Typography>
+        <Typography>
+          *Weight must be changed in the Weight Progress page, not here
         </Typography>
 
       </Box>

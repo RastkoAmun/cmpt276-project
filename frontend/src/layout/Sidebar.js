@@ -130,7 +130,7 @@ const Sidebar = (props) => {
         </Toolbar>
         <Divider />
       </Box>
-      <Box style={{padding: '70px'}} ml={`${drawerWidth}px`} p={3}>
+      <Box ml={`${drawerWidth}px`} p={8}>
         <Outlet />
       </Box>
     </Box>
