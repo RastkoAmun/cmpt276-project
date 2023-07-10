@@ -6,7 +6,8 @@ const SettingsProfile = () => {
   // Obtain default values from user !!
   const [selectedGender, setSelectedGender] = useState('male');
   const [selectedWeight, setSelectedWeight] = useState('500');
-  const [selectedHeight, setSelectedHeight] = useState('100');
+  const [selectedAge, setSelectedAge] = useState('32');
+  const [selectedHeight, setSelectedHeight] = useState('100'); 
   const [selectedActivityLevel, setSelectedActivityLevel] = useState('sedentary');
   const [selectedClimate, setSelectedClimate] = useState('temperate');
 
@@ -19,15 +20,14 @@ const SettingsProfile = () => {
   const handleClimate = (event) => {
     setSelectedClimate(event.target.value);
   }
-  const handleWeight = (event) => {
-    const { value } = event.target;
-    setSelectedWeight(value);
-  };
   const handleHeight = (event) => {
     const { value} = event.target;
     setSelectedHeight(value);
   }
-
+  const handleAge = (event) => {
+    const {value} = event.target;
+    setSelectedAge(value);
+  }
 
 
   const navigate = useNavigate();
@@ -63,6 +63,7 @@ const SettingsProfile = () => {
           </FormControl>
         </Box>
 
+{/*  
         <Box style={{display: 'flex'}}>
           <Typography>
             Weight
@@ -70,7 +71,6 @@ const SettingsProfile = () => {
           <TextField
             type="text"
             value={selectedWeight}
-            onChange={handleWeight}
             variant="standard"
             sx={{
               '& .MuiOutlinedInput-root': {
@@ -86,13 +86,25 @@ const SettingsProfile = () => {
             Edit
           </Button>
         </Box>
+*/}
+
+        <Box style={{display: 'flex'}}>
+          <Typography>
+            Age
+          </Typography>
+          <TextField
+            type="number"
+            value={selectedAge}
+            onChange={handleAge}
+          />
+        </Box>
 
         <Box style={{display: 'flex'}}>
           <Typography>
             Height
           </Typography>
           <TextField
-            type="text"
+            type="number"
             value={selectedHeight}
             onChange={handleHeight}
             InputProps={{endAdornment: <InputAdornment position="end">cm</InputAdornment>,}}
@@ -134,7 +146,13 @@ const SettingsProfile = () => {
           </FormControl>
         </Box>
 
+        <Button>
+          Save changes
+        </Button>
 
+        <Typography>
+          Whenever user changes any of their info, we should recalculate their recommended water intake
+        </Typography>
 
       </Box>
     </Box>
