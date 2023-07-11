@@ -2,10 +2,8 @@ import React, { useState } from 'react'
 import { Typography,
   Box,
   TextField,
-  InputAdornment,
   Grid,
   Card,
-  formHelperTextClasses,
   List,
   ListItem,
   ListItemText,
@@ -15,8 +13,10 @@ import { Typography,
   DialogContent,
   DialogActions,
   Button,
+  Link
   } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
+import { titleContainerStyle } from '../Style';
 
 
 const Weight = () => {
@@ -30,13 +30,6 @@ const Weight = () => {
     p: 2,
   }
 
-  const titleContainerStyles = {
-    width: '100%', 
-    borderBottom: '1px solid', 
-    borderColor: 'lightText.heavy', 
-    paddingBottom: '10px', 
-    marginBottom: '50px'
-  }
 
   const entries = [
     { id: 1, date: '2023-01-01', weight: 75 },
@@ -71,12 +64,12 @@ const Weight = () => {
 
   return (
     <Box>
-      <Box display="flex" sx={titleContainerStyles}>
-        <Box>
-          <Typography color="light.grey" variant="h7" sx={{fontWeight:'500', fontSize: '12px'}}>
-            W E I G H T
+      <Box display="flex" sx={titleContainerStyle} paddingBottom="30px">
+        <Box display="flex" flexDirection="column">
+          <Typography variant="fh2">
+            Weight
           </Typography>
-          <Typography variant="h4" sx={{fontWeight:'500', fontSize: '30px', paddingBottom: '20px'}}>
+          <Typography variant="fh1">
             Weight Progress
           </Typography>
         </Box>
@@ -112,7 +105,7 @@ const Weight = () => {
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handleSubmit} variant="contained" color="primary">
-            Submit
+            Submit TO DB
           </Button>
         </DialogActions>
       </Dialog>
@@ -152,7 +145,13 @@ const Weight = () => {
 
           <Grid item xs={8.5}>
             <Card sx={cardStyle} >
-              <Typography variant='h5'>30 days / 90 days / 1 year</Typography>
+              <Typography component="span" variant='h5'>
+                <Link>30 days</Link>
+                <span> / </span>
+                <Link>90 days</Link>
+                <span> / </span>
+                <Link>1 year</Link>
+              </Typography>
               <Box display='flex' justifyContent='center' alignItems='center'
               sx={{ height: 500 }}>
               <Typography> Graph will go here </Typography>
@@ -163,7 +162,7 @@ const Weight = () => {
           <Grid item xs={3.5}>
             <Card sx={cardStyle}
             style={{height: '100%'}} >
-              <Typography variant='h5'>Entries</Typography>
+              <Typography variant='h5'>Entries (render from db)</Typography>
               <List>
               {entries.map((entry) => (
                 <ListItem key={entry.id}>

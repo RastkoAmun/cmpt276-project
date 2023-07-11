@@ -1,11 +1,9 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
-import { Typography, Box, FormControl, Button, Select, MenuItem, TextField, InputAdornment, Input } from '@mui/material'
+import { Typography, Box, FormControl, Button, Select, MenuItem, TextField, InputAdornment } from '@mui/material'
 
 const SettingsProfile = () => {
   // Obtain default values from user !!
   const [selectedGender, setSelectedGender] = useState('male');
-  const [selectedWeight, setSelectedWeight] = useState('500');
   const [selectedAge, setSelectedAge] = useState('32');
   const [selectedHeight, setSelectedHeight] = useState('100'); 
   const [selectedActivityLevel, setSelectedActivityLevel] = useState('sedentary');
@@ -30,10 +28,6 @@ const SettingsProfile = () => {
   }
 
 
-  const navigate = useNavigate();
-  const handleEditClick = () => {
-    navigate('/weight');
-  };
 
 
 
