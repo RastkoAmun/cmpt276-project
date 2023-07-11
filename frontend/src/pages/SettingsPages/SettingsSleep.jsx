@@ -1,12 +1,12 @@
 import React from 'react'
 import { Typography } from '@mui/material'
 
-const Settings = () => {
+const SettingsSleep = () => {
   return (
     <Typography variant='h1'>
-      Settings
+      Sleep Settings
     </Typography>
   )
 }
 
-export default Settings
+export default SettingsSleep

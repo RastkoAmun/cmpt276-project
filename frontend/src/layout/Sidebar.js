@@ -120,7 +120,7 @@ const Sidebar = (props) => {
             }}
           >
             <Typography>USERNAME</Typography>
-            <MenuItem component={Link} to='/profile' onClick={handleMenuClose}>Edit Profile</MenuItem>
+            <MenuItem component={Link} to='/settings/profile' onClick={handleMenuClose}>Edit Profile</MenuItem>
             <MenuItem component={Link} to='/settings' onClick={handleMenuClose}>Settings</MenuItem>
             <MenuItem component={Link} to='' onClick={handleMenuClose}>Help</MenuItem>
             <MenuItem onClick={handleMenuClose}>Log out</MenuItem>
@@ -130,7 +130,7 @@ const Sidebar = (props) => {
         </Toolbar>
         <Divider />
       </Box>
-      <Box ml={`${drawerWidth}px`} p={3}>
+      <Box ml={`${drawerWidth}px`} p={8}>
         <Outlet />
       </Box>
     </Box>

@@ -1,6 +1,21 @@
 import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
+  typography: {
+    fh1: {
+      fontWeight:'500', 
+      fontSize: '30px',
+      lineHeight: '1.235',
+    },
+    fh2: {
+      fontWeight:'500',
+      fontSize: '12px',
+      color: 'rgb(177,182,189)',
+      textTransform: 'uppercase',
+      letterSpacing: '0.6em'
+    }
+  },
+
   palette: {
     mode: 'light',
 
@@ -20,8 +35,10 @@ const theme = createTheme({
       main: 'rgb(248, 249, 253)'
     },
 
-    lightText: {
-      main: 'rgba(0,0,0,0.6)'
+    //lightText
+    opaque: {
+      main: 'rgba(0,0,0,0.6)',
+      heavy: 'rgba(0,0,0,0.15)'
       // main: '#696969'
     },
     
