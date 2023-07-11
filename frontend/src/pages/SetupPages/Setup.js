@@ -39,7 +39,7 @@ const Setup = () => {
 
   // Variables for all the user's input information
   const [selectedGender, setSelectedGender] = useState(null);
-  const [selectedAge, setSelectedAge] = useState(null);                       //child, teenager, earlyadult, lateadult, elder
+  const [selectedAge, setSelectedAge] = useState(null);                      
   const [selectedWeight, setSelectedWeight] = useState(0);
   const [selectedHeight, setSelectedHeight] = useState(0);
   const [selectedActivityLevel, setSelectedActivityLevel] = useState(null);   //sedentary, light, moderate, heavy
@@ -56,24 +56,17 @@ const Setup = () => {
     const BWF = gender === 'male' ? 35 : 31;
 
     let ageAdjustment = 0;
-    switch (age) {
-      case 'child':
-        ageAdjustment=100;
-        break;
-      case 'teenager':
-        ageAdjustment=70;
-        break;
-      case 'earlyadult':
-        ageAdjustment=-35;
-        break;
-      case 'lateadult':
-        ageAdjustment=-30;
-        break;
-      case 'elderly':
-        ageAdjustment=-25;
-        break;
-      default:
-        ageAdjustment=0;
+    if (age>=13 && age<=18) {
+      ageAdjustment=70;
+    }
+    else if (age>=19 && age<=29) {
+      ageAdjustment=-35;
+    }
+    else if (age>=30 && age<=49) {
+      ageAdjustment=-30;
+    }
+    else if (age>=50) {
+      ageAdjustment=-25;
     }
     
     const BWN = weight * BWF;
