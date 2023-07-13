@@ -4,17 +4,21 @@ import {
   Box,
   Button,
   CssBaseline,
-  Divider,
   Drawer,
   IconButton,
   Toolbar,
   Menu,
   MenuItem,
   Typography,
-  AppBar
+  AppBar,
+  TextField,
+  InputAdornment,
+  Badge,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import SearchIcon from '@mui/icons-material/Search';
+import NotificationsIcon from '@mui/icons-material/NotificationsNone';
 import SidebarDisplay from './SidebarDisplay';
 import { drawerWidth } from '../utils/constants'
 import { UserContext } from '../index'
@@ -39,6 +43,13 @@ const Sidebar = (props) => {
   };
 
   const container = window !== undefined ? () => window().document.body : undefined;
+
+
+//search bar stuff, not important
+  const [searchTerm, setSearchTerm] = useState("");
+  const handleChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
 
   return (
     <ThemeProvider theme={lightTheme}>
@@ -74,7 +85,7 @@ const Sidebar = (props) => {
       </Box>
 
       {/* Navigation bar */}
-      <AppBar position="static" elevation={0}
+      <AppBar position="fixed" elevation={0}
         sx={{
           flexGrow: 1,
           width: { md: `calc(100% - ${drawerWidth}px)` },
@@ -83,9 +94,30 @@ const Sidebar = (props) => {
         }}
       >
         <Toolbar >
+            <Box maxWidth="30%">
+              <TextField
+                sx={{minWidth: '20vw'}}
+                variant="standard"
+                placeholder="Search for something..."
+                value={searchTerm}
+                onChange={handleChange}
+                autoComplete="off"
+                InputProps={{
+                  disableUnderline: true,
+                  style: {fontSize: '14px'},
+                  startAdornment: (
+                    <InputAdornment position="front" sx={{marginRight:'10px'}}>
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Box>
+
+
           <IconButton aria-label="open drawer"
             edge="start" onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { md: 'none' }, border: '0' }} >
+            sx={{ mr: 2, display: { md: 'none' }, }} >
             <MenuIcon />
           </IconButton>
           {/* <Typography variant='h4' p={2}>
@@ -94,16 +126,22 @@ const Sidebar = (props) => {
 
           <Box sx={{ flexGrow: '1' }} />
 
+
+
           {
             !globalUser ?
               <Button variant='contained' color='inherit'
                 component={Link} to={'/login'}
-                sx={{ marginX: 3 }}>
+                >
                 LogIn
               </Button>
               :
               null
           }
+
+          <Badge badgeContent={5} color="primary" sx={{marginX: 3}}>
+            <NotificationsIcon color="opaque"/>
+          </Badge>
 
           <IconButton aria-label="open drawer"
             edge="start" onClick={handleProfileClick}
@@ -132,7 +170,7 @@ const Sidebar = (props) => {
       </AppBar>
 
 
-      <Box ml={`${drawerWidth}px`} p={8}>
+      <Box ml={`${drawerWidth}px`} p={8} pt={16}>
         <Outlet />
       </Box>
     </Box>
