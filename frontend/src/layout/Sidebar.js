@@ -10,7 +10,8 @@ import {
   Toolbar,
   Menu,
   MenuItem,
-  Typography
+  Typography,
+  AppBar
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -73,18 +74,18 @@ const Sidebar = (props) => {
       </Box>
 
       {/* Navigation bar */}
-      <Box
+      <AppBar position="static" elevation={0}
         sx={{
           flexGrow: 1,
           width: { md: `calc(100% - ${drawerWidth}px)` },
           marginLeft: { sm: 0, md: `${drawerWidth}px` },
-          backgroundColor: 'white'
+          backgroundColor: 'white',
         }}
       >
         <Toolbar >
           <IconButton aria-label="open drawer"
             edge="start" onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { md: 'none' } }} >
+            sx={{ mr: 2, display: { md: 'none' }, border: '0' }} >
             <MenuIcon />
           </IconButton>
           {/* <Typography variant='h4' p={2}>
@@ -128,8 +129,9 @@ const Sidebar = (props) => {
           </Menu>
           
         </Toolbar>
-        <Divider />
-      </Box>
+      </AppBar>
+
+
       <Box ml={`${drawerWidth}px`} p={8}>
         <Outlet />
       </Box>
