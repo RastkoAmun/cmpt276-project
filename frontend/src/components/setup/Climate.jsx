@@ -1,6 +1,8 @@
 import React from 'react';
 import { Typography, Button, Box } from '@mui/material';
 import { NextButtonContainerStyle, NextButtonStyle, SelectionButtonStyle } from '../../pages/SetupPages/SetupStyles';
+import { ThemeProvider } from '@emotion/react';
+import lightTheme from '../../utils/lightTheme';
 
 const Climate = ({selectedClimate, setSelectedClimate, handleNextPage}) => {
   const handleClimateSelection = (climate) => {
@@ -14,13 +16,14 @@ const Climate = ({selectedClimate, setSelectedClimate, handleNextPage}) => {
   };
 
   return (
+    <ThemeProvider theme={lightTheme}>
     <Box>
       <Box style={{ paddingLeft: '10vw', paddingRight: '10vw' }}>
       {/* Container for text */}
         <Typography variant="h5" align="center" mb={2} fontWeight="bold" style={{ marginBottom: '5px' }}>
-          Choose your activity level
+          Choose your climate
         </Typography>
-        <Typography variant="body2" align="center" mb={2} style={{ margin: '0 auto 16px', maxWidth: '250px'}}>
+        <Typography color="lightText.main" variant="body2" align="center" mb={2} style={{ margin: '0 auto 16px', maxWidth: '250px'}}>
           Tell us more about you so we can tailor the experience to suit your needs.
         </Typography>
       </Box>
@@ -37,9 +40,9 @@ const Climate = ({selectedClimate, setSelectedClimate, handleNextPage}) => {
         }}
         onClick={() => handleClimateSelection('hot')}
         >
-          <h3 style={{fontSize: '20px'}}>
+          <Typography variant="h7">
             Hot
-          </h3>
+          </Typography>
         </Button>
 
 
@@ -53,9 +56,9 @@ const Climate = ({selectedClimate, setSelectedClimate, handleNextPage}) => {
         }}
         onClick={() => handleClimateSelection('temperate')}
         >
-          <h3 style={{fontSize: '20px'}}>
+          <Typography variant="h7">
             Temperate
-          </h3>
+          </Typography>
         </Button>
 
 
@@ -69,9 +72,9 @@ const Climate = ({selectedClimate, setSelectedClimate, handleNextPage}) => {
         }}
         onClick={() => handleClimateSelection('cold')}
         >
-          <h3 style={{fontSize: '20px'}}>
+          <Typography variant="h7">
             Cold
-          </h3>
+          </Typography>
         </Button>
 
       </Box>
@@ -85,6 +88,7 @@ const Climate = ({selectedClimate, setSelectedClimate, handleNextPage}) => {
           </Button>
       </Box>
     </Box>
+    </ThemeProvider>
 
   )
 }

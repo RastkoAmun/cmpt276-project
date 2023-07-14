@@ -5,9 +5,10 @@ import {
   Button,
   Card,
   TextField,
-  Typography
+  Typography,
 }
   from '@mui/material';
+import { useTheme } from '@mui/material/styles'
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../index'
 
@@ -18,12 +19,12 @@ const Login = () => {
   const { setGlobalUser } = useContext(UserContext);
 
   const navigate = useNavigate();
+  const theme = useTheme();
 
   const submit = async () => {
     try {
       const body = { username, password }
       const user = await fetch('http://localhost:8080/user/login', {
-      // const user = await fetch('/user/login', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -65,7 +66,7 @@ const Login = () => {
   })
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', height: '100vh' }}>
+    <Box display='flex' justifyContent='center' height='100vh'>
       <Card
         elevation={10}
         sx={{
@@ -75,53 +76,69 @@ const Login = () => {
           boxShadow: 'none'
         }}>
         <Box mx={5}
-          sx={{
-            display: 'flex', flexDirection: 'column',
-            justifyContent: 'center',
-            width: '70%',
-          }}>
-          <Typography variant="h4" style={{fontWeight:'bold', fontSize: '30px'}}>
+          display='flex'
+          flexDirection='column'
+          justifyContent='center'
+          width='70%'>
+          <Typography variant="h4">
             Login
           </Typography>
 
-          <Typography variant='h7' component='div' p={1}
-            sx={{ alignSelf: 'flex-start', padding: '12px', paddingLeft: '0', fontSize: '14px', color:'rgba(0,0,0,0.6)' }}>
+          <Typography variant='body2' component='div' p={1.5} pl={0}
+            color={theme.palette.grey[700]}>
             Username
           </Typography>
-          <TextField id="outlined-basic1" variant="outlined"
-            size='small' value={username} onChange={(e) => { setUserName(e.target.value) }}
+          <TextField 
+            id="outlined-basic1" 
+            variant="outlined"
+            size='small' 
+            value={username} 
+            onChange={(e) => { setUserName(e.target.value) }}
           />
 
-          <Typography variant='h7' component='div' p={1} mt={1.5} style={{padding:'12px', paddingLeft:'0',  fontSize: '14px', color:'rgba(0,0,0,0.6)'}}> Password </Typography>
-          <TextField id="outlined-basic2" type='password' variant="outlined"
-            size='small' value={password} onChange={(e) => { setPassword(e.target.value) }}
+          <Typography variant='body2' component='div' p={1.5} pl={0}
+            color={theme.palette.grey[700]}>
+            Password
+          </Typography>
+          <TextField 
+            id="outlined-basic2" 
+            type='password' 
+            variant="outlined"
+            size='small' 
+            value={password} 
+            onChange={(e) => { setPassword(e.target.value) }}
           />
 
           {
             loginError ?
-              <div style={{ color: "red" }}>{loginError}</div>
+              <Typography color='error'>{loginError}</Typography>
               : null
           }
 
-          <Box mt={4} style={{display: 'flex', flexDirection: 'column'}}>
-            <Button variant='contained' color='info' onClick={submit}
-              sx={{ backgroundColor: '#4169e1', textTransform: 'none', padding: '10px'}}>
+          <Box mt={4} display='flex' flexDirection='column'>
+            <Button variant='contained' color='primary' onClick={submit}
+              sx={{ textTransform: 'none', padding: '10px' }}>
               Login
             </Button>
 
-            <Box style={{flexDirection: 'row', display: 'flex', marginTop:'20px'}}>
-              <Typography style={{marginRight: '5px', fontSize: '14px'}}>
+            <Box  display='flex' flexDirection='row' mt={2.5} >
+              <Typography variant='body2' mr={1}>
                 Don't have an account?
               </Typography>
-              <Typography style={{fontSize: '14px', textDecoration: 'none'}} component={Link} to={'/signup'} color='#4169e1'>
+              <Typography 
+                variant='body2' 
+                component={Link} 
+                to={'/signup'} 
+                color='primary'>
                 Sign up
               </Typography>
             </Box>
 
-            <Typography style={{fontSize: '14px', textDecoration: 'none', marginTop:'5px'}} component={Link} to={''} color='#4169e1'>
+            <Typography variant='body2' mt={1} 
+              component={Link} to={''} color='primary'
+              sx={{ textDecoration: 'none' }}>
               Forgot password (TO BE IMPLEMENTED)
             </Typography>
-
           </Box>
         </Box>
       </Card>

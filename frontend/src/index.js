@@ -10,11 +10,20 @@ import Food from './pages/FeaturesPages/Food';
 import Sleep from './pages/FeaturesPages/Sleep';
 import Exercise from './pages/FeaturesPages/Exercise';
 import Hydration from './pages/FeaturesPages/Hydration';
-import Settings from './pages/Settings';
+import Weight from './pages/FeaturesPages/Weight';
+import SettingsMain from './pages/SettingsPages/SettingsMain';
+import SettingsGeneral from './pages/SettingsPages/SettingsGeneral';
+import SettingsProfile from './pages/SettingsPages/SettingsProfile';
+import SettingsExercise from './pages/SettingsPages/SettingsExercise';
+import SettingsFood from './pages/SettingsPages/SettingsFood';
+import SettingsHydration from './pages/SettingsPages/SettingsHydration';
+import SettingsSleep from './pages/SettingsPages/SettingsSleep';
 import MainPage from './pages/MainPage';
 import Login from './pages/LoginPages/Login';
 import Setup from './pages/SetupPages/Setup';
 import SignUp from './pages/LoginPages/SignUp';
+import { ThemeProvider } from '@mui/material';
+import theme from '../src/utils/lightTheme'
 
 export const UserContext = React.createContext(null);
 
@@ -46,12 +55,44 @@ const CustomRouterProvider = () => {
           path: 'hydration',
           element: <Hydration />
         },
+        {
+          path: 'weight',
+          element: <Weight />
+        },
+        {
+          path: 'settings',
+          element: <SettingsMain />,
+          children: [
+            {
+              path: '/settings',
+              element: <SettingsGeneral />
+            },
+            {
+              path: 'profile',
+              element: <SettingsProfile />
+            },
+            {
+              path: 'exercise',
+              element: <SettingsExercise />
+            },
+            {
+              path: 'food',
+              element: <SettingsFood />
+            },
+            {
+              path: 'hydration',
+              element: <SettingsHydration />
+            },
+            {
+              path: 'sleep',
+              element: <SettingsSleep />
+            },
+          ]
+        },
+        
       ]
     },
-    {
-      path: 'settings',
-      element: <Settings />
-    },
+
     {
       path: 'login',
       element: <Login />
@@ -71,20 +112,13 @@ const CustomRouterProvider = () => {
       <RouterProvider router={router} />
     </UserContext.Provider>
   )
-
 }
-
-
-// const theme = createTheme({
-
-// });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    {/* <ThemeProvider theme={theme}> */}
-    {/* <App /> */}
-    <CustomRouterProvider />
-    {/* </ThemeProvider> */}
+    <ThemeProvider theme={theme}>
+      <CustomRouterProvider />
+    </ThemeProvider>
   </React.StrictMode>
 );

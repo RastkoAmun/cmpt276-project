@@ -1,6 +1,8 @@
 import React from 'react';
 import { Typography, Button, Box } from '@mui/material';
 import { NextButtonContainerStyle, NextButtonStyle, SelectionButtonStyle } from '../../pages/SetupPages/SetupStyles';
+import { ThemeProvider } from '@emotion/react';
+import lightTheme from '../../utils/lightTheme';
 
 const Age = ({selectedAge, setSelectedAge, handleNextPage}) => {
   const handleAgeSelection = (age) => {
@@ -14,13 +16,14 @@ const Age = ({selectedAge, setSelectedAge, handleNextPage}) => {
   };
 
   return (
+  <ThemeProvider theme={lightTheme}>
     <Box>
       <Box style={{ paddingLeft: '10vw', paddingRight: '10vw' }}>
       {/* Container for text */}
         <Typography variant="h5" align="center" mb={2} fontWeight="bold" style={{ marginBottom: '5px' }}>
           Choose your age group
         </Typography>
-        <Typography variant="body2" align="center" mb={2} style={{ margin: '0 auto 16px', maxWidth: '250px'}}>
+        <Typography color="lightText.main" variant="body2" align="center" mb={2} style={{ margin: '0 auto 16px', maxWidth: '250px'}}>
           Tell us more about you so we can tailor the experience to suit your needs.
         </Typography>
       </Box>
@@ -35,9 +38,9 @@ const Age = ({selectedAge, setSelectedAge, handleNextPage}) => {
         }}
         onClick={() => handleAgeSelection('child')}
         >
-          <h3 style={{fontSize: '20px'}}>
+          <Typography variant="h7">
             4-11
-          </h3>
+          </Typography>
         </Button>
         <Button
         style = {SelectionButtonStyle}
@@ -49,9 +52,9 @@ const Age = ({selectedAge, setSelectedAge, handleNextPage}) => {
         }}
         onClick={() => handleAgeSelection('teenager')}
         >
-          <h3 style={{fontSize: '20px'}}>
+          <Typography variant="h7">
             12-18
-          </h3>
+          </Typography>
         </Button>
         <Button
         style = {SelectionButtonStyle}
@@ -63,9 +66,9 @@ const Age = ({selectedAge, setSelectedAge, handleNextPage}) => {
         }}
         onClick={() => handleAgeSelection('earlyadult')}
         >
-          <h3 style={{fontSize: '20px'}}>
+          <Typography variant="h7">
             19-29
-          </h3>
+          </Typography>
         </Button>
         <Button
         style = {SelectionButtonStyle}
@@ -77,9 +80,9 @@ const Age = ({selectedAge, setSelectedAge, handleNextPage}) => {
         }}
         onClick={() => handleAgeSelection('lateadult')}
         >
-          <h3 style={{fontSize: '20px'}}>
+          <Typography variant="h7">
             30-49
-          </h3>
+          </Typography>
         </Button>
         <Button
         style = {SelectionButtonStyle}
@@ -91,9 +94,9 @@ const Age = ({selectedAge, setSelectedAge, handleNextPage}) => {
         }}
         onClick={() => handleAgeSelection('elder')}
         >
-          <h3 style={{fontSize: '20px'}}>
+          <Typography variant="h7">
             50+
-          </h3>
+          </Typography>
         </Button>
       </Box>
       <Box style={NextButtonContainerStyle}>
@@ -106,7 +109,7 @@ const Age = ({selectedAge, setSelectedAge, handleNextPage}) => {
           </Button>
       </Box>
     </Box>
-
+  </ThemeProvider>
   )
 }
 

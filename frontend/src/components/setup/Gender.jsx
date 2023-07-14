@@ -3,6 +3,8 @@ import { Typography, Button, Box } from '@mui/material';
 import ManIcon from '../../images/man-thinking-svgrepo-com.svg';
 import WomanIcon from '../../images/woman-with-hand-on-chin-svgrepo-com.svg';
 import {NextButtonContainerStyle,NextButtonStyle} from '../../pages/SetupPages/SetupStyles'
+import { ThemeProvider } from '@emotion/react';
+import lightTheme from '../../utils/lightTheme';
 
 const Gender = ({ selectedGender, setSelectedGender, handleNextPage }) => {
 
@@ -38,13 +40,14 @@ const Gender = ({ selectedGender, setSelectedGender, handleNextPage }) => {
   }
     
   return (
+    <ThemeProvider theme={lightTheme}>
     <Box>
       {/* #1 Container for text */}
       <Box style={{ padding:'0 10vw' }}>
         <Typography variant="h5" align="center" mb={2} fontWeight="bold" style={{ marginBottom: '5px' }}>
           Choose your gender
         </Typography>
-        <Typography variant="body2" align="center" mb={2} style={{margin: '0 auto 16px', maxWidth: '250px'}}>
+        <Typography color="lightText.main" variant="body2" align="center" mb={2} style={{margin: '0 auto 16px', maxWidth: '250px'}}>
           Tell us more about you so we can tailor the experience to suit your needs.
         </Typography>
       </Box>
@@ -75,6 +78,7 @@ const Gender = ({ selectedGender, setSelectedGender, handleNextPage }) => {
         </Button>
       </Box>
     </Box>
+    </ThemeProvider>
   );
 };
 
