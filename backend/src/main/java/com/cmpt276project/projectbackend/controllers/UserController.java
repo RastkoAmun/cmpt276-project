@@ -78,10 +78,11 @@ public class UserController {
       return null;
     }
 
-    User newUser = new User();
-    newUser.setUsername(request.username());
-    newUser.setEmail(request.email());
-    newUser.setPassword(request.password());
+    User newUser = new User.UserBuilder()
+      .setUsername(request.username())
+      .setEmail(request.email())
+      .setPassword(request.password())
+      .build();
 
     userRepo.save(newUser);
     res.setStatus(201);

@@ -15,15 +15,17 @@ public class User {
   private String username;
   private String password;
   private String email;
+  private Boolean isAdmin;
 
   public User() {
 
   }
 
-  public User(String username, String email, String password) {
+  public User(String username, String email, String password, Boolean isAdmin) {
     this.username = username;
     this.email = email;
     this.password = password;
+    this.isAdmin = isAdmin;
   }
 
   public int getUid() {
@@ -42,6 +44,10 @@ public class User {
     return password;
   }
 
+  public Boolean getIsAdmin() {
+    return isAdmin;
+  }
+
   public void setUsername(String username) {
     this.username = username;
   }
@@ -52,5 +58,41 @@ public class User {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public void setisAdmin(Boolean isAdmin) {
+    this.isAdmin = isAdmin;
+  }
+
+  public static class UserBuilder {
+    private String username = "";
+    private String password = "";
+    private String email = "";
+    private boolean isAdmin = false;
+
+    public UserBuilder setUsername(String username) {
+      this.username = username;
+      return this;
+    }
+
+    public UserBuilder setPassword(String password) {
+      this.password = password;
+      return this;
+    }
+
+    public UserBuilder setEmail(String email) {
+      this.email = email;
+      return this;
+    }
+
+    UserBuilder setIsAdmin(boolean isAdmin) {
+      this.isAdmin = isAdmin;
+      return this;
+    }
+
+    public User build() {
+      System.out.println(this.isAdmin);
+      return new User(username, email, password, isAdmin);
+    }
   }
 }
