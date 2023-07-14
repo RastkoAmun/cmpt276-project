@@ -60,7 +60,7 @@ public class User {
     this.password = password;
   }
 
-  public void setisAdmin(Boolean isAdmin) {
+  public void setIsAdmin(Boolean isAdmin) {
     this.isAdmin = isAdmin;
   }
 
