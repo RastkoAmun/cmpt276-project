@@ -23,19 +23,6 @@ public class UserController {
   record UserRequest(String username, String password, String email) {
   }
 
-  record AdminRequest(String username, String adminKey) {
-  }
-
-  @DeleteMapping
-  public void delete(@RequestBody AdminRequest request) {
-    User user = userRepo.findByUsername(request.username());
-
-    String admin = request.adminKey();
-    if (admin.equals("admin123")) {
-      userRepo.delete(user);
-    }
-  }
-
   @GetMapping("/login")
   public User getLogin(HttpServletRequest req, HttpSession session) {
     User user = (User) session.getAttribute("session_user");
