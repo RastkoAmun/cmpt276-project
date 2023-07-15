@@ -44,7 +44,7 @@ const SidebarDisplay = () => {
         credentials: "include"
       })
       setGlobalUser(null);
-      navigate('/');
+      navigate('/login');
     } catch (e) {
       console.log(e)
     }

@@ -19,11 +19,28 @@ import { drawerWidth } from '../utils/constants'
 import { UserContext } from '../index'
 import { ThemeProvider } from '@emotion/react';
 import lightTheme from '../utils/lightTheme';
+import {useNavigate} from 'react-router-dom';
+
 
 const Sidebar = (props) => {
+  const navigate = useNavigate();
+  const { globalUser, setGlobalUser } = useContext(UserContext);
+
+  const logout = async () => {
+    try {
+      await fetch('http://localhost:8080/user/logout', {
+        method: "GET",
+        credentials: "include"
+      })
+      setGlobalUser(null);
+      navigate('/login');
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { globalUser } = useContext(UserContext);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -123,7 +140,7 @@ const Sidebar = (props) => {
             <MenuItem component={Link} to='/settings/profile' onClick={handleMenuClose}>Edit Profile</MenuItem>
             <MenuItem component={Link} to='/settings' onClick={handleMenuClose}>Settings</MenuItem>
             <MenuItem component={Link} to='' onClick={handleMenuClose}>Help</MenuItem>
-            <MenuItem onClick={handleMenuClose}>Log out</MenuItem>
+            <MenuItem onClick={logout}>Log out</MenuItem>
 
           </Menu>
           
