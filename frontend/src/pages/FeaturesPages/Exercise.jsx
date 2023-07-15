@@ -9,8 +9,10 @@ import {
   TextField,
   Button,
   Box,
-  Container
+  Container,
+  IconButton
 } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { UserContext } from '../../index';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -75,10 +77,12 @@ const Exercise = () => {
   };
 
   const getCompletedExercises = () => {
-    axios.get(`http://localhost:8080/exercise/${globalUser.uid}/${formattedDate}`)
+    axios.get(`http://localhost:8080/data/exercise/${globalUser.uid}/${formattedDate}`)
       .then((response) => {
         const data = response.data;
+        console.log(data);
         const completedExercises = data.map((exercise) => ({
+          id: exercise.exerciseId,
           name: exercise.exerciseName,
           duration: exercise.duration,
         }));
@@ -111,7 +115,7 @@ const Exercise = () => {
     };
 
     axios
-      .post('http://localhost:8080/exercise/add', exercise)
+      .post('http://localhost:8080/data/exercise/add', exercise)
       .then(() => {
         getCompletedExercises();
         setSelectedExercise('');
@@ -172,6 +176,11 @@ const Exercise = () => {
     }
   };
 
+  const handleDeleteExercise = async (id) => {
+    await axios.delete(`http://localhost:8080/data/exercise/${id}`)
+    getCompletedExercises();
+  }
+
   return (
     <Container>
       <Typography variant='h2'>
@@ -231,9 +240,13 @@ const Exercise = () => {
           :
           (
             <ul style={{ paddingInlineStart: '20px' }}>
-              {completedExercises.map((exercise, index) => (
-                <li key={index} style={{ padding: '3px 0' }}>
+              {completedExercises.map((exercise) => (
+                <li key={exercise.id} style={{ padding: '3px 0' }}>
                   <strong>{exercise.name}</strong> - Duration: {exercise.duration} minutes
+                  <IconButton aria-label="delete" sx={{ p: 0 , ml: 1}}
+                    onClick={() => handleDeleteExercise(exercise.id)}>
+                    <DeleteIcon />
+                  </IconButton>
                 </li>
               ))}
             </ul>

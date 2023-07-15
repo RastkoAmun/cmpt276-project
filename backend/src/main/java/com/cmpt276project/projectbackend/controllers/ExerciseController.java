@@ -14,7 +14,7 @@ import com.cmpt276project.projectbackend.models.ExerciseRepository;
 
 @CrossOrigin(origins = { "http://localhost:3000" }, allowedHeaders = "*", allowCredentials = "true")
 @RestController
-@RequestMapping("/exercise")
+@RequestMapping("data/exercise")
 public class ExerciseController {
     
     private final ExerciseRepository exerRepository;
@@ -43,13 +43,16 @@ public class ExerciseController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-    
-
 
     @GetMapping("/{userId}/{date}")
     public ResponseEntity<List<Exercise>> getCompletedExercises(@PathVariable("userId") int userId, @PathVariable("date") String date) {
         LocalDate exer_date = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);    
         List<Exercise> completedActivities = exerRepository.findByUidAndExerDate(userId, exer_date);
         return ResponseEntity.ok(completedActivities);
-}
+    }
+
+    @DeleteMapping("/{userId}")
+    public void deleteStudent(@PathVariable("userId") Long userId){
+      exerRepository.deleteById(userId);
+    }
 }
