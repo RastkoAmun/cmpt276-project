@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import UserRowView from '../../components/custom/AdminUserView';
 import axios from 'axios';
 import { TableContainer, Table, TableHead, TableBody, Paper, TableRow, TableCell } from '@mui/material';
-import Snackbar from '@mui/material/Snackbar';
+import { Snackbar, Box, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { titleContainerStyle } from '../Style';
 
 const Admin = () => {
   const [users, setUsers] = useState([]);
@@ -51,6 +52,16 @@ const Admin = () => {
 
   return (
     <>
+      <Box display="flex" sx={titleContainerStyle} paddingBottom="30px">
+        <Box display="flex" flexDirection="column">
+          <Typography variant="fh2">
+            Admin
+          </Typography>
+          <Typography variant="fh1">
+            Admin Tools
+          </Typography>
+        </Box>
+      </Box>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>

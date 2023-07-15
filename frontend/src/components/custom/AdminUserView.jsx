@@ -16,6 +16,7 @@ const UserRowView = ({ user, incrementRefresh, handleClick }) => {
     })
 
     incrementRefresh();
+    handleClick();
   }
 
   const giveAdminUserRole = async () => {
