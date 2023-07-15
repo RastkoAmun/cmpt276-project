@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useCallback } from 'react';
 import {
   Typography,
   Select,
@@ -10,8 +10,7 @@ import {
   Button,
   Box,
   Container
-}
-  from '@mui/material';
+} from '@mui/material';
 import { UserContext } from '../../index';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -33,11 +32,20 @@ const Exercise = () => {
   const localDate = new Date(currentDate.getTime() - offset);
   const formattedDate = localDate.toISOString().split('T')[0]
 
+  //Handler Functions
+  const handleSelectedExercise = useCallback((event) => {
+    setSelectedExercise(event.target.value)
+  }, [])
+
+  const handleDuration = useCallback((event) => {
+    setDuration(parseInt(event.target.value))
+  }, [])
+
   useEffect(() => {
     if (globalUser) {
       getExercises();
-      fetchCompletedExercises();
-      fetchExerciseSummary();
+      getCompletedExercises();
+      getExerciseSummary();
     } else {
       navigate('/login');
     }
@@ -66,7 +74,7 @@ const Exercise = () => {
     setExercises(allExercises);
   };
 
-  const fetchCompletedExercises = () => {
+  const getCompletedExercises = () => {
     axios.get(`http://localhost:8080/exercise/${globalUser.uid}/${formattedDate}`)
       .then((response) => {
         const data = response.data;
@@ -78,15 +86,19 @@ const Exercise = () => {
       })
   };
 
-  const fetchExerciseSummary = () => {
-    axios.get(`http://localhost:8080/exercisesummary/${globalUser.uid}/${formattedDate}`)
+  const getExerciseSummary = async () => {
+    let data;
+    await axios
+      .get(`http://localhost:8080/exercisesummary/${globalUser.uid}/${formattedDate}`)
       .then((response) => {
-        const data = response.data;
+        data = response.data;
         if (data) {
           setTotalDuration(data.totalDuration);
           setTotalCaloriesBurned(data.totalCalBurned);
         }
       })
+    console.log(data)
+    return data;
   };
 
   const addExercise = (caloriesBurned) => {
@@ -98,99 +110,63 @@ const Exercise = () => {
       exerDate: formattedDate,
     };
 
-    fetch('http://localhost:8080/exercise/add', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(exercise),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-      })
-      .catch((error) => console.error('Error adding exercise:', error))
-      .finally(() => {
+    axios
+      .post('http://localhost:8080/exercise/add', exercise)
+      .then(() => {
+        getCompletedExercises();
         setSelectedExercise('');
         setDuration(0);
-      });
-  };
-
-  const calculateCaloriesBurned = () => {
-    const query = selectedExercise;
-
-    return fetch('https://trackapi.nutritionix.com/v2/natural/exercise', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-app-id': '2e084447',
-        'x-app-key': '8007a08963e9035d0b49795c17219796',
-      },
-      body: JSON.stringify({
-        query: query,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        const exercises = data.exercises || [];
-        if (exercises.length > 0) {
-          const exercise = exercises[0];
-          const cal = (exercise.nf_calories / exercise.duration_min) || 0;
-          const caloriesBurned = parseFloat((cal * duration).toFixed(2));
-
-          const completedExercise = {
-            name: selectedExercise,
-            duration,
-            caloriesBurned,
-          };
-          setCompletedExercises((prevExercises) => [...prevExercises, completedExercise]);
-          return caloriesBurned;
-        }
-        return 0;
       })
-      .catch((error) => {
-        console.error('Error calculating calories burned:', error);
-        return 0;
-      });
   };
 
-  const addExerciseSummary = (totalCaloriesBurned, td) => {
-    console.log("aaaaa" + formattedDate.toString())
+  const calculateCaloriesBurned = async () => {
+    const query = selectedExercise;
+    const response = await axios
+      .post('https://trackapi.nutritionix.com/v2/natural/exercise', {
+        query: query
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'x-app-id': '2e084447',
+          'x-app-key': '8007a08963e9035d0b49795c17219796',
+        }
+      });
+
+    const data = response.data;
+    const exercise = data.exercises[0] || [];
+
+    if (exercises.length > 0) {
+      const cal = (exercise.nf_calories / exercise.duration_min) || 0;
+      const caloriesBurned = parseFloat((cal * duration).toFixed(2));
+      return caloriesBurned;
+    } else return 0;
+  };
+
+  const addExerciseSummary = async (totalCaloriesBurned, totalDuration) => {
     const exerciseSummary = {
       uid: globalUser.uid,
-      totalDuration: td,
+      totalDuration: totalDuration,
       totalCalBurned: totalCaloriesBurned,
       exerSumDate: formattedDate,
     };
 
-    fetch('http://localhost:8080/exercisesummary/add', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(exerciseSummary),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-      })
-      .catch((error) => console.error('Error adding exercise summary:', error));
+    axios.post('http://localhost:8080/exercisesummary/add', exerciseSummary);
   };
 
-  const handleAddExercise = () => {
+  const handleAddExercise = async (event) => {
+    event.preventDefault();
     if (globalUser) {
       if (!selectedExercise) {
         setError('Please select an exercise');
         return;
       }
 
-      calculateCaloriesBurned()
-        .then((caloriesBurned) => {
-          addExercise(caloriesBurned);
-          setTotalDuration(totalDuration + duration);
-          setTotalCaloriesBurned(totalCaloriesBurned + caloriesBurned);
-          addExerciseSummary(totalCaloriesBurned + caloriesBurned, totalDuration + duration);
-          setError('');
-        })
-        .catch((error) => console.error('Error adding exercise:', error));
+      const caloriesBurned = await calculateCaloriesBurned();
+      addExercise(caloriesBurned);
+      setTotalDuration(totalDuration + duration);
+      setTotalCaloriesBurned(totalCaloriesBurned + caloriesBurned);
+      addExerciseSummary(totalCaloriesBurned + caloriesBurned, totalDuration + duration);
+      setError('');
     } else {
       navigate('/login');
     }
@@ -207,7 +183,7 @@ const Exercise = () => {
             <InputLabel id="exercise-select">Exercise</InputLabel>
             <Select id="exercise-select"
               value={selectedExercise}
-              onChange={(e) => setSelectedExercise(e.target.value)}
+              onChange={handleSelectedExercise}
               label="Exercise"
             >
               {exercises.map((exercise, index) => (
@@ -222,7 +198,7 @@ const Exercise = () => {
           type="number"
           label="Duration (minutes)"
           value={duration.toString()}
-          onChange={(e) => setDuration(parseInt(e.target.value))}
+          onChange={handleDuration}
           inputProps={{ min: 1 }}
           size='small'
           sx={{ mx: 1.5 }}
@@ -230,10 +206,7 @@ const Exercise = () => {
         <Button
           variant="contained"
           color="primary"
-          onClick={(e) => {
-            e.preventDefault();
-            handleAddExercise();
-          }}
+          onClick={handleAddExercise}
           sx={{ boxShadow: 'none' }}>
           Add Exercise
         </Button>
