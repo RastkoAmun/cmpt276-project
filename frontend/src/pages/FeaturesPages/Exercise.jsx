@@ -1,19 +1,20 @@
 import React from 'react';
 import { useState, useEffect, useContext } from 'react';
-import { 
-  Typography, 
-  Select, 
-  MenuItem, 
-  InputLabel, 
-  FormControl, 
-  TextField, 
-  Button, 
-  Box, 
-  Container } 
-from '@mui/material';
+import {
+  Typography,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  TextField,
+  Button,
+  Box,
+  Container
+}
+  from '@mui/material';
 import { UserContext } from '../../index';
 import { useNavigate } from 'react-router-dom';
-import { useTheme } from '@mui/material/styles';
+import axios from 'axios';
 
 const Exercise = () => {
   const [exercises, setExercises] = useState([]);
@@ -24,8 +25,6 @@ const Exercise = () => {
   const [totalCaloriesBurned, setTotalCaloriesBurned] = useState(0);
   const [error, setError] = useState('');
 
-
-  const theme = useTheme();
   const { globalUser } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -36,61 +35,58 @@ const Exercise = () => {
 
   useEffect(() => {
     if (globalUser) {
-      fetchExercises();
+      getExercises();
       fetchCompletedExercises();
       fetchExerciseSummary();
     } else {
       navigate('/login');
     }
-  }, [globalUser]);
+  }, [globalUser, navigate]);
 
-  const fetchExercises = () => {
-    const cardioPromise = fetch('https://api.api-ninjas.com/v1/exercises?type=cardio', {
-      headers: {
-        'X-Api-Key': 'NJCiel+y0Q1KlvCfrUBqag==tJ3D15BZQ8t0HoI4',
-      },
-    }).then((response) => response.json());
-
-    const strengthPromise = fetch('https://api.api-ninjas.com/v1/exercises?type=strength', {
-      headers: {
-        'X-Api-Key': 'NJCiel+y0Q1KlvCfrUBqag==tJ3D15BZQ8t0HoI4',
-      },
-    }).then((response) => response.json());
-
-    Promise.all([cardioPromise, strengthPromise])
-      .then(([cardioData, strengthData]) => {
-        const cardioExercises = cardioData.map((exercise) => exercise.name);
-        const strengthExercises = strengthData.map((exercise) => exercise.name);
-        const exercisesSet = new Set([...cardioExercises, ...strengthExercises]);
-        const exercises = Array.from(exercisesSet);
-        setExercises(exercises);
+  const getExercises = async () => {
+    const cardioData = await axios
+      .get('https://api.api-ninjas.com/v1/exercises?type=cardio', {
+        headers: {
+          'X-Api-Key': 'NJCiel+y0Q1KlvCfrUBqag==tJ3D15BZQ8t0HoI4'
+        }
       })
-      .catch((error) => console.error('Error fetching exercises:', error));
+      .then((response) => response.data);
+
+    const strengthData = await axios
+      .get('https://api.api-ninjas.com/v1/exercises?type=strength', {
+        headers: {
+          'X-Api-Key': 'NJCiel+y0Q1KlvCfrUBqag==tJ3D15BZQ8t0HoI4'
+        }
+      })
+      .then((response) => response.data);
+
+    const cardioExercises = cardioData.map((exercise) => exercise.name);
+    const strengthExercises = strengthData.map((exercise) => exercise.name);
+    const allExercises = [...cardioExercises, ...strengthExercises]
+    setExercises(allExercises);
   };
 
   const fetchCompletedExercises = () => {
-    fetch(`http://localhost:8080/exercise/${globalUser.uid}/${formattedDate}`)
-      .then((response) => response.json())
-      .then((data) => {
+    axios.get(`http://localhost:8080/exercise/${globalUser.uid}/${formattedDate}`)
+      .then((response) => {
+        const data = response.data;
         const completedExercises = data.map((exercise) => ({
           name: exercise.exerciseName,
           duration: exercise.duration,
         }));
         setCompletedExercises(completedExercises);
       })
-      .catch((error) => console.error('Error fetching completed exercises:', error));
   };
 
   const fetchExerciseSummary = () => {
-    fetch(`http://localhost:8080/exercisesummary/${globalUser.uid}/${formattedDate}`)
-      .then((response) => response.json())
-      .then((data) => {
+    axios.get(`http://localhost:8080/exercisesummary/${globalUser.uid}/${formattedDate}`)
+      .then((response) => {
+        const data = response.data;
         if (data) {
           setTotalDuration(data.totalDuration);
           setTotalCaloriesBurned(data.totalCalBurned);
         }
       })
-      .catch((error) => console.error('Error fetching exercise summary:', error));
   };
 
   const addExercise = (caloriesBurned) => {
@@ -255,19 +251,19 @@ const Exercise = () => {
         {completedExercises.length === 0
           ?
           (
-          <Typography variant='body1'>
-            No exercises completed yet.
-          </Typography>
+            <Typography variant='body1'>
+              No exercises completed yet.
+            </Typography>
           )
           :
           (
-          <ul style={{ paddingInlineStart: '20px' }}>
-            {completedExercises.map((exercise, index) => (
-              <li key={index} style={{ padding: '3px 0' }}>
-                <strong>{exercise.name}</strong> - Duration: {exercise.duration} minutes
-              </li>
-            ))}
-          </ul>
+            <ul style={{ paddingInlineStart: '20px' }}>
+              {completedExercises.map((exercise, index) => (
+                <li key={index} style={{ padding: '3px 0' }}>
+                  <strong>{exercise.name}</strong> - Duration: {exercise.duration} minutes
+                </li>
+              ))}
+            </ul>
           )}
       </Box>
 
