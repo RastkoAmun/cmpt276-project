@@ -1,5 +1,16 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Typography, Select, MenuItem, InputLabel, FormControl, TextField, Button, Box} from '@mui/material';
+import React from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { 
+  Typography, 
+  Select, 
+  MenuItem, 
+  InputLabel, 
+  FormControl, 
+  TextField, 
+  Button, 
+  Box, 
+  Container } 
+from '@mui/material';
 import { UserContext } from '../../index';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
@@ -19,9 +30,9 @@ const Exercise = () => {
   const navigate = useNavigate();
 
   const currentDate = new Date();
-  const offset = currentDate.getTimezoneOffset() * 60000; 
+  const offset = currentDate.getTimezoneOffset() * 60000;
   const localDate = new Date(currentDate.getTime() - offset);
-  const formattedDate = localDate.toISOString().split('T')[0] 
+  const formattedDate = localDate.toISOString().split('T')[0]
 
   useEffect(() => {
     if (globalUser) {
@@ -36,13 +47,13 @@ const Exercise = () => {
   const fetchExercises = () => {
     const cardioPromise = fetch('https://api.api-ninjas.com/v1/exercises?type=cardio', {
       headers: {
-        'X-Api-Key': 'NJCiel+y0Q1KlvCfrUBqag==tJ3D15BZQ8t0HoI4', 
+        'X-Api-Key': 'NJCiel+y0Q1KlvCfrUBqag==tJ3D15BZQ8t0HoI4',
       },
     }).then((response) => response.json());
 
     const strengthPromise = fetch('https://api.api-ninjas.com/v1/exercises?type=strength', {
       headers: {
-        'X-Api-Key': 'NJCiel+y0Q1KlvCfrUBqag==tJ3D15BZQ8t0HoI4', 
+        'X-Api-Key': 'NJCiel+y0Q1KlvCfrUBqag==tJ3D15BZQ8t0HoI4',
       },
     }).then((response) => response.json());
 
@@ -131,7 +142,7 @@ const Exercise = () => {
           const caloriesBurned = parseFloat((cal * duration).toFixed(2));
 
           const completedExercise = {
-            name:selectedExercise,
+            name: selectedExercise,
             duration,
             caloriesBurned,
           };
@@ -147,7 +158,7 @@ const Exercise = () => {
   };
 
   const addExerciseSummary = (totalCaloriesBurned, td) => {
-    console.log("aaaaa"+formattedDate.toString())
+    console.log("aaaaa" + formattedDate.toString())
     const exerciseSummary = {
       uid: globalUser.uid,
       totalDuration: td,
@@ -174,7 +185,7 @@ const Exercise = () => {
         setError('Please select an exercise');
         return;
       }
-      
+
       calculateCaloriesBurned()
         .then((caloriesBurned) => {
           addExercise(caloriesBurned);
@@ -190,70 +201,86 @@ const Exercise = () => {
   };
 
   return (
-  <div>
-  <Typography variant='h2'>Exercise</Typography>
-  <Box mt={2} p={2}>
-  <form
-    onSubmit={(e) => {
-      e.preventDefault();
-      handleAddExercise();
-    }}
-  >
-    <Box display="flex" alignItems="center" mb={2}>
-      <FormControl style={{ minWidth: '200px', marginRight: '10px' }}>
-        <InputLabel>Select an exercise</InputLabel>
-        <Select
-          value={selectedExercise}
-          onChange={(e) => setSelectedExercise(e.target.value)}
-        >
-          {exercises.map((exercise, index) => (
-            <MenuItem key={index} value={exercise}>
-              {exercise}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <TextField
-              type="number"
-              label="Duration (minutes)"
-              value={duration.toString()}
-              onChange={(e) => setDuration(parseInt(e.target.value))}
-              inputProps={{ min: 1 }}
-              style={{ marginRight: '10px' }}
-            />
-      <Button type="submit" variant="contained" color="primary" style={{ marginLeft: '10px' }}>
-        Add Exercise
-      </Button>
-    </Box>
-    {error && (
-            <Typography variant='body1' color="error">
-              {error}
-            </Typography>
+    <Container>
+      <Typography variant='h2'>
+        Exercise
+      </Typography>
+      <Box display="flex" alignItems="center" mt={5}>
+        <Box width='200px'>
+          <FormControl fullWidth size='small'>
+            <InputLabel id="exercise-select">Exercise</InputLabel>
+            <Select id="exercise-select"
+              value={selectedExercise}
+              onChange={(e) => setSelectedExercise(e.target.value)}
+              label="Exercise"
+            >
+              {exercises.map((exercise, index) => (
+                <MenuItem key={index} value={exercise}>
+                  {exercise}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
+        <TextField
+          type="number"
+          label="Duration (minutes)"
+          value={duration.toString()}
+          onChange={(e) => setDuration(parseInt(e.target.value))}
+          inputProps={{ min: 1 }}
+          size='small'
+          sx={{ mx: 1.5 }}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={(e) => {
+            e.preventDefault();
+            handleAddExercise();
+          }}
+          sx={{ boxShadow: 'none' }}>
+          Add Exercise
+        </Button>
+      </Box>
+      {error && (
+        <Typography variant='subtitle2' color="error" ml={1}>
+          {error}
+        </Typography>
+      )}
+
+      <Box mt={4} pl={2}>
+        <Typography variant='h4'>
+          Completed Exercises
+        </Typography>
+        {completedExercises.length === 0
+          ?
+          (
+          <Typography variant='body1'>
+            No exercises completed yet.
+          </Typography>
+          )
+          :
+          (
+          <ul style={{ paddingInlineStart: '20px' }}>
+            {completedExercises.map((exercise, index) => (
+              <li key={index} style={{ padding: '3px 0' }}>
+                <strong>{exercise.name}</strong> - Duration: {exercise.duration} minutes
+              </li>
+            ))}
+          </ul>
           )}
-        </form>
       </Box>
 
-<Box mt={4} p={2} >
-  <Typography variant='h4'>Completed Exercises</Typography>
-  {completedExercises.length === 0 ? (
-    <Typography variant='body1'>No exercises completed yet.</Typography>
-  ) : (
-    <ul style={{ paddingInlineStart: '20px' }}>
-      {completedExercises.map((exercise, index) => (
-        <li key={index} style={{ padding: '3px 0' }}>
-        <strong>{exercise.name}</strong> - Duration: {exercise.duration} minutes
-        </li>
-      ))}
-    </ul>
-  )}
-</Box>
-
-<Box mt={4} p={2}>
-  <Typography variant='h4'>Summary</Typography>
-  <Typography variant='body1' style={{ padding: '3px 0' }}><strong>Total Duration:</strong> {totalDuration} minutes</Typography>
-  <Typography variant='body1' style={{ padding: '3px 0' }}><strong>Total Calories Burned:</strong> {totalCaloriesBurned.toFixed(2)}</Typography>
-</Box>
-    </div>
+      <Box mt={4} p={2}>
+        <Typography variant='h4'>Summary</Typography>
+        <Typography variant='body1' p={.5}>
+          <strong>Total Duration:</strong> {totalDuration} minutes
+        </Typography>
+        <Typography variant='body1' p={.5}>
+          <strong>Total Calories Burned:</strong> {totalCaloriesBurned.toFixed(2)}
+        </Typography>
+      </Box>
+    </Container>
   );
 };
 
