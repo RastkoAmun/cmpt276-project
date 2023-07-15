@@ -1,6 +1,4 @@
 package com.cmpt276project.projectbackend.models;
-
-import java.util.Date;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,8 +10,6 @@ public class Hydration {
     private Integer uid;
     private Integer goal;
     private Integer intake;
-
-    // @Column(name = "intake_date")
     private String intakeDate;
 
     public Hydration() {
