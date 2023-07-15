@@ -8,7 +8,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Comparable<User> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int uid;
@@ -28,7 +28,7 @@ public class User {
     this.isAdmin = isAdmin;
   }
 
-  public int getUid() {
+  public Integer getUid() {
     return uid;
   }
 
@@ -94,5 +94,10 @@ public class User {
       System.out.println(this.isAdmin);
       return new User(username, email, password, isAdmin);
     }
+  }
+
+  @Override
+  public int compareTo(User arg0) {
+    return this.getUid().compareTo(arg0.getUid());
   }
 }

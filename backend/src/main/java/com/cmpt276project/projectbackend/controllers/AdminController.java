@@ -1,6 +1,7 @@
 package com.cmpt276project.projectbackend.controllers;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import com.cmpt276project.projectbackend.models.UserRepository;
 
 import jakarta.servlet.http.HttpServletResponse;
 
-// @CrossOrigin(origins = { "http://localhost:3000" }, allowedHeaders = "*", allowCredentials = "true")
+@CrossOrigin(origins = { "http://localhost:3000" }, allowedHeaders = "*", allowCredentials = "true")
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
@@ -39,6 +40,8 @@ public class AdminController {
   public User userPermissions(@RequestBody AdminRequest request, HttpServletResponse res) throws IOException {
     User user = userRepo.findByUsername(request.username());
 
+    System.out.println(user);
+
     if (user == null) {
       res.sendError(400, "User not found");
       return null;
@@ -57,6 +60,8 @@ public class AdminController {
 
   @GetMapping("/view")
   public List<User> viewUsers() {
-    return userRepo.findAll();
+    List<User> userList = userRepo.findAll();
+    Collections.sort(userList);
+    return userList;
   }
 }
