@@ -67,7 +67,7 @@ const Admin = () => {
           </TableBody>
         </Table>
       </TableContainer >
-      <Snackbar open={open} autoHideDuration={6000} message="Success!" onClose={handleClose} action={action} />
+      <Snackbar open={open} autoHideDuration={6000} message="Action Successful!" onClose={handleClose} action={action} ContentProps={{ sx: { backgroundColor: 'green' } }} />
     </>
   )
 }
