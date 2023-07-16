@@ -80,7 +80,6 @@ const Exercise = () => {
     axios.get(`http://localhost:8080/data/exercise/${globalUser.uid}/${formattedDate}`)
       .then((response) => {
         const data = response.data;
-        console.log(data);
         const completedExercises = data.map((exercise) => ({
           id: exercise.exerciseId,
           name: exercise.exerciseName,
@@ -101,7 +100,6 @@ const Exercise = () => {
           setTotalCaloriesBurned(data.totalCalBurned);
         }
       })
-    console.log(data)
     return data;
   };
 
@@ -177,8 +175,24 @@ const Exercise = () => {
   };
 
   const handleDeleteExercise = async (id) => {
+    const exercise = (await axios.get(`http://localhost:8080/data/exercise/${id}`)).data;
     await axios.delete(`http://localhost:8080/data/exercise/${id}`)
+
+    let newTotalCaloriesBurned = totalCaloriesBurned - exercise.caloriesBurned;
+    let newTotalDuration = totalDuration - exercise.duration;
+    
+    const updateSummary = {
+      uid: globalUser.uid,
+      totalDuration: newTotalDuration,
+      totalCalBurned: newTotalCaloriesBurned,
+      exerSumDate: formattedDate,
+    };
+    await axios.put(`http://localhost:8080/exercisesummary/${globalUser.uid}/${formattedDate}`, updateSummary);
+
+    setTotalCaloriesBurned(newTotalCaloriesBurned);
+    setTotalDuration(newTotalDuration);
     getCompletedExercises();
+    // getExerciseSummary();
   }
 
   return (
@@ -243,7 +257,7 @@ const Exercise = () => {
               {completedExercises.map((exercise) => (
                 <li key={exercise.id} style={{ padding: '3px 0' }}>
                   <strong>{exercise.name}</strong> - Duration: {exercise.duration} minutes
-                  <IconButton aria-label="delete" sx={{ p: 0 , ml: 1}}
+                  <IconButton aria-label="delete" sx={{ p: 0, ml: 1 }}
                     onClick={() => handleDeleteExercise(exercise.id)}>
                     <DeleteIcon />
                   </IconButton>

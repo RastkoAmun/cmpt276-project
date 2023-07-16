@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.cmpt276project.projectbackend.models.Exercise;
 import com.cmpt276project.projectbackend.models.ExerciseRepository;
+import com.cmpt276project.projectbackend.models.Hydration;
 
 @CrossOrigin(origins = { "http://localhost:3000" }, allowedHeaders = "*", allowCredentials = "true")
 @RestController
@@ -51,8 +53,14 @@ public class ExerciseController {
         return ResponseEntity.ok(completedActivities);
     }
 
+    @GetMapping("/{id}")
+    public Exercise getHydrations(@PathVariable Integer id) {
+        Optional<Exercise> exerciseOptional = exerRepository.findById(id);
+        return exerciseOptional.orElse(null);
+    }
+
     @DeleteMapping("/{userId}")
-    public void deleteStudent(@PathVariable("userId") Long userId){
+    public void deleteStudent(@PathVariable("userId") Integer userId){
       exerRepository.deleteById(userId);
     }
 }

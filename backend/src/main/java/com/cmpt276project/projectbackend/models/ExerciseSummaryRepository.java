@@ -6,9 +6,6 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ExerciseSummaryRepository extends JpaRepository<ExerciseSummary, Long> {
-
     Optional<ExerciseSummary> findByUidAndExerSumDate(Integer uid, LocalDate exerSumDate);
-
-    
-    
+    ExerciseSummary findById(long id);
 }
