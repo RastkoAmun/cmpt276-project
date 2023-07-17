@@ -1,9 +1,12 @@
 package com.cmpt276project.projectbackend.models;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,6 +20,10 @@ public class User implements Comparable<User> {
   private String email;
   private Boolean isAdmin;
 
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "up_id")
+  private UserProfile userProfile;
+
   public User() {
 
   }
@@ -26,6 +33,11 @@ public class User implements Comparable<User> {
     this.email = email;
     this.password = password;
     this.isAdmin = isAdmin;
+    this.userProfile = new UserProfile();
+  }
+
+  public UserProfile getUserProfile() {
+    return userProfile;
   }
 
   public Integer getUid() {
