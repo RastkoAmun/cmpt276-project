@@ -78,7 +78,7 @@ const SignUp = () => {
           setRegistrationError(resJson.message);
           console.log('error');
         } else {
-          navigate('/login')
+          navigate('/success')
         }
       } catch (error) {
         console.log(error)

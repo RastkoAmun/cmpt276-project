@@ -21,7 +21,13 @@ import SettingsSleep from './pages/SettingsPages/SettingsSleep';
 import MainPage from './pages/MainPage';
 import Login from './pages/LoginPages/Login';
 import Setup from './pages/SetupPages/Setup';
+import Success from './pages/LoginPages/Success';
 import SignUp from './pages/LoginPages/SignUp';
+import PasswordChanged from './pages/LoginPages/PasswordChanged';
+import ResetLink from './pages/LoginPages/ResetLink';
+
+import ChangePassword from './pages/LoginPages/ChangePassword';
+import ForgetPassword from './pages/LoginPages/ForgetPassword';
 import { ThemeProvider } from '@mui/material';
 import theme from '../src/utils/lightTheme'
 
@@ -104,6 +110,25 @@ const CustomRouterProvider = () => {
     {
       path: 'signup',
       element: <SignUp />
+    },    
+    {
+      path: 'forgetpassword',
+      element: <ForgetPassword />
+    },
+    {
+      path: 'passwordchanged',
+      element: <PasswordChanged />
+    },
+    {
+      path: 'changepassword',
+      element: <ChangePassword />
+    },    {
+      path: 'resetlink',
+      element: <ResetLink />
+    },
+    {
+      path: 'success',
+      element: <Success />
     }
   ])
 
