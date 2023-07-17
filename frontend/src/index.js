@@ -22,6 +22,7 @@ import MainPage from './pages/MainPage';
 import Login from './pages/LoginPages/Login';
 import Setup from './pages/SetupPages/Setup';
 import SignUp from './pages/LoginPages/SignUp';
+import Admin from './pages/FeaturesPages/Admin';
 import { ThemeProvider } from '@mui/material';
 import theme from '../src/utils/lightTheme'
 
@@ -60,6 +61,10 @@ const CustomRouterProvider = () => {
           element: <Weight />
         },
         {
+          path: 'admin',
+          element: <Admin />
+        },
+        {
           path: 'settings',
           element: <SettingsMain />,
           children: [
@@ -89,7 +94,7 @@ const CustomRouterProvider = () => {
             },
           ]
         },
-        
+
       ]
     },
 
