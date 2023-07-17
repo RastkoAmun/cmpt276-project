@@ -70,7 +70,7 @@ const Hydration = () => {
     } else {
       navigate("/login");
     }
-  }, [globalUser, navigate, intakeDate]);
+  }, [globalUser, navigate, intakeDate, firstTimeSetup]);
 
   const submitGoal = async () => {
     if (goal > 20 || goal < 6) {
@@ -94,6 +94,7 @@ const Hydration = () => {
         if (firstTimeSetup === true) {
           axios
             .post('http://localhost:8080/data/hydration', userData)
+          setFirstTimeSetup(false);
         }
         else {
           axios
@@ -118,7 +119,7 @@ const Hydration = () => {
           "uid": globalUser.uid,
           "goal": goal,
           "intake": currentIntake,
-          "intakeDate": intakeDate
+          "intakeDate": getDate()
         }
         axios.put(`http://localhost:8080/data/hydration/${globalUser.uid}/${getDate()}`, 
           userData)

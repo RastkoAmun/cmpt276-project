@@ -1,8 +1,21 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Typography, Select, MenuItem, InputLabel, FormControl, TextField, Button, Box} from '@mui/material';
+import React from 'react';
+import { useState, useEffect, useContext, useCallback } from 'react';
+import {
+  Typography,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  TextField,
+  Button,
+  Box,
+  Container,
+  IconButton
+} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { UserContext } from '../../index';
 import { useNavigate } from 'react-router-dom';
-import { useTheme } from '@mui/material/styles';
+import axios from 'axios';
 
 const Exercise = () => {
   const [exercises, setExercises] = useState([]);
@@ -13,73 +26,81 @@ const Exercise = () => {
   const [totalCaloriesBurned, setTotalCaloriesBurned] = useState(0);
   const [error, setError] = useState('');
 
-
-  const theme = useTheme();
   const { globalUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   const currentDate = new Date();
-  const offset = currentDate.getTimezoneOffset() * 60000; 
+  const offset = currentDate.getTimezoneOffset() * 60000;
   const localDate = new Date(currentDate.getTime() - offset);
-  const formattedDate = localDate.toISOString().split('T')[0] 
+  const formattedDate = localDate.toISOString().split('T')[0]
+
+  //Handler Functions
+  const handleSelectedExercise = useCallback((event) => {
+    setSelectedExercise(event.target.value)
+  }, [])
+
+  const handleDuration = useCallback((event) => {
+    setDuration(parseInt(event.target.value))
+  }, [])
 
   useEffect(() => {
     if (globalUser) {
-      fetchExercises();
-      fetchCompletedExercises();
-      fetchExerciseSummary();
+      getExercises();
+      getCompletedExercises();
+      getExerciseSummary();
     } else {
       navigate('/login');
     }
-  }, [globalUser]);
+  }, [globalUser, navigate]);
 
-  const fetchExercises = () => {
-    const cardioPromise = fetch('https://api.api-ninjas.com/v1/exercises?type=cardio', {
-      headers: {
-        'X-Api-Key': 'NJCiel+y0Q1KlvCfrUBqag==tJ3D15BZQ8t0HoI4', 
-      },
-    }).then((response) => response.json());
-
-    const strengthPromise = fetch('https://api.api-ninjas.com/v1/exercises?type=strength', {
-      headers: {
-        'X-Api-Key': 'NJCiel+y0Q1KlvCfrUBqag==tJ3D15BZQ8t0HoI4', 
-      },
-    }).then((response) => response.json());
-
-    Promise.all([cardioPromise, strengthPromise])
-      .then(([cardioData, strengthData]) => {
-        const cardioExercises = cardioData.map((exercise) => exercise.name);
-        const strengthExercises = strengthData.map((exercise) => exercise.name);
-        const exercisesSet = new Set([...cardioExercises, ...strengthExercises]);
-        const exercises = Array.from(exercisesSet);
-        setExercises(exercises);
+  const getExercises = async () => {
+    const cardioData = await axios
+      .get('https://api.api-ninjas.com/v1/exercises?type=cardio', {
+        headers: {
+          'X-Api-Key': 'NJCiel+y0Q1KlvCfrUBqag==tJ3D15BZQ8t0HoI4'
+        }
       })
-      .catch((error) => console.error('Error fetching exercises:', error));
+      .then((response) => response.data);
+
+    const strengthData = await axios
+      .get('https://api.api-ninjas.com/v1/exercises?type=strength', {
+        headers: {
+          'X-Api-Key': 'NJCiel+y0Q1KlvCfrUBqag==tJ3D15BZQ8t0HoI4'
+        }
+      })
+      .then((response) => response.data);
+
+    const cardioExercises = cardioData.map((exercise) => exercise.name);
+    const strengthExercises = strengthData.map((exercise) => exercise.name);
+    const allExercises = [...cardioExercises, ...strengthExercises]
+    setExercises(allExercises);
   };
 
-  const fetchCompletedExercises = () => {
-    fetch(`http://localhost:8080/exercise/${globalUser.uid}/${formattedDate}`)
-      .then((response) => response.json())
-      .then((data) => {
+  const getCompletedExercises = () => {
+    axios.get(`http://localhost:8080/data/exercise/${globalUser.uid}/${formattedDate}`)
+      .then((response) => {
+        const data = response.data;
         const completedExercises = data.map((exercise) => ({
+          id: exercise.exerciseId,
           name: exercise.exerciseName,
           duration: exercise.duration,
         }));
         setCompletedExercises(completedExercises);
       })
-      .catch((error) => console.error('Error fetching completed exercises:', error));
   };
 
-  const fetchExerciseSummary = () => {
-    fetch(`http://localhost:8080/exercisesummary/${globalUser.uid}/${formattedDate}`)
-      .then((response) => response.json())
-      .then((data) => {
+  const getExerciseSummary = async () => {
+    let data;
+    await axios
+      .get(`http://localhost:8080/exercisesummary/${globalUser.uid}/${formattedDate}`)
+      .then((response) => {
+        data = response.data;
         if (data) {
           setTotalDuration(data.totalDuration);
           setTotalCaloriesBurned(data.totalCalBurned);
         }
       })
-      .catch((error) => console.error('Error fetching exercise summary:', error));
+    return data;
   };
 
   const addExercise = (caloriesBurned) => {
@@ -91,169 +112,171 @@ const Exercise = () => {
       exerDate: formattedDate,
     };
 
-    fetch('http://localhost:8080/exercise/add', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(exercise),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-      })
-      .catch((error) => console.error('Error adding exercise:', error))
-      .finally(() => {
+    axios
+      .post('http://localhost:8080/data/exercise/add', exercise)
+      .then(() => {
+        getCompletedExercises();
         setSelectedExercise('');
         setDuration(0);
-      });
-  };
-
-  const calculateCaloriesBurned = () => {
-    const query = selectedExercise;
-
-    return fetch('https://trackapi.nutritionix.com/v2/natural/exercise', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-app-id': '2e084447',
-        'x-app-key': '8007a08963e9035d0b49795c17219796',
-      },
-      body: JSON.stringify({
-        query: query,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        const exercises = data.exercises || [];
-        if (exercises.length > 0) {
-          const exercise = exercises[0];
-          const cal = (exercise.nf_calories / exercise.duration_min) || 0;
-          const caloriesBurned = parseFloat((cal * duration).toFixed(2));
-
-          const completedExercise = {
-            name:selectedExercise,
-            duration,
-            caloriesBurned,
-          };
-          setCompletedExercises((prevExercises) => [...prevExercises, completedExercise]);
-          return caloriesBurned;
-        }
-        return 0;
       })
-      .catch((error) => {
-        console.error('Error calculating calories burned:', error);
-        return 0;
-      });
   };
 
-  const addExerciseSummary = (totalCaloriesBurned, td) => {
-    console.log("aaaaa"+formattedDate.toString())
+  const calculateCaloriesBurned = async () => {
+    const query = selectedExercise;
+    const response = await axios
+      .post('https://trackapi.nutritionix.com/v2/natural/exercise', {
+        query: query
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'x-app-id': '2e084447',
+          'x-app-key': '8007a08963e9035d0b49795c17219796',
+        }
+      });
+
+    const data = response.data;
+    const exercise = data.exercises[0] || [];
+
+    if (exercises.length > 0) {
+      const cal = (exercise.nf_calories / exercise.duration_min) || 0;
+      const caloriesBurned = parseFloat((cal * duration).toFixed(2));
+      return caloriesBurned;
+    } else return 0;
+  };
+
+  const addExerciseSummary = async (totalCaloriesBurned, totalDuration) => {
     const exerciseSummary = {
       uid: globalUser.uid,
-      totalDuration: td,
+      totalDuration: totalDuration,
       totalCalBurned: totalCaloriesBurned,
       exerSumDate: formattedDate,
     };
 
-    fetch('http://localhost:8080/exercisesummary/add', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(exerciseSummary),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-      })
-      .catch((error) => console.error('Error adding exercise summary:', error));
+    axios.post('http://localhost:8080/exercisesummary/add', exerciseSummary);
   };
 
-  const handleAddExercise = () => {
+  const handleAddExercise = async (event) => {
+    event.preventDefault();
     if (globalUser) {
       if (!selectedExercise) {
         setError('Please select an exercise');
         return;
       }
-      
-      calculateCaloriesBurned()
-        .then((caloriesBurned) => {
-          addExercise(caloriesBurned);
-          setTotalDuration(totalDuration + duration);
-          setTotalCaloriesBurned(totalCaloriesBurned + caloriesBurned);
-          addExerciseSummary(totalCaloriesBurned + caloriesBurned, totalDuration + duration);
-          setError('');
-        })
-        .catch((error) => console.error('Error adding exercise:', error));
+
+      const caloriesBurned = await calculateCaloriesBurned();
+      addExercise(caloriesBurned);
+      setTotalDuration(totalDuration + duration);
+      setTotalCaloriesBurned(totalCaloriesBurned + caloriesBurned);
+      addExerciseSummary(totalCaloriesBurned + caloriesBurned, totalDuration + duration);
+      setError('');
     } else {
       navigate('/login');
     }
   };
 
+  const handleDeleteExercise = async (id) => {
+    const exercise = (await axios.get(`http://localhost:8080/data/exercise/${id}`)).data;
+    await axios.delete(`http://localhost:8080/data/exercise/${id}`)
+
+    let newTotalCaloriesBurned = totalCaloriesBurned - exercise.caloriesBurned;
+    let newTotalDuration = totalDuration - exercise.duration;
+    
+    const updateSummary = {
+      uid: globalUser.uid,
+      totalDuration: newTotalDuration,
+      totalCalBurned: newTotalCaloriesBurned,
+      exerSumDate: formattedDate,
+    };
+    await axios.put(`http://localhost:8080/exercisesummary/${globalUser.uid}/${formattedDate}`, updateSummary);
+
+    setTotalCaloriesBurned(newTotalCaloriesBurned);
+    setTotalDuration(newTotalDuration);
+    getCompletedExercises();
+    // getExerciseSummary();
+  }
+
   return (
-  <div>
-  <Typography variant='h2'>Exercise</Typography>
-  <Box mt={2} p={2}>
-  <form
-    onSubmit={(e) => {
-      e.preventDefault();
-      handleAddExercise();
-    }}
-  >
-    <Box display="flex" alignItems="center" mb={2}>
-      <FormControl style={{ minWidth: '200px', marginRight: '10px' }}>
-        <InputLabel>Select an exercise</InputLabel>
-        <Select
-          value={selectedExercise}
-          onChange={(e) => setSelectedExercise(e.target.value)}
-        >
-          {exercises.map((exercise, index) => (
-            <MenuItem key={index} value={exercise}>
-              {exercise}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <TextField
-              type="number"
-              label="Duration (minutes)"
-              value={duration.toString()}
-              onChange={(e) => setDuration(parseInt(e.target.value))}
-              inputProps={{ min: 1 }}
-              style={{ marginRight: '10px' }}
-            />
-      <Button type="submit" variant="contained" color="primary" style={{ marginLeft: '10px' }}>
-        Add Exercise
-      </Button>
-    </Box>
-    {error && (
-            <Typography variant='body1' color="error">
-              {error}
+    <Container>
+      <Typography variant='h2'>
+        Exercise
+      </Typography>
+      <Box display="flex" alignItems="center" mt={5}>
+        <Box width='200px'>
+          <FormControl fullWidth size='small'>
+            <InputLabel id="exercise-select">Exercise</InputLabel>
+            <Select id="exercise-select"
+              value={selectedExercise}
+              onChange={handleSelectedExercise}
+              label="Exercise"
+            >
+              {exercises.map((exercise, index) => (
+                <MenuItem key={index} value={exercise}>
+                  {exercise}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
+        <TextField
+          type="number"
+          label="Duration (minutes)"
+          value={duration.toString()}
+          onChange={handleDuration}
+          inputProps={{ min: 1 }}
+          size='small'
+          sx={{ mx: 1.5 }}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleAddExercise}
+          sx={{ boxShadow: 'none' }}>
+          Add Exercise
+        </Button>
+      </Box>
+      {error && (
+        <Typography variant='subtitle2' color="error" ml={1}>
+          {error}
+        </Typography>
+      )}
+
+      <Box mt={4} pl={2}>
+        <Typography variant='h4'>
+          Completed Exercises
+        </Typography>
+        {completedExercises.length === 0
+          ?
+          (
+            <Typography variant='body1'>
+              No exercises completed yet.
             </Typography>
+          )
+          :
+          (
+            <ul style={{ paddingInlineStart: '20px' }}>
+              {completedExercises.map((exercise) => (
+                <li key={exercise.id} style={{ padding: '3px 0' }}>
+                  <strong>{exercise.name}</strong> - Duration: {exercise.duration} minutes
+                  <IconButton aria-label="delete" sx={{ p: 0, ml: 1 }}
+                    onClick={() => handleDeleteExercise(exercise.id)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </li>
+              ))}
+            </ul>
           )}
-        </form>
       </Box>
 
-<Box mt={4} p={2} >
-  <Typography variant='h4'>Completed Exercises</Typography>
-  {completedExercises.length === 0 ? (
-    <Typography variant='body1'>No exercises completed yet.</Typography>
-  ) : (
-    <ul style={{ paddingInlineStart: '20px' }}>
-      {completedExercises.map((exercise, index) => (
-        <li key={index} style={{ padding: '3px 0' }}>
-        <strong>{exercise.name}</strong> - Duration: {exercise.duration} minutes
-        </li>
-      ))}
-    </ul>
-  )}
-</Box>
-
-<Box mt={4} p={2}>
-  <Typography variant='h4'>Summary</Typography>
-  <Typography variant='body1' style={{ padding: '3px 0' }}><strong>Total Duration:</strong> {totalDuration} minutes</Typography>
-  <Typography variant='body1' style={{ padding: '3px 0' }}><strong>Total Calories Burned:</strong> {totalCaloriesBurned.toFixed(2)}</Typography>
-</Box>
-    </div>
+      <Box mt={4} p={2}>
+        <Typography variant='h4'>Summary</Typography>
+        <Typography variant='body1' p={.5}>
+          <strong>Total Duration:</strong> {totalDuration} minutes
+        </Typography>
+        <Typography variant='body1' p={.5}>
+          <strong>Total Calories Burned:</strong> {totalCaloriesBurned.toFixed(2)}
+        </Typography>
+      </Box>
+    </Container>
   );
 };
 
