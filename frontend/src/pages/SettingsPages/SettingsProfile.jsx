@@ -11,7 +11,10 @@ const SettingsProfile = () => {
   const [selectedHeight, setSelectedHeight] = useState("");
   const [selectedActivityLevel, setSelectedActivityLevel] = useState("");
   const [selectedClimate, setSelectedClimate] = useState("");
+  const [refresh, setRefresh] = useState(0);
   const [open, setOpen] = useState(false);
+  const [openAgeError, setOpenAgeError] = useState(false);
+  const [openHeightError, setOpenHeightError] = useState(false);
 
   const { globalUser } = useContext(UserContext);
 
@@ -37,16 +40,26 @@ const SettingsProfile = () => {
     setOpen(false);
   }
 
-  const action = (
-    <IconButton
-      size="small"
-      aria-label="close"
-      color="inherit"
-      onClick={handleClose}
-    >
-      <CloseIcon fontSize="small" />
-    </IconButton>
-  )
+  const handleCloseAgeError = () => {
+    setOpenAgeError(false);
+  }
+
+  const handleCloseHeightError = () => {
+    setOpenAgeError(false);
+  }
+
+  const action = (func) => {
+    return (
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={func}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    )
+  }
 
   const fetchProfileAndSetState = async () => {
     if (!globalUser) {
@@ -64,10 +77,32 @@ const SettingsProfile = () => {
     setSelectedActivityLevel(res.data.userProfile.activityLevel.toLowerCase());
   }
 
+  const validateInputs = () => {
+    if (selectedAge < 0 || selectedAge > 100) {
+      setOpenAgeError(true);
+      return false
+    }
+
+    if (selectedHeight < 30 || selectedHeight > 300) {
+      setOpenHeightError(true);
+      return false;
+    }
+
+    return true;
+  }
+
   const submit = async () => {
     if (!globalUser) {
       return;
     }
+
+    if (!validateInputs()) {
+      return;
+    }
+
+    // Make sure error snackbars are closed
+    setOpenAgeError(false);
+    setOpenHeightError(false);
 
     await axios.patch('http://localhost:8080/user/profile', {
       "uid": globalUser.uid,
@@ -79,11 +114,13 @@ const SettingsProfile = () => {
     })
 
     setOpen(true);
+    setRefresh(refresh + 1);
   }
 
   useEffect(() => {
     fetchProfileAndSetState();
-  })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refresh])
 
   return (
     <>
@@ -124,6 +161,7 @@ const SettingsProfile = () => {
               type="number"
               value={selectedAge}
               onChange={handleAge}
+              inputProps={{ min: 0, max: 100 }}
             />
           </Box>
 
@@ -137,7 +175,7 @@ const SettingsProfile = () => {
               type="number"
               value={selectedHeight}
               onChange={handleHeight}
-              InputProps={{ endAdornment: <InputAdornment position="end">cm</InputAdornment>, }}
+              InputProps={{ endAdornment: <InputAdornment position="end">cm</InputAdornment>, min: 1, max: 300 }}
             />
           </Box>
 
@@ -195,7 +233,9 @@ const SettingsProfile = () => {
 
         </Box>
       </Box>
-      <Snackbar open={open} autoHideDuration={6000} message="User profile changes saved!" onClose={handleClose} action={action} ContentProps={{ sx: { backgroundColor: 'green' } }} />
+      <Snackbar open={open} autoHideDuration={3000} message="User profile changes saved!" onClose={handleClose} action={action(handleClose)} ContentProps={{ sx: { backgroundColor: 'green' } }} />
+      <Snackbar open={openAgeError} autoHideDuration={3000} message="Age must be between 0 and 100." onClose={handleCloseAgeError} action={action(handleCloseAgeError)} ContentProps={{ sx: { backgroundColor: 'red' } }} />
+      <Snackbar open={openHeightError} autoHideDuration={3000} message="Height must be between 30 and 300." onClose={handleCloseHeightError} action={action(handleCloseHeightError)} ContentProps={{ sx: { backgroundColor: 'red' } }} />
     </>
   )
 }
