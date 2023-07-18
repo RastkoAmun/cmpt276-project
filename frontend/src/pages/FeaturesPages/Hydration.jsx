@@ -28,6 +28,7 @@ const Hydration = () => {
   const [intakeDate, setIntakeDate] = useState('');
 
   const [invalidGoal, setInvalidGoal] = useState(false);
+  const [invalidChange, setInvalidChange] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [firstTimeSetup, setFirstTimeSetup] = useState(true);
 
@@ -40,28 +41,33 @@ const Hydration = () => {
     setGoal(event.target.value)
   }, [])
 
+  const getHydrationData = () => {
+    const uid = globalUser.uid;
+    let date = getDate();
+    date = date.replace(/\s/g, '%20');
+    axios
+      .get(`http://localhost:8080/data/hydration/${uid}/${date}`)
+      .then(results => {
+        const data = results.data;
+        if (data) {
+          const dif = data.goal - data.intake;
+          setGoal(data.goal);
+          setCurrent(data.intake);
+          setGlassesLeft(dif);
+          setInvalidGoal(false);
+          setInvalidChange(false);
+          setIntakeDate(data.intakeDate)
+          setSubmitted(true);
+          setFirstTimeSetup(false);
+        }
+      });
+  }
+
   useEffect(() => {
     if (globalUser) {
       const fetchGoal = async () => {
         try {
-          const uid = globalUser.uid;
-          let date = getDate();
-          date = date.replace(/\s/g, '%20');
-          axios
-            .get(`http://localhost:8080/data/hydration/${uid}/${date}`)
-            .then(results => {
-              const data = results.data;
-              if (data) {
-                const dif = data.goal - data.intake;
-                setGoal(data.goal);
-                setCurrent(data.intake);
-                setGlassesLeft(dif);
-                setInvalidGoal(false);
-                setIntakeDate(data.intakeDate)
-                setSubmitted(true);
-                setFirstTimeSetup(false);
-              }
-            });
+          getHydrationData();
         } catch (error) {
           console.error('Error:', error);
         }
@@ -75,10 +81,13 @@ const Hydration = () => {
   const submitGoal = async () => {
     if (goal > 20 || goal < 6) {
       setInvalidGoal(true);
+    }else if(goal < current){
+      setInvalidChange(true);
     } else {
       setGoal(goal);
       setSubmitted(true);
       setInvalidGoal(false);
+      setInvalidChange(false);
       setGlassesLeft(goal);
       setIntakeDate(getDate())
 
@@ -97,9 +106,10 @@ const Hydration = () => {
           setFirstTimeSetup(false);
         }
         else {
-          axios
+          await axios
             .put(`http://localhost:8080/data/hydration/${globalUser.uid}/${getDate()}`,
-               userData)
+              userData)
+          getHydrationData();
         }
 
       } catch (error) {
@@ -121,7 +131,7 @@ const Hydration = () => {
           "intake": currentIntake,
           "intakeDate": getDate()
         }
-        axios.put(`http://localhost:8080/data/hydration/${globalUser.uid}/${getDate()}`, 
+        axios.put(`http://localhost:8080/data/hydration/${globalUser.uid}/${getDate()}`,
           userData)
 
       } catch (error) {
@@ -168,6 +178,11 @@ const Hydration = () => {
               {invalidGoal &&
                 <Typography variant='subtitle2' color='error' width='80%' mt={2}>
                   * INVALID: Recommended water intake is at least 6 glasses, up to 20 glasses
+                </Typography>
+              }
+              {invalidChange &&
+                <Typography variant='subtitle2' color='error' width='80%' mt={2}>
+                  * INVALID: You already drink that much today.
                 </Typography>
               }
             </>
