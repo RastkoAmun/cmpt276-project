@@ -1,5 +1,9 @@
 package com.cmpt276project.projectbackend.models;
 
+import com.cmpt276project.projectbackend.enums.ActivityLevel;
+import com.cmpt276project.projectbackend.enums.Climate;
+import com.cmpt276project.projectbackend.enums.Sex;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -17,24 +21,6 @@ public class UserProfile {
 
   @OneToOne(mappedBy = "userProfile")
   private User user;
-
-  enum Sex {
-    MALE,
-    FEMALE
-  }
-
-  enum ActivityLevel {
-    SENDENTARY,
-    LIGHT,
-    MODERATE,
-    HEAVY
-  }
-
-  enum Climate {
-    HOT,
-    TEMPERATE,
-    COLD
-  }
 
   public int getAge() {
     return this.age;
