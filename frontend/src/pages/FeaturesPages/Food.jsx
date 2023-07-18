@@ -133,7 +133,7 @@ const Food = () => {
     };
 
     axios
-      .post('http://localhost:8080/foodsummary/add', foodSummary)
+      .post('/foodsummary/add', foodSummary)
       .then((response) => {
         console.log('Calorie goal added to food summary:', response.data);
         setEditingGoal(false);
@@ -149,7 +149,7 @@ const Food = () => {
 
   const getAddedFoods = () => {
     axios
-      .get(`http://localhost:8080/data/food/${globalUser.uid}/${formattedDate}`)
+      .get(`/data/food/${globalUser.uid}/${formattedDate}`)
       .then((response) => {
         const data = response.data;
         const addedFoodsData = data.map((food) => ({
@@ -165,7 +165,7 @@ const Food = () => {
 
   const getFoodSummary = () => {
     axios
-      .get(`http://localhost:8080/foodsummary/${globalUser.uid}/${formattedDate}`)
+      .get(`/foodsummary/${globalUser.uid}/${formattedDate}`)
       .then((response) => {
         const foodSummaryData = response.data;
         if (foodSummaryData) {
@@ -195,7 +195,7 @@ const Food = () => {
     };
     console.log(food);
 
-    axios.post('http://localhost:8080/data/food/add', food);
+    axios.post('/data/food/add', food);
   };
 
   const updateFoodSummary = (consumedCalories) => {
@@ -207,7 +207,7 @@ const Food = () => {
     };
 
     axios
-      .post('http://localhost:8080/foodsummary/add', foodSummary)
+      .post('/foodsummary/add', foodSummary)
       .then((response) => {
         console.log('Food summary updated:', response.data);
       })

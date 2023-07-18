@@ -48,7 +48,7 @@ const Hydration = () => {
           let date = getDate();
           date = date.replace(/\s/g, '%20');
           axios
-            .get(`http://localhost:8080/data/hydration/${uid}/${date}`)
+            .get(`/data/hydration/${uid}/${date}`)
             .then(results => {
               const data = results.data;
               if (data) {
@@ -93,12 +93,12 @@ const Hydration = () => {
 
         if (firstTimeSetup === true) {
           axios
-            .post('http://localhost:8080/data/hydration', userData)
+            .post('/data/hydration', userData)
           setFirstTimeSetup(false);
         }
         else {
           axios
-            .put(`http://localhost:8080/data/hydration/${globalUser.uid}/${getDate()}`,
+            .put(`/data/hydration/${globalUser.uid}/${getDate()}`,
                userData)
         }
 
@@ -121,7 +121,7 @@ const Hydration = () => {
           "intake": currentIntake,
           "intakeDate": getDate()
         }
-        axios.put(`http://localhost:8080/data/hydration/${globalUser.uid}/${getDate()}`, 
+        axios.put(`/data/hydration/${globalUser.uid}/${getDate()}`, 
           userData)
 
       } catch (error) {

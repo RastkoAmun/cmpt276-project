@@ -77,7 +77,7 @@ const Exercise = () => {
   };
 
   const getCompletedExercises = () => {
-    axios.get(`http://localhost:8080/data/exercise/${globalUser.uid}/${formattedDate}`)
+    axios.get(`/data/exercise/${globalUser.uid}/${formattedDate}`)
       .then((response) => {
         const data = response.data;
         const completedExercises = data.map((exercise) => ({
@@ -92,7 +92,7 @@ const Exercise = () => {
   const getExerciseSummary = async () => {
     let data;
     await axios
-      .get(`http://localhost:8080/exercisesummary/${globalUser.uid}/${formattedDate}`)
+      .get(`/exercisesummary/${globalUser.uid}/${formattedDate}`)
       .then((response) => {
         data = response.data;
         if (data) {
@@ -113,7 +113,7 @@ const Exercise = () => {
     };
 
     axios
-      .post('http://localhost:8080/data/exercise/add', exercise)
+      .post('/data/exercise/add', exercise)
       .then(() => {
         getCompletedExercises();
         setSelectedExercise('');
@@ -152,7 +152,7 @@ const Exercise = () => {
       exerSumDate: formattedDate,
     };
 
-    axios.post('http://localhost:8080/exercisesummary/add', exerciseSummary);
+    axios.post('/exercisesummary/add', exerciseSummary);
   };
 
   const handleAddExercise = async (event) => {
@@ -175,8 +175,8 @@ const Exercise = () => {
   };
 
   const handleDeleteExercise = async (id) => {
-    const exercise = (await axios.get(`http://localhost:8080/data/exercise/${id}`)).data;
-    await axios.delete(`http://localhost:8080/data/exercise/${id}`)
+    const exercise = (await axios.get(`/data/exercise/${id}`)).data;
+    await axios.delete(`/data/exercise/${id}`)
 
     let newTotalCaloriesBurned = totalCaloriesBurned - exercise.caloriesBurned;
     let newTotalDuration = totalDuration - exercise.duration;
@@ -187,7 +187,7 @@ const Exercise = () => {
       totalCalBurned: newTotalCaloriesBurned,
       exerSumDate: formattedDate,
     };
-    await axios.put(`http://localhost:8080/exercisesummary/${globalUser.uid}/${formattedDate}`, updateSummary);
+    await axios.put(`/exercisesummary/${globalUser.uid}/${formattedDate}`, updateSummary);
 
     setTotalCaloriesBurned(newTotalCaloriesBurned);
     setTotalDuration(newTotalDuration);

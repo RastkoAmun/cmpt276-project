@@ -7,7 +7,7 @@ import axios from 'axios';
 const UserRowView = ({ user, incrementRefresh, handleClick }) => {
 
   const deleteUser = async () => {
-    await axios.delete('http://localhost:8080/admin/delete', {
+    await axios.delete('/admin/delete', {
       data: {
         username: user.username
       }
@@ -20,7 +20,7 @@ const UserRowView = ({ user, incrementRefresh, handleClick }) => {
   }
 
   const giveAdminUserRole = async () => {
-    await axios.patch('http://localhost:8080/admin/permissions', {
+    await axios.patch('/admin/permissions', {
       username: user.username,
       isAdmin: 'true'
     }).catch(e => {
@@ -32,7 +32,7 @@ const UserRowView = ({ user, incrementRefresh, handleClick }) => {
   }
 
   const revokeAdminUserRole = async () => {
-    await axios.patch('http://localhost:8080/admin/permissions', {
+    await axios.patch('/admin/permissions', {
       username: user.username,
       isAdmin: 'false'
     }).catch(e => {
