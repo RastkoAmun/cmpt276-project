@@ -26,7 +26,7 @@ public class UserController {
   @Autowired
   private UserRepository userRepo;
 
-  record UserRequest(String username, String password, String email) {
+  record UserRequest(int uid, String username, String password, String email) {
   }
 
   record UserProfileRequest(int uid, Integer age, Double weight, Double height, String activityLevel,
@@ -101,6 +101,18 @@ public class UserController {
     return newUser;
   }
 
+  @PostMapping("/profile")
+  public User getUserAndProfile(@RequestBody UserRequest request, HttpServletResponse res) throws IOException {
+    User user = userRepo.findById(request.uid()).orElse(null);
+
+    if (user == null) {
+      res.sendError(400, "User does not exist");
+      return null;
+    }
+
+    return user;
+  }
+
   @PatchMapping("/profile")
   public User UserProfile(@RequestBody UserProfileRequest request, HttpServletResponse res) throws IOException {
 
@@ -124,15 +136,15 @@ public class UserController {
 
     try {
       if (request.activityLevel() != null) {
-        ActivityLevel level = ActivityLevel.valueOf(request.activityLevel());
+        ActivityLevel level = ActivityLevel.valueOf(request.activityLevel().toUpperCase());
         profile.setActivityLevel(level);
       }
       if (request.activityLevel() != null) {
-        Climate climate = Climate.valueOf(request.climate());
+        Climate climate = Climate.valueOf(request.climate().toUpperCase());
         profile.setClimate(climate);
       }
       if (request.activityLevel() != null) {
-        Sex sex = Sex.valueOf(request.sex());
+        Sex sex = Sex.valueOf(request.sex().toUpperCase());
         profile.setSex(sex);
       }
     } catch (IllegalArgumentException e) {
