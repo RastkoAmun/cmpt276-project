@@ -1,0 +1,93 @@
+{
+    "name": "FoodController Tests",
+    "event": [
+      {
+        "listen": "test",
+        "script": {
+          "type": "text/javascript",
+          "exec": [
+            "// Test the addFood endpoint",
+            "pm.test('Add Food - Status code is 201', function () {",
+            "    pm.response.to.have.status(201);",
+            "    pm.response.to.have.jsonBody();",
+            "});",
+            "",
+            "// Test the getCompletedFoods endpoint",
+            "pm.test('Get Completed Foods - Status code is 200', function () {",
+            "    pm.response.to.have.status(200);",
+            "    pm.response.to.have.jsonBody();",
+            "});",
+            "",
+            "// Test the getFood endpoint",
+            "pm.test('Get Food - Status code is 200', function () {",
+            "    pm.response.to.have.status(200);",
+            "    pm.response.to.have.jsonBody();",
+            "});"
+          ]
+        }
+      }
+    ],
+    "request": [
+      {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"food\": {\n        \"property1\": \"value1\",\n        \"property2\": \"value2\"\n    }\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/data/food/add",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "data",
+            "food",
+            "add"
+          ]
+        }
+      },
+      {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/data/food/1/2023-01-01",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "data",
+            "food",
+            "1",
+            "2023-01-01"
+          ]
+        }
+      },
+      {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/data/food/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "data",
+            "food",
+            "1"
+          ]
+        }
+      }
+    ],
+    "response": []
+  }
+  

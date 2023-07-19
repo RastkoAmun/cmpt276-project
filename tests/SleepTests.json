@@ -1,0 +1,115 @@
+{
+    "name": "SleepController Tests",
+    "event": [
+      {
+        "listen": "test",
+        "script": {
+          "type": "text/javascript",
+          "exec": [
+            "// Test the addSleepData endpoint",
+            "pm.test('Add Sleep Data - Status code is 201', function () {",
+            "    pm.response.to.have.status(201);",
+            "});",
+            "",
+            "pm.test('Add Sleep Data - Body contains success message', function () {",
+            "    pm.expect(pm.response.text()).to.include('Sleep data added successfully');",
+            "});",
+            "",
+            "// Test the addSleepData endpoint when data already exists for the given date and uid",
+            "pm.test('Add Sleep Data (Conflict) - Status code is 409', function () {",
+            "    pm.response.to.have.status(409);",
+            "});",
+            "",
+            "pm.test('Add Sleep Data (Conflict) - Body contains conflict message', function () {",
+            "    pm.expect(pm.response.text()).to.include('Sleep data already exists for the given date and uid');",
+            "});",
+            "",
+            "// Test the getSleepDataForLastFiveDays endpoint",
+            "pm.test('Get Sleep Data - Status code is 200', function () {",
+            "    pm.response.to.have.status(200);",
+            "});",
+            "",
+            "pm.test('Get Sleep Data - Response body is an array', function () {",
+            "    pm.response.to.be.json; // Asserts that the response is in JSON format",
+            "    pm.response.json().to.be.an('array'); // Asserts that the response body is an array",
+            "});"
+          ]
+        }
+      }
+    ],
+    "request": [
+      {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"uid\": 1,\n    \"date\": \"2023-07-18\",\n    \"duration\": 8\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/sleep/add",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "sleep",
+            "add"
+          ]
+        }
+      },
+      {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"uid\": 1,\n    \"date\": \"2023-07-18\",\n    \"duration\": 8\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/sleep/add",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "sleep",
+            "add"
+          ]
+        }
+      },
+      {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/sleep/sleep-data?uid=1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "sleep",
+            "sleep-data"
+          ],
+          "query": [
+            {
+              "key": "uid",
+              "value": "1"
+            }
+          ]
+        }
+      }
+    ],
+    "response": []
+  }
+  

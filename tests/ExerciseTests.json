@@ -1,0 +1,114 @@
+{
+    "name": "ExerciseController Tests",
+    "event": [
+      {
+        "listen": "test",
+        "script": {
+          "type": "text/javascript",
+          "exec": [
+            "// Test the addExerciseActivity endpoint",
+            "pm.test('Add Exercise - Status code is 201', function () {",
+            "    pm.response.to.have.status(201);",
+            "    pm.response.to.have.jsonBody();",
+            "});",
+            "",
+            "// Test the getCompletedExercises endpoint",
+            "pm.test('Get Completed Exercises - Status code is 200', function () {",
+            "    pm.response.to.have.status(200);",
+            "    pm.response.to.have.jsonBody();",
+            "});",
+            "",
+            "// Test the getHydrations endpoint",
+            "pm.test('Get Exercise - Status code is 200', function () {",
+            "    pm.response.to.have.status(200);",
+            "    pm.response.to.have.jsonBody();",
+            "});",
+            "",
+            "// Test the deleteStudent endpoint",
+            "pm.test('Delete Exercise - Status code is 200', function () {",
+            "    pm.response.to.have.status(200);",
+            "});"
+          ]
+        }
+      }
+    ],
+    "request": [
+      {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"exercise\": {\n        \"property1\": \"value1\",\n        \"property2\": \"value2\"\n    }\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/data/exercise/add",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "data",
+            "exercise",
+            "add"
+          ]
+        }
+      },
+      {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/data/exercise/1/2023-01-01",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "data",
+            "exercise",
+            "1",
+            "2023-01-01"
+          ]
+        }
+      },
+      {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/data/exercise/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "data",
+            "exercise",
+            "1"
+          ]
+        }
+      },
+      {
+        "method": "DELETE",
+        "url": {
+          "raw": "http://localhost:8080/data/exercise/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "data",
+            "exercise",
+            "1"
+          ]
+        }
+      }
+    ],
+    "response": []
+  }
+  
