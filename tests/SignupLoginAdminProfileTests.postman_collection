@@ -1,0 +1,375 @@
+{
+	"info": {
+		"_postman_id": "faab19fb-cd23-428c-b205-c694d24a16dd",
+		"name": "COMP276-Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20770622"
+	},
+	"item": [
+		{
+			"name": "Created User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"User credentials are echoed\", () => {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.username).to.eql(\"user1\");\r",
+							"    pm.expect(response.email).to.eql(\"user1@email.com\");\r",
+							"    pm.expect(response.password).to.eql(\"user1password\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"user1\",\r\n    \"email\": \"user1@email.com\",\r\n    \"password\": \"user1password\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL}}user/register",
+					"host": [
+						"{{LOCAL}}user"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Login Not Found",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Login user not found\", () => {\r",
+							"    const res = pm.response.json();\r",
+							"    pm.expect(res.status).to.eql(400);\r",
+							"    pm.expect(res.message).to.eql(\"User does not exist\");\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"user12\",\r\n    \"email\": \"user1@email.com\",\r\n    \"password\": \"Abc123!\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL}}user/login",
+					"host": [
+						"{{LOCAL}}user"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Login Wrong Password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Login wrong password\", () => {\r",
+							"    const res = pm.response.json();\r",
+							"    pm.expect(res.status).to.eql(401);\r",
+							"    pm.expect(res.message).to.eql(\"User password is wrong\");\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"user1\",\r\n    \"email\": \"user1@email.com\",\r\n    \"password\": \"user1passwordwrong\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL}}user/login",
+					"host": [
+						"{{LOCAL}}user"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"User login\", () => {\r",
+							"    const res = pm.response.json();\r",
+							"    pm.expect(res.username).to.eql(\"user1\");\r",
+							"    pm.expect(res.email).to.eql(\"user1@email.com\");\r",
+							"    pm.expect(res.password).to.eql(\"user1password\");\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"user1\",\r\n    \"email\": \"user1@email.com\",\r\n    \"password\": \"user1password\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL}}user/login",
+					"host": [
+						"{{LOCAL}}user"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Session Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"User login\", () => {\r",
+							"    const res = pm.response.json();\r",
+							"    pm.expect(res.username).to.eql(\"user1\");\r",
+							"    pm.expect(res.email).to.eql(\"user1@email.com\");\r",
+							"    pm.expect(res.password).to.eql(\"user1password\");\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL}}user/login",
+					"host": [
+						"{{LOCAL}}user"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL}}user/logout",
+					"host": [
+						"{{LOCAL}}user"
+					],
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"user1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL}}admin/delete",
+					"host": [
+						"{{LOCAL}}admin"
+					],
+					"path": [
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Give Admin Privileges",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"user1\",\r\n    \"isAdmin\": \"true\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL}}admin/permissions",
+					"host": [
+						"{{LOCAL}}admin"
+					],
+					"path": [
+						"permissions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Revoke Admin Privileges",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"user1\",\r\n    \"isAdmin\": \"false\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL}}admin/permissions",
+					"host": [
+						"{{LOCAL}}admin"
+					],
+					"path": [
+						"permissions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin View Users",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Profile (All)",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"uid\": 97,\r\n    \"age\": 25,\r\n    \"height\": 196,\r\n    \"weight\": 82,\r\n    \"sex\": \"female\",\r\n    \"activityLevel\": \"sedentary\",\r\n    \"climate\": \"temperate\" \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL}}user/profile",
+					"host": [
+						"{{LOCAL}}user"
+					],
+					"path": [
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Profile (Some)",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"uid\": 97,\r\n    \"height\": 196,\r\n    \"activityLevel\": \"sedentary\",\r\n    \"climate\": \"temperate\" \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL}}user/profile",
+					"host": [
+						"{{LOCAL}}user"
+					],
+					"path": [
+						"profile"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "LOCAL",
+			"value": "http://localhost:8080/"
+		}
+	]
+}
