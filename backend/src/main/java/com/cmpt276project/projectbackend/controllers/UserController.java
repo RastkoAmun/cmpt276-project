@@ -69,20 +69,20 @@ public class UserController {
     User existingEmail = userRepo.findByEmail(request.email());
 
     if (existingUsername != null) {
-      res.sendError(400, "Username is already taken");
+      res.sendError(409, "Username is already taken");
       return null;
     }
 
     if (existingEmail != null) {
-      res.sendError(400, "Email is already in use");
+      res.sendError(409, "Email is already in use");
       return null;
     }
 
     User newUser = new User.UserBuilder()
-      .setUsername(request.username())
-      .setEmail(request.email())
-      .setPassword(request.password())
-      .build();
+        .setUsername(request.username())
+        .setEmail(request.email())
+        .setPassword(request.password())
+        .build();
 
     userRepo.save(newUser);
     res.setStatus(201);
