@@ -24,7 +24,7 @@ const Login = () => {
   const submit = async () => {
     try {
       const body = { username, password }
-      const user = await fetch('http://localhost:8080/user/login', {
+      const user = await fetch('/user/login', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -45,7 +45,7 @@ const Login = () => {
 
   const sessionLogin = async () => {
     try {
-      const user = await fetch('http://localhost:8080/user/login', {
+      const user = await fetch('/user/login', {
         method: "GET",
         credentials: "include"
       })
@@ -88,11 +88,11 @@ const Login = () => {
             color={theme.palette.grey[700]}>
             Username
           </Typography>
-          <TextField 
-            id="outlined-basic1" 
+          <TextField
+            id="outlined-basic1"
             variant="outlined"
-            size='small' 
-            value={username} 
+            size='small'
+            value={username}
             onChange={(e) => { setUserName(e.target.value) }}
           />
 
@@ -100,12 +100,12 @@ const Login = () => {
             color={theme.palette.grey[700]}>
             Password
           </Typography>
-          <TextField 
-            id="outlined-basic2" 
-            type='password' 
+          <TextField
+            id="outlined-basic2"
+            type='password'
             variant="outlined"
-            size='small' 
-            value={password} 
+            size='small'
+            value={password}
             onChange={(e) => { setPassword(e.target.value) }}
           />
 
@@ -121,20 +121,20 @@ const Login = () => {
               Login
             </Button>
 
-            <Box  display='flex' flexDirection='row' mt={2.5} >
+            <Box display='flex' flexDirection='row' mt={2.5} >
               <Typography variant='body2' mr={1}>
                 Don't have an account?
               </Typography>
-              <Typography 
-                variant='body2' 
-                component={Link} 
-                to={'/signup'} 
+              <Typography
+                variant='body2'
+                component={Link}
+                to={'/signup'}
                 color='primary'>
                 Sign up
               </Typography>
             </Box>
 
-            <Typography variant='body2' mt={1} 
+            <Typography variant='body2' mt={1}
               component={Link} to={''} color='primary'
               sx={{ textDecoration: 'none' }}>
               Forgot password (TO BE IMPLEMENTED)

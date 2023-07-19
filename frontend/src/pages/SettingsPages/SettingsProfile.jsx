@@ -66,7 +66,7 @@ const SettingsProfile = () => {
       return;
     }
 
-    const res = await axios.post('http://localhost:8080/user/profile', {
+    const res = await axios.post('/user/profile', {
       "uid": globalUser.uid
     })
 
@@ -104,7 +104,7 @@ const SettingsProfile = () => {
     setOpenAgeError(false);
     setOpenHeightError(false);
 
-    await axios.patch('http://localhost:8080/user/profile', {
+    await axios.patch('/user/profile', {
       "uid": globalUser.uid,
       "age": selectedAge,
       "height": selectedHeight,

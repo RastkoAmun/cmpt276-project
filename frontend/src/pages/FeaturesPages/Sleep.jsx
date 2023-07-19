@@ -18,55 +18,56 @@ const Sleep = () => {
   const { globalUser } = useContext(UserContext);
 
   const navigate = useNavigate();
-   const uid=globalUser?.uid;
+  const uid = globalUser?.uid;
 
   const handleAddSleepData = async () => {
     if (!uid) {
-      navigate("/login"); 
+      navigate("/login");
     }
-    else{
+    else {
 
-    const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0); 
+      const currentDate = new Date();
+      currentDate.setHours(0, 0, 0, 0);
 
-    const newSleepData = {
-      uid,
-      date: currentDate.toISOString(), 
-      bedTime,
-      wakeUpTime,
-      satisfactionLevel
-    };
+      const newSleepData = {
+        uid,
+        date: currentDate.toISOString(),
+        bedTime,
+        wakeUpTime,
+        satisfactionLevel
+      };
 
-    try {
-      const response = await fetch('http://localhost:8080/sleep/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(newSleepData)
-      });
+      try {
+        const response = await fetch('/sleep/add', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newSleepData)
+        });
 
-      if (response.ok) {
-        console.log('Sleep data added successfully');
-        setBedTime('');
-        setWakeUpTime('');
-        setSatisfactionLevel('');
+        if (response.ok) {
+          console.log('Sleep data added successfully');
+          setBedTime('');
+          setWakeUpTime('');
+          setSatisfactionLevel('');
 
-        // Refetch sleep data
-        fetchSleepData();
-      } else if (response.status === 409) {
-        setErrorMessage('Entry already exists');
-      } else {
-        console.error('Failed to add sleep data');
+          // Refetch sleep data
+          fetchSleepData();
+        } else if (response.status === 409) {
+          setErrorMessage('Entry already exists');
+        } else {
+          console.error('Failed to add sleep data');
+        }
+      } catch (error) {
+        console.error('Failed to add sleep data:', error);
       }
-    } catch (error) {
-      console.error('Failed to add sleep data:', error);
     }
-  }};
+  };
 
   const fetchSleepData = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/sleep/sleep-data?uid=${globalUser.uid}`);
+      const response = await fetch(`/sleep/sleep-data?uid=${globalUser.uid}`);
 
       const data = await response.json();
       setSleepData(data);
@@ -77,11 +78,11 @@ const Sleep = () => {
 
   useEffect(() => {
     if (globalUser) {
-    fetchSleepData();
-  }else {
-    navigate("/login");
-  }
-}, [globalUser]);
+      fetchSleepData();
+    } else {
+      navigate("/login");
+    }
+  }, [globalUser]);
 
   const calculateSleepDuration = (bedTime, wakeUpTime) => {
     const bedTimeDate = new Date(`1970-01-01T${bedTime}`);
@@ -90,11 +91,11 @@ const Sleep = () => {
     if (timeDiffMs < 0) {
       timeDiffMs += 24 * 60 * 60 * 1000; // Add 24 hours in milliseconds
     }
-    const sleepDuration = timeDiffMs / (1000 * 60 * 60);    
+    const sleepDuration = timeDiffMs / (1000 * 60 * 60);
     return sleepDuration.toFixed(2);
   };
 
-  
+
   const sleepDurationData = sleepData.map((data) => ({
     date: data.date,
     sleepDuration: calculateSleepDuration(data.bedTime, data.wakeUpTime)
@@ -150,10 +151,10 @@ const Sleep = () => {
         </Grid>
       </Grid>
       {errorMessage && (
-      <Typography variant="subtitle1" color="error">
-        {errorMessage}
-      </Typography>
-    )}
+        <Typography variant="subtitle1" color="error">
+          {errorMessage}
+        </Typography>
+      )}
 
       <Grid container spacing={2} alignItems="center" justifyContent="center" style={{ marginTop: '4rem' }}>
         <Grid item xs={12} sm={8}>
@@ -162,7 +163,7 @@ const Sleep = () => {
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />
               <YAxis ticks={[0, 3, 6, 9, 12, 15]} />
-               <Tooltip />
+              <Tooltip />
               <Legend />
               <Line type="monotone" dataKey="sleepDuration" stroke="#8884d8" />
             </LineChart>
@@ -176,7 +177,7 @@ const Sleep = () => {
             <LineChart width={600} height={300} data={sleepData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />
-              <YAxis ticks={[0, 2, 4, 6, 8, 10,12]} />
+              <YAxis ticks={[0, 2, 4, 6, 8, 10, 12]} />
               <Tooltip />
               <Legend />
               <Line type="monotone" dataKey="satisfactionLevel" stroke="#82ca9d" />

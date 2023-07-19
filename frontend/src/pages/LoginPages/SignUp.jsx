@@ -67,7 +67,7 @@ const SignUp = () => {
     if (!invUsername && !invEmail && !invPassword && !passMismatch) {
       try {
         const body = { username, email, password }
-        const res = await fetch('http://localhost:8080/user/register', {
+        const res = await fetch('/user/register', {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body)
@@ -180,8 +180,8 @@ const SignUp = () => {
             />
 
             <Box mt={4} display='flex' flexDirection='column'>
-            {/* <Box sx={{ flexGrow: 1 }} /> */}
-            {
+              {/* <Box sx={{ flexGrow: 1 }} /> */}
+              {
                 registrationError ?
                   <Typography color="error" mb={2}>{registrationError}</Typography>
                   : null

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Typography,
+import {
+  Typography,
   Box,
   TextField,
   Grid,
@@ -14,7 +15,7 @@ import { Typography,
   DialogActions,
   Button,
   Link
-  } from '@mui/material'
+} from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import { titleContainerStyle } from '../Style';
 
@@ -137,9 +138,9 @@ const Weight = () => {
           <Grid item xs={4}>
             <Card sx={cardStyle} >
               <Typography variant='h5'>Change</Typography>
-                <Typography>
-                  {weightChange} %
-                </Typography>
+              <Typography>
+                {weightChange} %
+              </Typography>
             </Card>
           </Grid>
 
@@ -153,23 +154,23 @@ const Weight = () => {
                 <Link>1 year</Link>
               </Typography>
               <Box display='flex' justifyContent='center' alignItems='center'
-              sx={{ height: 500 }}>
-              <Typography> Graph will go here </Typography>
+                sx={{ height: 500 }}>
+                <Typography> Graph will go here </Typography>
               </Box>
             </Card>
           </Grid>
 
           <Grid item xs={3.5}>
             <Card sx={cardStyle}
-            style={{height: '100%'}} >
+              style={{ height: '100%' }} >
               <Typography variant='h5'>Entries (render from db)</Typography>
               <List>
-              {entries.map((entry) => (
-                <ListItem key={entry.id}>
-                  <ListItemText primary={entry.date} secondary={`Weight: ${entry.weight} kg`} />
-                </ListItem>
-              ))}
-            </List>
+                {entries.map((entry) => (
+                  <ListItem key={entry.id}>
+                    <ListItemText primary={entry.date} secondary={`Weight: ${entry.weight} kg`} />
+                  </ListItem>
+                ))}
+              </List>
             </Card>
           </Grid>
 
