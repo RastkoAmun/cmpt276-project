@@ -10,9 +10,11 @@ import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import axios from 'axios';
 import {
+  Alert,
   Box,
   Button,
   Fab,
+  Snackbar,
   Stack,
   TextField,
   Typography
@@ -31,6 +33,15 @@ const Hydration = () => {
   const [invalidChange, setInvalidChange] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [firstTimeSetup, setFirstTimeSetup] = useState(true);
+
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const handleClose = (reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
+
 
   const { globalUser } = useContext(UserContext);
 
@@ -131,9 +142,9 @@ const Hydration = () => {
           "intake": currentIntake,
           "intakeDate": getDate()
         }
-        axios.put(`http://localhost:8080/data/hydration/${globalUser.uid}/${getDate()}`,
+        await axios.put(`http://localhost:8080/data/hydration/${globalUser.uid}/${getDate()}`,
           userData)
-
+        if(goal === userData.intake) setOpenSnackbar(true);
       } catch (error) {
         console.error('Error:', error);
       }
@@ -250,6 +261,23 @@ const Hydration = () => {
           </Box>
           <Typography variant='body2' mb={3}> Current: {current} </Typography>
         </Box>
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={4000}
+          onClose={handleClose}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        >
+          <Alert
+            onClose={handleClose}
+            severity="success"
+            sx={{ width: "100%" }}
+            variant="filled"
+            elevation={6}
+          >
+            Congratulations, you reached your daily goal!
+          </Alert>
+        </Snackbar>
+
       </Stack>
     </>
   )
