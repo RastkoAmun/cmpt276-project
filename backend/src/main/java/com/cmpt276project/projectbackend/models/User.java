@@ -1,5 +1,6 @@
 package com.cmpt276project.projectbackend.models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,6 +17,7 @@ public class User {
   private String password;
   private String email;
   private Boolean isAdmin;
+  private String resetToken;
 
   public User() {
 
@@ -62,6 +64,14 @@ public class User {
 
   public void setisAdmin(Boolean isAdmin) {
     this.isAdmin = isAdmin;
+  }
+
+  public String getResetToken() {
+    return resetToken;
+  }
+
+  public void setResetToken(String resetToken) {
+    this.resetToken = resetToken;
   }
 
   public static class UserBuilder {
