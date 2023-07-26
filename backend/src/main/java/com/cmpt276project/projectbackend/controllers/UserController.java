@@ -6,24 +6,14 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 
 import com.cmpt276project.projectbackend.models.User;
 import com.cmpt276project.projectbackend.models.UserRepository;
 
-import jakarta.mail.Message;
-import jakarta.mail.MessagingException;
-import jakarta.mail.Multipart;
-import jakarta.mail.PasswordAuthentication;
-import jakarta.mail.Authenticator;
-import jakarta.mail.Session;
-import jakarta.mail.Transport;
+import jakarta.mail.*;
 import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.mail.internet.MimeMultipart;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -101,14 +91,11 @@ public class UserController {
 
       // // Save token to database
       userRepo.save(user);
-      String appUrl = req.getScheme() + "://" + req.getServerName();
+      String appUrl = req.getHeader("origin");
 
       // // Email message
       String to = email;
       // provide sender's email ID
-      // String from = "healthtrackrr@gmail.com";
-      String from = "support@healthtrackrr.com";
-
       final String username = "healthtrackrr@gmail.com";
       // provide Mailtrap's password
       final String password = "gnlfvwtbocntengo";
@@ -133,7 +120,8 @@ public class UserController {
         message.setSubject("Request to Change Password");
         message.setText("To reset your password, click the link below:\n"
             + appUrl
-            + "/reset?token=" + user.getResetToken() + "\n\nThanks,\nHealthTracker Support Team"
+            + "/changepassword/" + user.getResetToken()
+            + "\n\nThanks,\nHealthTracker Support Team"
             + "\n\n"
             + "***********************************\n"
             + "This is an auto-generated email.\n"
@@ -146,14 +134,6 @@ public class UserController {
         throw new RuntimeException(e);
       }
     }
-
-    // passwordResetEmail.add
-    // passwordResetEmail.setTo(user.getEmail());
-    // passwordResetEmail.setSubject("Password Reset Request");
-    // passwordResetEmail.setText("To reset your password, click the link below:\n"
-    // + appUrl
-    // + "/reset?token=" + user.getResetToken());
-
   }
 
   @GetMapping("/logout")
