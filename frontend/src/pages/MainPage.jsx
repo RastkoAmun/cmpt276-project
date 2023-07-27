@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -11,6 +11,7 @@ import {
 import { UserContext } from "../index";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import HydrationTable from "../components/tables/HydrationTable";
+import { useNavigate } from "react-router-dom";
 
 const buttonStyle = {
   p: 0,
@@ -22,7 +23,12 @@ const buttonStyle = {
 
 const MainPage = () => {
   const { globalUser } = useContext(UserContext);
+  const navigate = useNavigate();
+
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [currentTable, setCurrentTable] = useState("Select Table");
+  const [username, setUsername] = useState("");
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -31,9 +37,49 @@ const MainPage = () => {
     setAnchorEl(null);
   };
 
+  useEffect(() => {
+    if (globalUser) {
+      setUsername(globalUser.username);
+    } else {
+      navigate("/login");
+    }
+  }, [navigate, globalUser]);
+
+  const displayTable = () => {
+    switch (currentTable) {
+      case "hydration":
+        return <HydrationTable globalUser={globalUser} />;
+      case "food":
+        return <Typography variant="h2"> Food will go here </Typography>;
+      case "exercise":
+        return <Typography variant="h2"> Exercise will go here </Typography>;
+      case "sleep":
+        return <Typography variant="h2"> Sleep will go here </Typography>;
+      default:
+        return <></>;
+    }
+  };
+
+  const handleFoodOption = useCallback(() => {
+    setCurrentTable("food");
+    handleClose();
+  }, []);
+  const handleHydrationOption = useCallback(() => {
+    setCurrentTable("hydration");
+    handleClose();
+  }, []);
+  const handleExerciseOption = useCallback(() => {
+    setCurrentTable("exercise");
+    handleClose();
+  }, []);
+  const handleSleepOption = useCallback(() => {
+    setCurrentTable("sleep");
+    handleClose();
+  }, []);
+
   return (
     <Box>
-      <Typography variant="h3">Welcome, {globalUser.username}</Typography>
+      <Typography variant="h3">Welcome, {username}</Typography>
       <Grid container spacing={5} mt={1}>
         <Grid item xs={8}>
           <Button
@@ -47,7 +93,7 @@ const MainPage = () => {
             endIcon={<KeyboardArrowDownIcon />}
             fullWidth
           >
-            Options
+            {currentTable}
           </Button>
           <Menu
             id="demo-customized-menu"
@@ -61,21 +107,23 @@ const MainPage = () => {
               paper: "menu-paper",
             }}
           >
-            <MenuItem onClick={handleClose} disableRipple>
+            <MenuItem onClick={handleFoodOption} disableRipple>
               Food
             </MenuItem>
-            <MenuItem onClick={handleClose} disableRipple>
+            <MenuItem onClick={handleSleepOption} disableRipple>
               Sleep
             </MenuItem>
-            <MenuItem onClick={handleClose} disableRipple>
+            <MenuItem onClick={handleExerciseOption} disableRipple>
               Exercise
             </MenuItem>
-            <MenuItem onClick={handleClose} disableRipple>
+            <MenuItem onClick={handleHydrationOption} disableRipple>
               Hydration
             </MenuItem>
           </Menu>
-
-          <HydrationTable globalUser={globalUser} />
+          <Typography variant="body1" textAlign="center" mt={3} mb={1}>
+            Displaying your history for {currentTable} feature
+          </Typography>
+          {displayTable()}
         </Grid>
         <Grid item xs={4}>
           <Paper sx={{ p: 2 }}>
