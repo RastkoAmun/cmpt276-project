@@ -3,11 +3,14 @@ import { Typography, Box } from '@mui/material'
 
 const SettingsGeneral = () => {
   return (
-    <Box style={{backgroundColor: 'red', height: '100vh'}}>
+    <>
       <Typography variant='h1'>
-        Gen. settings
+        General settings
       </Typography>
-    </Box>
+      <Typography variant="h2" sx={{ color: 'red' }}>
+        Out of Scope
+      </Typography>
+    </>
   )
 }
 
