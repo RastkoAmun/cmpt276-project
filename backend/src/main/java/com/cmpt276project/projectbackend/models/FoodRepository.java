@@ -7,12 +7,16 @@ import java.util.List;
 import java.util.Optional;
 
 
-public interface FoodRepository extends JpaRepository<Food, Long> {
+public interface FoodRepository extends JpaRepository<Food, Integer> {
 
 
     List<Food> findByUidAndDate(int userId, LocalDate foodDate);
 
-    Optional<Food> findByUid(Integer id);    
+    Optional<Food> findByUid(Integer id);
+
+    Optional<Food> findById(Integer id);
+
+    void deleteById(Integer id);    
 
    
 }
