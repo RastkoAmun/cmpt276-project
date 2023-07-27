@@ -53,8 +53,13 @@ public class FoodController {
 
     @GetMapping("/{id}")
     public Food getFood(@PathVariable Integer id) {
-        Optional<Food> foodOptional = foodRepository.findByUid(id);
+        Optional<Food> foodOptional = foodRepository.findById(id);
         return foodOptional.orElse(null);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteFood(@PathVariable("id") Integer id){
+      foodRepository.deleteById(id);
     }
 }
 

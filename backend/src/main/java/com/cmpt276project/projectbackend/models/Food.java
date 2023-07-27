@@ -11,7 +11,7 @@ public class Food {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
-    private Integer id;
+    private Integer foodId;
 
     @Column(name = "food_name")
     private String foodName;
@@ -40,12 +40,12 @@ public class Food {
     }
 
 
-    public Integer getId() {
-        return id;
+    public Integer getFoodId() {
+        return foodId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setFoodId(Integer foodId) {
+        this.foodId = foodId;
     }
 
     public String getFoodName() {
