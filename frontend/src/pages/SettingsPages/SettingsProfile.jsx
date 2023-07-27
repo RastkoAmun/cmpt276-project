@@ -124,17 +124,10 @@ const SettingsProfile = () => {
 
   return (
     <>
-      <Box>
-        <Box sx={{ backgroundColor: 'red', height: '300px' }}>
-          <Typography variant="h1">
-            PLACEHOLDER
-          </Typography>
-
-        </Box>
-        <Box>
-
+      <Box display="flex" sx={{ flexDirection: 'column', alignItems: 'start' }}>
+        <Box display="flex" sx={{ flexDirection: 'column' }}>
           <Box display="flex">
-            <Box display='flex' sx={{ alignItems: 'center', justifyContent: 'center', width: 1 / 5 }}>
+            <Box display='flex' sx={{ alignItems: 'center', justifyContent: 'center', width: 1 / 2 }}>
               <Typography>
                 Gender
               </Typography>
@@ -152,7 +145,7 @@ const SettingsProfile = () => {
           </Box>
 
           <Box display='flex'>
-            <Box display='flex' sx={{ alignItems: 'center', justifyContent: 'center', width: 1 / 5 }}>
+            <Box display='flex' sx={{ alignItems: 'center', justifyContent: 'center', width: 1 / 2 }}>
               <Typography>
                 Age
               </Typography>
@@ -166,7 +159,7 @@ const SettingsProfile = () => {
           </Box>
 
           <Box display="flex">
-            <Box display='flex' sx={{ alignItems: 'center', justifyContent: 'center', width: 1 / 5 }}>
+            <Box display='flex' sx={{ alignItems: 'center', justifyContent: 'center', width: 1 / 2 }}>
               <Typography>
                 Height
               </Typography>
@@ -176,11 +169,12 @@ const SettingsProfile = () => {
               value={selectedHeight}
               onChange={handleHeight}
               InputProps={{ endAdornment: <InputAdornment position="end">cm</InputAdornment>, min: 1, max: 300 }}
+              sx={{ width: 1 / 2 }}
             />
           </Box>
 
           <Box display="flex">
-            <Box display='flex' sx={{ alignItems: 'center', justifyContent: 'center', width: 1 / 5 }}>
+            <Box display='flex' sx={{ alignItems: 'center', justifyContent: 'center', width: 1 / 2 }}>
               <Typography>
                 Activity Level
               </Typography>
@@ -200,7 +194,7 @@ const SettingsProfile = () => {
           </Box>
 
           <Box display="flex">
-            <Box display='flex' sx={{ alignItems: 'center', justifyContent: 'center', width: 1 / 5 }}>
+            <Box display='flex' sx={{ alignItems: 'center', justifyContent: 'center', width: 1 / 2 }}>
               <Typography>
                 Climate
               </Typography>
@@ -218,19 +212,9 @@ const SettingsProfile = () => {
             </FormControl>
           </Box>
 
-          <Button onClick={submit}>
+          <Button onClick={submit} sx={{ fontSize: '1.5rem', my: '3vh' }}>
             Save changes
           </Button>
-
-          <Typography>
-            *Whenever user changes any of their info, we should recalculate their recommended water intake
-          </Typography>
-          <Typography>
-            *Weight must be changed in the Weight Progress page, not here
-          </Typography>
-
-
-
         </Box>
       </Box>
       <Snackbar open={open} autoHideDuration={3000} message="User profile changes saved!" onClose={handleClose} action={action(handleClose)} ContentProps={{ sx: { backgroundColor: 'green' } }} />
