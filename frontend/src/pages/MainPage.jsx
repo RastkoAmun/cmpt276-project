@@ -11,6 +11,7 @@ import {
 import { UserContext } from "../index";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import HydrationTable from "../components/tables/HydrationTable";
+import ExerciseTable from "../components/tables/ExerciseTable";
 import { useNavigate } from "react-router-dom";
 
 const buttonStyle = {
@@ -52,7 +53,7 @@ const MainPage = () => {
       case "food":
         return <Typography variant="h2"> Food will go here </Typography>;
       case "exercise":
-        return <Typography variant="h2"> Exercise will go here </Typography>;
+        return <ExerciseTable globalUser={globalUser} />;
       case "sleep":
         return <Typography variant="h2"> Sleep will go here </Typography>;
       default:

@@ -2,6 +2,7 @@ package com.cmpt276project.projectbackend.controllers;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +72,8 @@ public class ExerciseSummaryController {
             @PathVariable("date") String date) {
         try {
             LocalDate exer_date = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
-            ExerciseSummary exerciseSummaryEntry = exerciseSummaryRepository.findByUidAndExerSumDate(userId, exer_date).get();
+            ExerciseSummary exerciseSummaryEntry = exerciseSummaryRepository.findByUidAndExerSumDate(userId, exer_date)
+                    .get();
             exerciseSummaryEntry.setTotalDuration(exerciseSummaryRequest.getTotalDuration());
             exerciseSummaryEntry.setTotalCalBurned(exerciseSummaryRequest.getTotalCalBurned());
             exerciseSummaryEntry.setExerSumDate(exerciseSummaryRequest.getExerSumDate());
@@ -88,6 +90,12 @@ public class ExerciseSummaryController {
         LocalDate exer_date = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
         Optional<ExerciseSummary> summary = exerciseSummaryRepository.findByUidAndExerSumDate(userId, exer_date);
         return ResponseEntity.ok(summary);
+    }
+
+    @GetMapping("/{uid}")
+    public List<ExerciseSummary> getHydrations(@PathVariable long uid) {
+        List<ExerciseSummary> summaryList = exerciseSummaryRepository.findByUid(uid);
+        return summaryList;
     }
 
 }
