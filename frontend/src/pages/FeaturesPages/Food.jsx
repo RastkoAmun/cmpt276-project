@@ -8,8 +8,10 @@ import {
   List,
   ListItem,
   ListItemText,
-  withTheme,
+  ListItemButton,
+  IconButton,
 } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { UserContext } from '../../index';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -19,11 +21,12 @@ const Food = () => {
   const [foods, setFoods] = useState([]);
   const [selectedFood, setSelectedFood] = useState(null);
   const [weight, setWeight] = useState(0);
-  const [addedFoods, setAddedFoods] = useState([]);
   const [totalCalories, setTotalCalories] = useState(0);
   const [calorieGoal, setCalorieGoal] = useState(0);
   const [editingGoal, setEditingGoal] = useState(false);
   const [error, setError] = useState('');
+  const [errorGoal, setGoalError] = useState('');
+  const [completedFoods, setCompletedExercises] = useState([]);
 
   const { globalUser } = useContext(UserContext);
   const navigate = useNavigate();
@@ -110,7 +113,7 @@ const Food = () => {
         name: selectedFood.food.label,
         weight: weight,
       };
-      setAddedFoods((prevFoods) => [...prevFoods, addedFood]);
+      //setAddedFoods((prevFoods) => [...prevFoods, addedFood]);
 
       setSelectedFood(null);
       setWeight(0);
@@ -125,22 +128,29 @@ const Food = () => {
   };
 
   const handleSaveCalorieGoal = () => {
-    const foodSummary = {
-      uid: 79,
-      targetCalories: calorieGoal,
-      consumedCalories: totalCalories,
-      date: formattedDate,
-    };
+    if (calorieGoal < 800 || calorieGoal > 3400) {
+      setGoalError('Calorie goal must be between 800 and 3400.');
+      return;
+    } else {
+      setGoalError('');
 
-    axios
-      .post('http://localhost:8080/foodsummary/add', foodSummary)
-      .then((response) => {
-        console.log('Calorie goal added to food summary:', response.data);
-        setEditingGoal(false);
-      })
-      .catch((error) => {
-        console.error('Error adding calorie goal to food summary:', error);
-      });
+      const foodSummary = {
+        uid: globalUser.uid,
+        targetCalories: calorieGoal,
+        consumedCalories: totalCalories,
+        date: formattedDate,
+      };
+
+      axios
+        .post('http://localhost:8080/foodsummary/add', foodSummary)
+        .then((response) => {
+          console.log('Calorie goal added to food summary:', response.data);
+          setEditingGoal(false);
+        })
+        .catch((error) => {
+          console.error('Error adding calorie goal to food summary:', error);
+        });
+    }
   };
 
   const handleEditGoal = () => {
@@ -152,11 +162,12 @@ const Food = () => {
       .get(`http://localhost:8080/data/food/${globalUser.uid}/${formattedDate}`)
       .then((response) => {
         const data = response.data;
-        const addedFoodsData = data.map((food) => ({
+        const completedFoods = data.map((food) => ({
+          id: food.foodId,
           name: food.foodName,
           weight: food.weight,
         }));
-        setAddedFoods(addedFoodsData);
+        setCompletedExercises(completedFoods);
       })
       .catch((error) => {
         console.error('Error fetching added foods:', error);
@@ -195,7 +206,9 @@ const Food = () => {
     };
     console.log(food);
 
-    axios.post('http://localhost:8080/data/food/add', food);
+    axios.post('http://localhost:8080/data/food/add', food).then(() => {
+      getAddedFoods();
+    });
   };
 
   const updateFoodSummary = (consumedCalories) => {
@@ -214,6 +227,24 @@ const Food = () => {
       .catch((error) => {
         console.error('Error updating food summary:', error);
       });
+  };
+
+  const handleDeleteFood = async (id) => {
+    const food = (await axios.get(`http://localhost:8080/data/food/${id}`)).data;
+    await axios.delete(`http://localhost:8080/data/food/${id}`);
+
+    let newTotalCaloriesConsumed = totalCalories - food.calorie;
+
+    const updateSummary = {
+      uid: globalUser.uid,
+      targetCalories: calorieGoal,
+      consumedCalories: newTotalCaloriesConsumed,
+      date: formattedDate,
+    };
+    await axios.put(`http://localhost:8080/foodsummary/${globalUser.uid}/${formattedDate}`, updateSummary);
+
+    setTotalCalories(newTotalCaloriesConsumed);
+    getAddedFoods();
   };
 
   return (
@@ -245,6 +276,12 @@ const Food = () => {
         )}
       </Box>
 
+      {errorGoal && (
+        <Typography variant="body1" color="error">
+          {errorGoal}
+        </Typography>
+      )}
+
       <Box mt={2}>
         <FormControl>
           <TextField label="Enter a food item" value={foodQuery} onChange={handleFoodQueryChange} />
@@ -261,9 +298,9 @@ const Food = () => {
         <Box mt={2} sx={{ border: '1px solid #ccc', maxHeight: '200px', overflowY: 'scroll' }}>
           <List>
             {foods.slice(0, 5).map((food, index) => (
-              <ListItem button key={index} onClick={() => handleFoodSelection(food)}>
+              <ListItemButton key={index} onClick={() => handleFoodSelection(food)}>
                 <ListItemText primary={food.food.label} />
-              </ListItem>
+              </ListItemButton>
             ))}
           </List>
         </Box>
@@ -289,13 +326,20 @@ const Food = () => {
         <Typography variant="h4">
           <strong>Food List</strong>
         </Typography>
-        {addedFoods.length === 0 ? (
+        {completedFoods.length === 0 ? (
           <Typography variant="body1">No foods added yet.</Typography>
         ) : (
           <ul style={{ paddingInlineStart: '20px' }}>
-            {addedFoods.map((food, index) => (
-              <li key={index} style={{ padding: '3px 0' }}>
+            {completedFoods.map((food) => (
+              <li key={food.id} style={{ padding: '3px 0' }}>
                 <strong>{food.name}</strong> - Weight: {food.weight} grams
+                <IconButton
+                  aria-label="delete"
+                  sx={{ p: 0, ml: 1 }}
+                  onClick={() => handleDeleteFood(food.id)}
+                >
+                  <DeleteIcon />
+                </IconButton>
               </li>
             ))}
           </ul>
