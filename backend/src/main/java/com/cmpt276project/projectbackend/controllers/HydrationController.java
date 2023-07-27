@@ -3,7 +3,10 @@ package com.cmpt276project.projectbackend.controllers;
 import com.cmpt276project.projectbackend.models.Hydration;
 import com.cmpt276project.projectbackend.models.HydrationRepository;
 
+import java.util.Collections;
 import java.util.List;
+
+import org.hibernate.mapping.Collection;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -32,13 +35,15 @@ public class HydrationController {
     }
 
     @GetMapping("/{uid}")
-    public Hydration getHydrations(@PathVariable Integer uid) {
-        return hydrationRepo.findByUid(uid);
+    public List<Hydration> getHydrations(@PathVariable Integer uid) {
+        // return hydrationRepo.findByUid(uid);
+        List<Hydration> hydrationByUid = hydrationRepo.findByUid(uid);
+        return hydrationByUid;
     }
 
     @GetMapping("/{uid}/{intakeDate}")
-    public Hydration getHydrationsByDate(@PathVariable Integer uid, 
-        @PathVariable String intakeDate) {
+    public Hydration getHydrationsByDate(@PathVariable Integer uid,
+            @PathVariable String intakeDate) {
         return hydrationRepo.findByUidAndIntakeDate(uid, intakeDate);
     }
 
@@ -58,8 +63,8 @@ public class HydrationController {
     }
 
     @PutMapping("/{uid}/{intakeDate}")
-    public ResponseEntity<Hydration> updateHydrationRecord(@RequestBody Hydration hydrationRequest, 
-        @PathVariable Integer uid, @PathVariable String intakeDate) {
+    public ResponseEntity<Hydration> updateHydrationRecord(@RequestBody Hydration hydrationRequest,
+            @PathVariable Integer uid, @PathVariable String intakeDate) {
         try {
             Hydration hydrationEntry = hydrationRepo.findByUidAndIntakeDate(uid, intakeDate);
             hydrationEntry.setUid(hydrationRequest.getUid());

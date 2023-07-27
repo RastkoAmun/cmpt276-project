@@ -7,15 +7,10 @@ import {
   MenuItem,
   Paper,
   Typography,
-  alpha,
-  styled,
 } from "@mui/material";
 import { UserContext } from "../index";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-
-const paperStyle = {
-  p: 2,
-};
+import HydrationTable from "../components/tables/HydrationTable";
 
 const buttonStyle = {
   p: 0,
@@ -38,7 +33,8 @@ const MainPage = () => {
 
   return (
     <Box>
-      <Grid container spacing={5}>
+      <Typography variant="h3">Welcome, {globalUser.username}</Typography>
+      <Grid container spacing={5} mt={1}>
         <Grid item xs={8}>
           <Button
             id="demo-customized-button"
@@ -78,9 +74,11 @@ const MainPage = () => {
               Hydration
             </MenuItem>
           </Menu>
+
+          <HydrationTable globalUser={globalUser} />
         </Grid>
         <Grid item xs={4}>
-          <Paper sx={paperStyle}>
+          <Paper sx={{ p: 2 }}>
             <Box display="flex" justifyContent="space-between">
               <Typography variant="h5"> Profile </Typography>
               <Button variant="contained" sx={buttonStyle}>
