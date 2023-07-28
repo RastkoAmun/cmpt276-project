@@ -72,9 +72,16 @@ const SettingsProfile = () => {
 
     setSelectedAge(res.data.userProfile.age);
     setSelectedHeight(res.data.userProfile.height);
-    setSelectedGender(res.data.userProfile.sex.toLowerCase());
-    setSelectedClimate(res.data.userProfile.climate.toLowerCase());
-    setSelectedActivityLevel(res.data.userProfile.activityLevel.toLowerCase());
+
+    if (res.data.userProfile.sex)
+      setSelectedGender(res.data.userProfile.sex.toLowerCase())
+
+    if (res.data.userProfile.activityLevel)
+      setSelectedActivityLevel(res.data.userProfile.activityLevel.toLowerCase())
+
+    if (res.data.userProfile.climate)
+      setSelectedClimate(res.data.userProfile.climate.toLowerCase())
+
   }
 
   const validateInputs = () => {
@@ -108,9 +115,9 @@ const SettingsProfile = () => {
       "uid": globalUser.uid,
       "age": selectedAge,
       "height": selectedHeight,
-      "sex": selectedGender,
-      "activityLevel": selectedActivityLevel,
-      "climate": selectedClimate
+      "sex": selectedGender || null,
+      "activityLevel": selectedActivityLevel || null,
+      "climate": selectedClimate || null
     })
 
     setOpen(true);
