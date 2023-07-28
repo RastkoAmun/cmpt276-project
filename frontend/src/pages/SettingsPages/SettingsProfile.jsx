@@ -87,6 +87,7 @@ const SettingsProfile = () => {
 
     setSelectedAge(res.data.userProfile.age);
     setSelectedHeight(res.data.userProfile.height);
+    setSelectedWeight(res.data.userProfile.weight);
 
     if (res.data.userProfile.sex)
       setSelectedGender(res.data.userProfile.sex.toLowerCase())
