@@ -136,7 +136,7 @@ const Login = () => {
             </Box>
 
             <Typography variant='body2' mt={1}
-              component={Link} to={'/forgotpassword'} color='primary'
+              component={Link} to={'/forgetpassword'} color='primary'
               sx={{ textDecoration: 'none' }}>
               Forgot password (TO BE IMPLEMENTED)
             </Typography>
