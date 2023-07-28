@@ -80,6 +80,11 @@ const MainPage = () => {
     handleClose();
   }, []);
 
+  const capitalizeCharacteristic = (word) => {
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+  }
+
+
   return (
     <Box>
       <Typography variant="h3">Welcome, {username}</Typography>
@@ -143,8 +148,30 @@ const MainPage = () => {
               <Typography pt={2}>
                 Name: {globalUser ? globalUser.username : null}
               </Typography>
-              <Typography pt={2}>Height: </Typography>
-              <Typography pt={2}>Weight: </Typography>
+              <Typography pt={2}>Gender: {
+                globalUser
+                  ? globalUser.userProfile.sex
+                    ? capitalizeCharacteristic(globalUser.userProfile.sex)
+                    : "N/A"
+                  : null}
+              </Typography>
+              <Typography pt={2}>Age: {globalUser ? globalUser.userProfile.age : null}</Typography>
+              <Typography pt={2}>Height: {globalUser ? globalUser.userProfile.height : null}</Typography>
+              <Typography pt={2}>Weight: {globalUser ? globalUser.userProfile.weight : null}</Typography>
+              <Typography pt={2}>Activity Level: {
+                globalUser
+                  ? globalUser.userProfile.activityLevel
+                    ? capitalizeCharacteristic(globalUser.userProfile.activityLevel)
+                    : "N/A"
+                  : null}
+              </Typography>
+              <Typography pt={2}>Climate: {
+                globalUser
+                  ? globalUser.userProfile.climate
+                    ? capitalizeCharacteristic(globalUser.userProfile.climate)
+                    : "N/A"
+                  : null}
+              </Typography>
             </Box>
           </Paper>
         </Grid>
