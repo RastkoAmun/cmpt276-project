@@ -23,6 +23,8 @@ import Login from './pages/LoginPages/Login';
 import Setup from './pages/SetupPages/Setup';
 import SignUp from './pages/LoginPages/SignUp';
 import ForgetPassword from './pages/LoginPages/ForgetPassword';
+import ChangePassword from './pages/LoginPages/ChangePassword';
+import PasswordChanged from './pages/LoginPages/PasswordChanged';
 import ResetLink from './pages/LoginPages/ResetLink';
 import Admin from './pages/FeaturesPages/Admin';
 import { ThemeProvider } from '@mui/material';
@@ -112,6 +114,14 @@ const CustomRouterProvider = () => {
       path: 'forgetpassword',
       element: <ForgetPassword />
     },
+    {
+      path: 'passwordchanged',
+      element: <PasswordChanged />
+    },
+    {
+      path: 'changepassword/:token',
+      element: <ChangePassword />
+    },  
     {
       path: 'resetlink',
       element: <ResetLink />
