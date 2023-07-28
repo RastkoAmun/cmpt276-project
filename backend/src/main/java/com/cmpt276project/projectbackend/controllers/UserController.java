@@ -1,9 +1,13 @@
 package com.cmpt276project.projectbackend.controllers;
 
 import java.io.IOException;
+import java.net.PasswordAuthentication;
 import java.util.Map;
+import java.util.Properties;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.rsocket.server.RSocketServer.Transport;
 import org.springframework.web.bind.annotation.*;
 
 import com.cmpt276project.projectbackend.enums.ActivityLevel;
@@ -12,6 +16,10 @@ import com.cmpt276project.projectbackend.enums.Sex;
 import com.cmpt276project.projectbackend.models.User;
 import com.cmpt276project.projectbackend.models.UserRepository;
 
+import jakarta.mail.*;
+import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -45,6 +53,57 @@ public class UserController {
     return user;
   }
 
+  private User sendEmail (User user, HttpServletRequest req) {
+      user.setResetToken(UUID.randomUUID().toString());
+
+      // // Save token to database
+      userRepo.save(user);
+      String appUrl = req.getHeader("origin");
+
+      // // Email message
+      String to = user.getEmail();
+      // provide sender's email ID
+      final String username = "healthtrackrr@gmail.com";
+      // provide Mailtrap's password
+      final String password = "gnlfvwtbocntengo";
+      Authenticator authenticator = new Authenticator() {
+        protected jakarta.mail.PasswordAuthentication getPasswordAuthentication() {
+          return new jakarta.mail.PasswordAuthentication(username, password);
+        }
+      };
+      String host = "smtp.gmail.com";
+      Properties props = new Properties();
+      props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+      props.put("mail.smtp.auth", "true");
+      props.put("mail.smtp.starttls.enable", "true");
+      props.put("mail.smtp.host", host);
+      props.put("mail.smtp.port", "587");
+      Session session = Session.getInstance(props, authenticator);
+
+      try {
+        Message message = new MimeMessage(session);
+        // message.setFrom(new InternetAddress(from));
+        message.setRecipients(Message.RecipientType.TO,
+            InternetAddress.parse(to));
+        message.setSubject("Request to Change Password");
+        message.setText("To reset your password, click the link below:\n"
+            + appUrl
+            + "/changepassword/" + user.getResetToken()
+            + "\n\nThanks,\nHealthTracker Support Team"
+            + "\n\n"
+            + "***********************************\n"
+            + "This is an auto-generated email.\n"
+            + "Please do not reply to this email.\n"
+            + "***********************************");
+      
+        jakarta.mail.Transport.send(message);
+        return user;
+
+      } catch (MessagingException e) {
+        throw new RuntimeException(e);
+      }
+  }
+
   @PostMapping("/login")
   public User login(@RequestBody UserRequest request, HttpServletResponse res, HttpServletRequest req,
       HttpSession session)
@@ -72,6 +131,21 @@ public class UserController {
   @GetMapping("/logout")
   public void logout(HttpServletRequest req) {
     req.getSession().invalidate();
+  }
+
+  @PostMapping("/forgetpassword")
+  public User forgetPassword(@RequestBody UserRequest request, HttpServletResponse res, HttpServletRequest req)
+      throws IOException, AddressException {
+    String email = request.email();
+    User user = userRepo.findByEmail(email);
+
+    if (user == null) {
+      res.sendError(400, "There is no account with associated email address");
+      return null;
+    } else {
+      user = sendEmail(user, req);
+      return user;
+    }
   }
 
   @PostMapping("/register")

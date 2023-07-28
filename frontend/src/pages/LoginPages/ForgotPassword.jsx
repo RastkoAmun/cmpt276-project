@@ -25,6 +25,12 @@ const ForgotPassword = () => {
     navigate('/login');
   }
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      submit();
+    }
+  };
+
   const submit = async () => {
     let invEmail = false;
 
@@ -50,7 +56,7 @@ const ForgotPassword = () => {
           setEmailError(resJson.message);
           console.log('error');
         } else {
-          navigate('/resetlink')
+          navigate('/login')
         }
       } catch (error) {
         console.log(error)
@@ -91,6 +97,7 @@ const ForgotPassword = () => {
               size='small'
               value={email}
               onChange={(e) => { setEmail(e.target.value) }}
+              onKeyDown={handleKeyDown}
               error={invalidEmail ? true : false}
               helperText={invalidEmail && 'Please enter a valid email address'}
               required

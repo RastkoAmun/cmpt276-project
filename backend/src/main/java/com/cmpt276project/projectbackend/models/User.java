@@ -19,6 +19,7 @@ public class User implements Comparable<User> {
   private String password;
   private String email;
   private Boolean isAdmin;
+  private String resetToken;
 
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "up_id")
@@ -76,6 +77,14 @@ public class User implements Comparable<User> {
     this.isAdmin = isAdmin;
   }
 
+  public String getResetToken() {
+    return resetToken;
+  }
+
+  public void setResetToken(String resetToken) {
+    this.resetToken = resetToken;
+  }
+  
   public static class UserBuilder {
     private String username = "";
     private String password = "";
