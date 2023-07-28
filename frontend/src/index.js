@@ -22,6 +22,8 @@ import MainPage from './pages/MainPage';
 import Login from './pages/LoginPages/Login';
 import Setup from './pages/SetupPages/Setup';
 import SignUp from './pages/LoginPages/SignUp';
+import ForgotPassword from './pages/LoginPages/ForgotPassword';
+import ResetLink from './pages/LoginPages/ResetLink';
 import Admin from './pages/FeaturesPages/Admin';
 import { ThemeProvider } from '@mui/material';
 import theme from '../src/utils/lightTheme'
@@ -105,6 +107,14 @@ const CustomRouterProvider = () => {
     {
       path: 'setup',
       element: <Setup />
+    },
+    {
+      path: 'forgotpassword',
+      element: <ForgotPassword />
+    },
+    {
+      path: 'resetlink',
+      element: <ResetLink />
     },
     {
       path: 'signup',
