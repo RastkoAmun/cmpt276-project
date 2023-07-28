@@ -14,7 +14,7 @@ import HydrationTable from "../components/tables/HydrationTable";
 import ExerciseTable from "../components/tables/ExerciseTable";
 import FoodTable from "../components/tables/FoodTable";
 import SleepTable from "../components/tables/SleepTable";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const buttonStyle = {
   p: 0,
@@ -95,10 +95,10 @@ const MainPage = () => {
             onClick={handleClick}
             endIcon={<KeyboardArrowDownIcon />}
             fullWidth
-            // sx={{ textTransform: 'capitalize' }}
+          // sx={{ textTransform: 'capitalize' }}
           >
             {/* {currentTable} */}
-            {currentTable !== "Select Table" ? currentTable 
+            {currentTable !== "Select Table" ? currentTable
               : "Select which table you want to check"}
           </Button>
           <Menu
@@ -135,7 +135,7 @@ const MainPage = () => {
           <Paper sx={{ p: 2 }}>
             <Box display="flex" justifyContent="space-between">
               <Typography variant="h5"> Profile </Typography>
-              <Button variant="contained" sx={buttonStyle}>
+              <Button variant="contained" sx={buttonStyle} component={Link} to='/settings/profile'>
                 Edit
               </Button>
             </Box>
