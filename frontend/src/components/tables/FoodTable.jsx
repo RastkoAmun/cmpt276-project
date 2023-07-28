@@ -13,14 +13,14 @@ import { useNavigate } from "react-router-dom";
 
 const HydrationTable = ({ globalUser }) => {
   const navigate = useNavigate();
-  const [exerciseData, setExerciseData] = useState([]);
+  const [foodData, setFoodData] = useState([]);
 
   useEffect(() => {
     if (globalUser) {
       axios
-        .get(`http://localhost:8080/exercisesummary/${globalUser.uid}`)
+        .get(`http://localhost:8080/foodsummary/${globalUser.uid}`)
         .then((results) => {
-          setExerciseData(results.data);
+          setFoodData(results.data);
         });
     } else {
       navigate("/login");
@@ -33,19 +33,23 @@ const HydrationTable = ({ globalUser }) => {
         <TableHead>
           <TableRow>
             <TableCell align="left">Date</TableCell>
-            <TableCell align="left">Calories Burned</TableCell>
-            <TableCell align="left">Duration</TableCell>
+            <TableCell align="left">Goal</TableCell>
+            <TableCell align="left">Consumed Calories</TableCell>
+            <TableCell align="left">Achieved</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {exerciseData.map((row) => (
+          {foodData.map((row) => (
             <TableRow
               key={row.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell align="left">{row.exerSumDate}</TableCell>
-              <TableCell align="left">{row.totalCalBurned}</TableCell>
-              <TableCell align="left">{row.totalDuration}</TableCell>
+              <TableCell align="left">{row.date}</TableCell>
+              <TableCell align="left">{row.targetCalories}</TableCell>
+              <TableCell align="left">{row.consumedCalories}</TableCell>
+              <TableCell align="left">
+                {row.targetCalories <= row.consumedCalories ? "Yes" : "No"}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
