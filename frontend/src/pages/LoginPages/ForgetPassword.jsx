@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { } from 'react';
 import { useState } from 'react';
 import {
   Box,
@@ -10,8 +10,7 @@ import {
 }
   from '@mui/material';
 import { useTheme } from '@mui/material/styles'
-import { Link, useNavigate } from 'react-router-dom';
-import { UserContext } from '../../index'
+import { useNavigate } from 'react-router-dom';
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState('');
