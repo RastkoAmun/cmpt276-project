@@ -13,19 +13,21 @@ import { useNavigate } from "react-router-dom";
 
 const HydrationTable = ({ globalUser }) => {
   const navigate = useNavigate();
-  const [foodData, setFoodData] = useState([]);
+  const [sleepData, setSleepData] = useState([]);
 
   useEffect(() => {
     if (globalUser) {
       axios
-        .get(`http://localhost:8080/foodsummary/${globalUser.uid}`)
+        .get(`http://localhost:8080/sleep/sleep-data/${globalUser.uid}`)
         .then((results) => {
-          setFoodData(results.data);
+          setSleepData(results.data);
         });
     } else {
       navigate("/login");
     }
   }, [globalUser, navigate]);
+
+  console.log(sleepData)
 
   return (
     <TableContainer component={Paper}>
@@ -33,23 +35,21 @@ const HydrationTable = ({ globalUser }) => {
         <TableHead>
           <TableRow>
             <TableCell align="left">Date</TableCell>
-            <TableCell align="left">Goal</TableCell>
-            <TableCell align="left">Consumed Calories</TableCell>
-            <TableCell align="left">Achieved</TableCell>
+            <TableCell align="left">Bed Time</TableCell>
+            <TableCell align="left">WakeUp Time</TableCell>
+            <TableCell align="left">Satisfaction</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {foodData.map((row) => (
+          {sleepData.map((row) => (
             <TableRow
-              key={row.id}
+              key={row.sleepId}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell align="left">{row.date}</TableCell>
-              <TableCell align="left">{row.targetCalories}</TableCell>
-              <TableCell align="left">{row.consumedCalories}</TableCell>
-              <TableCell align="left">
-                {row.targetCalories <= row.consumedCalories ? "Yes" : "No"}
-              </TableCell>
+              <TableCell align="left">{row.bedTime}</TableCell>
+              <TableCell align="left">{row.wakeUpTime}</TableCell>
+              <TableCell align="left">{row.satisfactionLevel}</TableCell>
             </TableRow>
           ))}
         </TableBody>

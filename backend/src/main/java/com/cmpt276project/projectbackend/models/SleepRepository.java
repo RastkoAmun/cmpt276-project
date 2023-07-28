@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface SleepRepository extends JpaRepository<Sleep, Long> {    
 
-    Sleep findByUid(Long id);
+    // Sleep findByUid(Long id);
 
     List<Sleep> findByDateAfter(LocalDate fiveDaysAgo);
 
@@ -19,4 +19,6 @@ public interface SleepRepository extends JpaRepository<Sleep, Long> {
     List<Sleep> findByUidAndDateAfterOrderByDateAsc(Long uid, LocalDate fiveDaysAgo);
 
     Sleep findByDateAndUid(LocalDate date, Integer uid);
+
+    List<Sleep> findByUid(Long uid);
 }

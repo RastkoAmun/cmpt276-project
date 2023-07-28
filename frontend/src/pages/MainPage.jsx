@@ -13,6 +13,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import HydrationTable from "../components/tables/HydrationTable";
 import ExerciseTable from "../components/tables/ExerciseTable";
 import FoodTable from "../components/tables/FoodTable";
+import SleepTable from "../components/tables/SleepTable";
 import { useNavigate } from "react-router-dom";
 
 const buttonStyle = {
@@ -56,7 +57,7 @@ const MainPage = () => {
       case "exercise":
         return <ExerciseTable globalUser={globalUser} />;
       case "sleep":
-        return <Typography variant="h2"> Sleep will go here </Typography>;
+        return <SleepTable globalUser={globalUser} />;
       default:
         return <></>;
     }
@@ -94,8 +95,11 @@ const MainPage = () => {
             onClick={handleClick}
             endIcon={<KeyboardArrowDownIcon />}
             fullWidth
+            // sx={{ textTransform: 'capitalize' }}
           >
-            {currentTable}
+            {/* {currentTable} */}
+            {currentTable !== "Select Table" ? currentTable 
+              : "Select which table you want to check"}
           </Button>
           <Menu
             id="demo-customized-menu"
@@ -123,7 +127,7 @@ const MainPage = () => {
             </MenuItem>
           </Menu>
           <Typography variant="body1" textAlign="center" mt={3} mb={1}>
-            Displaying your history for {currentTable} feature
+            Displaying your history for {currentTable !== "Select Table" ? currentTable : "specific"} feature
           </Typography>
           {displayTable()}
         </Grid>
