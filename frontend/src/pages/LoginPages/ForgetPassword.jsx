@@ -13,10 +13,10 @@ import { useTheme } from '@mui/material/styles'
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../index'
 
-const ForgotPassword = () => {
+const ForgetPassword = () => {
   const [email, setEmail] = useState('');
   const [invalidEmail, setInvalidEmail] = useState(false);
-  const {emailError, setEmailError } = useState(null);
+  const [resetError, setResetError] = useState('');
 
   const navigate = useNavigate();
   const theme = useTheme();
@@ -53,10 +53,10 @@ const ForgotPassword = () => {
         const resJson = await res.json();
         console.log(resJson)
         if (resJson.status) {
-          setEmailError(resJson.message);
+          setResetError(resJson.message);
           console.log('error');
         } else {
-          navigate('/login')
+          navigate('/resetlink')
         }
       } catch (error) {
         console.log(error)
@@ -106,8 +106,8 @@ const ForgotPassword = () => {
             <Box mt={4} display='flex' flexDirection='column'>
             {/* <Box sx={{ flexGrow: 1 }} /> */}
             {
-                emailError ?
-                  <Typography color="error" mb={2}>{emailError}</Typography>
+                resetError ?
+                  <Typography color="error" mb={2}>{resetError}</Typography>
                   : null
               }
               <Button variant='contained' mt={1}
@@ -134,4 +134,4 @@ const ForgotPassword = () => {
   );
 }
 
-export default ForgotPassword;
+export default ForgetPassword;
