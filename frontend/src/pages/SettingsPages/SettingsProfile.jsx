@@ -111,7 +111,7 @@ const SettingsProfile = () => {
       return false;
     }
 
-    if (selectedWeight < 1 || selectedHeight > 2000) {
+    if (selectedWeight < 1 || selectedWeight > 2000) {
       setOpenWeightError(true);
       return false;
     }
