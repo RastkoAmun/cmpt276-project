@@ -2,6 +2,7 @@ package com.cmpt276project.projectbackend.controllers;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.cmpt276project.projectbackend.models.ExerciseSummary;
 import com.cmpt276project.projectbackend.models.FoodSummary;
 import com.cmpt276project.projectbackend.models.FoodSummaryRepository;
 
@@ -84,5 +86,11 @@ public class FoodSummaryController {
         LocalDate foodDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
         Optional<FoodSummary> summary = foodSummaryRepository.findByUidAndDate(userId, foodDate);
         return ResponseEntity.ok(summary);
+    }
+
+    @GetMapping("/{uid}")
+    public List<FoodSummary> getHydrations(@PathVariable long uid) {
+        List<FoodSummary> summaryList = foodSummaryRepository.findByUid(uid);
+        return summaryList;
     }
 }
