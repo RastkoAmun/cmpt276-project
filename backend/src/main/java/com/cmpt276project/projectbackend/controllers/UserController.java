@@ -132,6 +132,32 @@ public class UserController {
     req.getSession().invalidate();
   }
 
+  @GetMapping("/changepassword/{token}")
+  public User getUserFromToken(@PathVariable String token) {
+    User user = userRepo.findByResetToken(token);
+    if (user != null) {
+      return user;
+    } else {
+      return null;
+    }
+  }
+
+  @PostMapping("/changepassword/{token}")
+  public User changePassword(@RequestBody UserRequest request, HttpServletResponse res, HttpServletRequest req,
+      @PathVariable String token)
+      throws IOException, AddressException {
+    String newPassword = request.password();
+    User user = userRepo.findByResetToken(token);
+
+    if (user == null) {
+      return null;
+    } else {
+      user.setPassword(newPassword);
+      userRepo.save(user);
+      return user;
+    }
+  }
+
   @PostMapping("/forgetpassword")
   public User forgetPassword(@RequestBody UserRequest request, HttpServletResponse res, HttpServletRequest req)
       throws IOException, AddressException {

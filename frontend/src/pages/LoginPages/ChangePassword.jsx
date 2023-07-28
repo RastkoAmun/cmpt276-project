@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react';
 import { useState } from 'react'
 import {
   Box,
@@ -10,13 +10,15 @@ import {
 }
   from '@mui/material'
 import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles'
 
 const ChangePassword = () => {
   const close = async () => {
     navigate('/login');
   }
+  
+  const {token} = useParams();
 
   const [password, setPassword] = useState('');
   const [confPassword, setConfPassword] = useState('');
@@ -47,28 +49,50 @@ const ChangePassword = () => {
       setPasswordMismatch(true);
     }
 
-    navigate('/passwordchanged');
-    // if (!invPassword && !passMismatch) {
-    //   try {
-    //     const body = { username, email, password }
-    //     const res = await fetch('http://localhost:8080/user/register', {
-    //       method: "POST",
-    //       headers: { "Content-Type": "application/json" },
-    //       body: JSON.stringify(body)
-    //     })
-    //     const resJson = await res.json();
-    //     console.log(resJson)
-    //     if (resJson.status) {
-    //       setRegistrationError(resJson.message);
-    //       console.log('error');
-    //     } else {
-    //       navigate('/login')
-    //     }
-    //   } catch (error) {
-    //     console.log(error)
-    //   }
-    // }
+    if (!invPassword && !passMismatch) {
+      try {
+        const body = {password }
+        const res = await fetch(`http://localhost:8080/user/changepassword/${token}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        })
+        const resJson = await res.json();
+        console.log(resJson)
+        if (resJson.status) {
+          setRegistrationError(resJson.message);
+          console.log('error');
+        } else {
+          navigate('/passwordchanged')
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
   }
+
+  // const checkToken = async () => {
+  //   try {
+  //     const user = await fetch(`http://localhost:8080/user/changepassword/${token}`, {
+  //       method: "GET",
+  //       credentials: "include"
+  //     })
+  //     const userCredentials = await user.json();
+
+  //     if (userCredentials.username) {
+  //       console.log(userCredentials);
+  //     } else {
+  //       navigate('/login');
+  //     }
+  //   } catch (e) {
+  //     console.log(e)
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   checkToken()
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center' }} >
@@ -151,7 +175,7 @@ const ChangePassword = () => {
 
               <Button variant='contained' mt={1}
                 onClick={close}
-                color='primary'
+                color='inherit'
                 sx={{ display: 'flex', padding: '10px' }}
               >
                 Close
@@ -164,5 +188,4 @@ const ChangePassword = () => {
     </Box>
   );
 }
-
 export default ChangePassword
