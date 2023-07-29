@@ -23,6 +23,7 @@ import Login from './pages/LoginPages/Login';
 import Setup from './pages/SetupPages/Setup';
 import SignUp from './pages/LoginPages/SignUp';
 import ForgetPassword from './pages/LoginPages/ForgetPassword';
+import ExpiredLink from './pages/LoginPages/ExpiredLink';
 import ChangePassword from './pages/LoginPages/ChangePassword';
 import PasswordChanged from './pages/LoginPages/PasswordChanged';
 import ResetLink from './pages/LoginPages/ResetLink';
@@ -125,6 +126,10 @@ const CustomRouterProvider = () => {
     {
       path: 'resetlink',
       element: <ResetLink />
+    },
+    {
+      path: 'expiredlink/:token',
+      element: <ExpiredLink />
     },
     {
       path: 'signup',

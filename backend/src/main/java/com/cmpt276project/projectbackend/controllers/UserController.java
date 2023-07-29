@@ -135,11 +135,7 @@ public class UserController {
   @GetMapping("/changepassword/{token}")
   public User getUserFromToken(@PathVariable String token) {
     User user = userRepo.findByResetToken(token);
-    if (user != null) {
-      return user;
-    } else {
-      return null;
-    }
+    return user;
   }
 
   @PostMapping("/changepassword/{token}")
