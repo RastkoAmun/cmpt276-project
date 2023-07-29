@@ -234,11 +234,11 @@ public class UserController {
         ActivityLevel level = ActivityLevel.valueOf(request.activityLevel().toUpperCase());
         profile.setActivityLevel(level);
       }
-      if (request.activityLevel() != null) {
+      if (request.climate() != null) {
         Climate climate = Climate.valueOf(request.climate().toUpperCase());
         profile.setClimate(climate);
       }
-      if (request.activityLevel() != null) {
+      if (request.sex() != null) {
         Sex sex = Sex.valueOf(request.sex().toUpperCase());
         profile.setSex(sex);
       }

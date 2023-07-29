@@ -14,7 +14,7 @@ import HydrationTable from "../components/tables/HydrationTable";
 import ExerciseTable from "../components/tables/ExerciseTable";
 import FoodTable from "../components/tables/FoodTable";
 import SleepTable from "../components/tables/SleepTable";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const buttonStyle = {
   p: 0,
@@ -80,6 +80,11 @@ const MainPage = () => {
     handleClose();
   }, []);
 
+  const capitalizeCharacteristic = (word) => {
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+  }
+
+
   return (
     <Box>
       <Typography variant="h3">Welcome, {username}</Typography>
@@ -95,10 +100,10 @@ const MainPage = () => {
             onClick={handleClick}
             endIcon={<KeyboardArrowDownIcon />}
             fullWidth
-            // sx={{ textTransform: 'capitalize' }}
+          // sx={{ textTransform: 'capitalize' }}
           >
             {/* {currentTable} */}
-            {currentTable !== "Select Table" ? currentTable 
+            {currentTable !== "Select Table" ? currentTable
               : "Select which table you want to check"}
           </Button>
           <Menu
@@ -135,7 +140,7 @@ const MainPage = () => {
           <Paper sx={{ p: 2 }}>
             <Box display="flex" justifyContent="space-between">
               <Typography variant="h5"> Profile </Typography>
-              <Button variant="contained" sx={buttonStyle}>
+              <Button variant="contained" sx={buttonStyle} component={Link} to='/settings/profile'>
                 Edit
               </Button>
             </Box>
@@ -143,8 +148,30 @@ const MainPage = () => {
               <Typography pt={2}>
                 Name: {globalUser ? globalUser.username : null}
               </Typography>
-              <Typography pt={2}>Height: </Typography>
-              <Typography pt={2}>Weight: </Typography>
+              <Typography pt={2}>Gender: {
+                globalUser
+                  ? globalUser.userProfile.sex
+                    ? capitalizeCharacteristic(globalUser.userProfile.sex)
+                    : "N/A"
+                  : null}
+              </Typography>
+              <Typography pt={2}>Age: {globalUser ? globalUser.userProfile.age : null}</Typography>
+              <Typography pt={2}>Height: {globalUser ? globalUser.userProfile.height : null}</Typography>
+              <Typography pt={2}>Weight: {globalUser ? globalUser.userProfile.weight : null}</Typography>
+              <Typography pt={2}>Activity Level: {
+                globalUser
+                  ? globalUser.userProfile.activityLevel
+                    ? capitalizeCharacteristic(globalUser.userProfile.activityLevel)
+                    : "N/A"
+                  : null}
+              </Typography>
+              <Typography pt={2}>Climate: {
+                globalUser
+                  ? globalUser.userProfile.climate
+                    ? capitalizeCharacteristic(globalUser.userProfile.climate)
+                    : "N/A"
+                  : null}
+              </Typography>
             </Box>
           </Paper>
         </Grid>

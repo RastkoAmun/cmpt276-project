@@ -9,28 +9,39 @@ const SettingsProfile = () => {
   const [selectedGender, setSelectedGender] = useState("");
   const [selectedAge, setSelectedAge] = useState("");
   const [selectedHeight, setSelectedHeight] = useState("");
+  const [selectedWeight, setSelectedWeight] = useState("");
   const [selectedActivityLevel, setSelectedActivityLevel] = useState("");
   const [selectedClimate, setSelectedClimate] = useState("");
   const [refresh, setRefresh] = useState(0);
   const [open, setOpen] = useState(false);
   const [openAgeError, setOpenAgeError] = useState(false);
   const [openHeightError, setOpenHeightError] = useState(false);
+  const [openWeightError, setOpenWeightError] = useState(false);
 
   const { globalUser } = useContext(UserContext);
 
   const handleGender = (event) => {
     setSelectedGender(event.target.value);
-  };
+  }
+
   const handleActivityLevel = (event) => {
     setSelectedActivityLevel(event.target.value);
-  };
+  }
+
   const handleClimate = (event) => {
     setSelectedClimate(event.target.value);
   }
+
   const handleHeight = (event) => {
     const { value } = event.target;
     setSelectedHeight(value);
   }
+
+  const handleWeight = (event) => {
+    const { value } = event.target;
+    setSelectedWeight(value);
+  }
+
   const handleAge = (event) => {
     const { value } = event.target;
     setSelectedAge(value);
@@ -45,7 +56,11 @@ const SettingsProfile = () => {
   }
 
   const handleCloseHeightError = () => {
-    setOpenAgeError(false);
+    setOpenHeightError(false);
+  }
+
+  const handleCloseWeightError = () => {
+    setOpenWeightError(false);
   }
 
   const action = (func) => {
@@ -72,9 +87,17 @@ const SettingsProfile = () => {
 
     setSelectedAge(res.data.userProfile.age);
     setSelectedHeight(res.data.userProfile.height);
-    setSelectedGender(res.data.userProfile.sex.toLowerCase());
-    setSelectedClimate(res.data.userProfile.climate.toLowerCase());
-    setSelectedActivityLevel(res.data.userProfile.activityLevel.toLowerCase());
+    setSelectedWeight(res.data.userProfile.weight);
+
+    if (res.data.userProfile.sex)
+      setSelectedGender(res.data.userProfile.sex.toLowerCase())
+
+    if (res.data.userProfile.activityLevel)
+      setSelectedActivityLevel(res.data.userProfile.activityLevel.toLowerCase())
+
+    if (res.data.userProfile.climate)
+      setSelectedClimate(res.data.userProfile.climate.toLowerCase())
+
   }
 
   const validateInputs = () => {
@@ -85,6 +108,11 @@ const SettingsProfile = () => {
 
     if (selectedHeight < 30 || selectedHeight > 300) {
       setOpenHeightError(true);
+      return false;
+    }
+
+    if (selectedWeight < 1 || selectedWeight > 2000) {
+      setOpenWeightError(true);
       return false;
     }
 
@@ -108,9 +136,10 @@ const SettingsProfile = () => {
       "uid": globalUser.uid,
       "age": selectedAge,
       "height": selectedHeight,
-      "sex": selectedGender,
-      "activityLevel": selectedActivityLevel,
-      "climate": selectedClimate
+      "weight": selectedWeight,
+      "sex": selectedGender || null,
+      "activityLevel": selectedActivityLevel || null,
+      "climate": selectedClimate || null
     })
 
     setOpen(true);
@@ -176,6 +205,21 @@ const SettingsProfile = () => {
           <Box display="flex">
             <Box display='flex' sx={{ alignItems: 'center', justifyContent: 'center', width: 1 / 2 }}>
               <Typography>
+                Weight
+              </Typography>
+            </Box>
+            <TextField
+              type="number"
+              value={selectedWeight}
+              onChange={handleWeight}
+              InputProps={{ endAdornment: <InputAdornment position="end">lbs</InputAdornment>, min: 1, max: 2000 }}
+              sx={{ width: 1 / 2 }}
+            />
+          </Box>
+
+          <Box display="flex">
+            <Box display='flex' sx={{ alignItems: 'center', justifyContent: 'center', width: 1 / 2 }}>
+              <Typography>
                 Activity Level
               </Typography>
             </Box>
@@ -220,6 +264,7 @@ const SettingsProfile = () => {
       <Snackbar open={open} autoHideDuration={3000} message="User profile changes saved!" onClose={handleClose} action={action(handleClose)} ContentProps={{ sx: { backgroundColor: 'green' } }} />
       <Snackbar open={openAgeError} autoHideDuration={3000} message="Age must be between 0 and 100." onClose={handleCloseAgeError} action={action(handleCloseAgeError)} ContentProps={{ sx: { backgroundColor: 'red' } }} />
       <Snackbar open={openHeightError} autoHideDuration={3000} message="Height must be between 30 and 300." onClose={handleCloseHeightError} action={action(handleCloseHeightError)} ContentProps={{ sx: { backgroundColor: 'red' } }} />
+      <Snackbar open={openWeightError} autoHideDuration={3000} message="Weight must be between 1 and 2000." onClose={handleCloseWeightError} action={action(handleCloseWeightError)} ContentProps={{ sx: { backgroundColor: 'red' } }} />
     </>
   )
 }
