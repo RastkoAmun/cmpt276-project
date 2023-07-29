@@ -84,14 +84,13 @@ const ChangePassword = () => {
       } else {
       }
     } catch (e) {        
-      navigate('/login');
+      navigate(`/expiredlink/${token}`);
       console.log(e)
     }
   }
 
   useEffect(() => {
     checkToken()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
