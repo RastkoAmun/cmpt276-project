@@ -87,7 +87,7 @@ const Login = () => {
 
           <Typography variant='body2' component='div' p={1.5} pl={0}
             color={theme.palette.grey[700]}>
-            Username
+            Username / Email Address
           </Typography>
           <TextField
             id="outlined-basic1"

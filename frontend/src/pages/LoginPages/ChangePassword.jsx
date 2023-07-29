@@ -81,8 +81,7 @@ const ChangePassword = () => {
 
       if (userCredentials.username) {
         console.log(userCredentials);
-      } else {
-      }
+      } 
     } catch (e) {        
       navigate(`/expiredlink/${token}`);
       console.log(e)
