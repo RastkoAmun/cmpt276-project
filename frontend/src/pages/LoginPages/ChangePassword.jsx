@@ -71,28 +71,28 @@ const ChangePassword = () => {
     }
   }
 
-  // const checkToken = async () => {
-  //   try {
-  //     const user = await fetch(`http://localhost:8080/user/changepassword/${token}`, {
-  //       method: "GET",
-  //       credentials: "include"
-  //     })
-  //     const userCredentials = await user.json();
+  const checkToken = async () => {
+    try {
+      const user = await fetch(`http://localhost:8080/user/changepassword/${token}`, {
+        method: "GET",
+        credentials: "include"
+      })
+      const userCredentials = await user.json();
 
-  //     if (userCredentials.username) {
-  //       console.log(userCredentials);
-  //     } else {
-  //       navigate('/login');
-  //     }
-  //   } catch (e) {
-  //     console.log(e)
-  //   }
-  // }
+      if (userCredentials.username) {
+        console.log(userCredentials);
+      } else {
+      }
+    } catch (e) {        
+      navigate('/login');
+      console.log(e)
+    }
+  }
 
-  // useEffect(() => {
-  //   checkToken()
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [])
+  useEffect(() => {
+    checkToken()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center' }} >
