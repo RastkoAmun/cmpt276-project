@@ -122,7 +122,7 @@ const CustomRouterProvider = () => {
     {
       path: 'changepassword/:token',
       element: <ChangePassword />
-    },  
+    },
     {
       path: 'resetlink',
       element: <ResetLink />
