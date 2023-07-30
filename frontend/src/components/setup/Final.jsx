@@ -19,7 +19,7 @@ const Final = ({ estimatedGoal, finishSetup }) => {
         </Box>
 
         <Typography variant="h2" align="center" mb={2} fontWeight="bold" style={{ margin: '50px 0', color: '#4169e1' }}>
-          {estimatedGoal} mL
+          {estimatedGoal} cups
         </Typography>
 
         <Typography color="lightText.main" variant="body2" align="center" mb={2} style={{ margin: '0 auto 16px', maxWidth: '250px' }}>

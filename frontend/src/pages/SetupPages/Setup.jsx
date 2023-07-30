@@ -11,6 +11,7 @@ import Climate from '../../components/setup/Climate';
 import Final from '../../components/setup/Final';
 import { UserContext } from '../../index';
 import { useNavigate } from 'react-router-dom';
+import getDate from '../../../src/services/helperFunctions'
 import axios from 'axios';
 
 const Setup = () => {
@@ -43,6 +44,13 @@ const Setup = () => {
       "sex": selectedGender,
       "activityLevel": selectedActivityLevel,
       "climate": selectedClimate
+    })
+
+    await axios.post('http://localhost:8080/data/hydration', {
+      "uid": globalUser.uid,
+      "goal": estimatedGoal,
+      "intake": 0,
+      "intakeDate": getDate()
     })
 
     await axios.patch('http://localhost:8080/user/updateFirstLogin', {
@@ -139,7 +147,8 @@ const Setup = () => {
     }
 
     const totalWaterGoal = (BWN + ageAdjustment + activityAdjustment + climateAdjustment);
-    return Math.round(totalWaterGoal);
+    const goalInCups = totalWaterGoal / 250;
+    return Math.round(goalInCups);
   }
 
 
