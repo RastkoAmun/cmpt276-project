@@ -22,6 +22,10 @@ const Final = ({ estimatedGoal, finishSetup }) => {
           {estimatedGoal} mL
         </Typography>
 
+        <Typography color="lightText.main" variant="body2" align="center" mb={2} style={{ margin: '0 auto 16px', maxWidth: '250px' }}>
+          You can edit this goal within Hydration
+        </Typography>
+
         {/* #3 Container for 'next' button */}
         <Box style={NextButtonContainerStyle}>
           <Button style={NextButtonStyle} sx={{ backgroundColor: '#4169e1', mt: 2 }}
