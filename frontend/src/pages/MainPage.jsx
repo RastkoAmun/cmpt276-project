@@ -84,6 +84,9 @@ const MainPage = () => {
     return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
   }
 
+  useEffect(() => {
+
+  }, [globalUser])
 
   return (
     <Box>
@@ -156,8 +159,8 @@ const MainPage = () => {
                   : null}
               </Typography>
               <Typography pt={2}>Age: {globalUser ? globalUser.userProfile.age : null}</Typography>
-              <Typography pt={2}>Height: {globalUser ? globalUser.userProfile.height : null}</Typography>
-              <Typography pt={2}>Weight: {globalUser ? globalUser.userProfile.weight : null}</Typography>
+              <Typography pt={2}>Height: {globalUser ? globalUser.userProfile.height : null} cm</Typography>
+              <Typography pt={2}>Weight: {globalUser ? globalUser.userProfile.weight : null} kg</Typography>
               <Typography pt={2}>Activity Level: {
                 globalUser
                   ? globalUser.userProfile.activityLevel

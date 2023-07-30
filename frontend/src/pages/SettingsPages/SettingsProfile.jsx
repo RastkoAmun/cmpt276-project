@@ -18,7 +18,7 @@ const SettingsProfile = () => {
   const [openHeightError, setOpenHeightError] = useState(false);
   const [openWeightError, setOpenWeightError] = useState(false);
 
-  const { globalUser } = useContext(UserContext);
+  const { globalUser, setGlobalUser } = useContext(UserContext);
 
   const handleGender = (event) => {
     setSelectedGender(event.target.value);
@@ -106,12 +106,12 @@ const SettingsProfile = () => {
       return false
     }
 
-    if (selectedHeight < 30 || selectedHeight > 300) {
+    if (selectedHeight < 9 || selectedHeight > 227) {
       setOpenHeightError(true);
       return false;
     }
 
-    if (selectedWeight < 1 || selectedWeight > 2000) {
+    if (selectedWeight < 1 || selectedWeight > 227) {
       setOpenWeightError(true);
       return false;
     }
@@ -140,7 +140,17 @@ const SettingsProfile = () => {
       "sex": selectedGender || null,
       "activityLevel": selectedActivityLevel || null,
       "climate": selectedClimate || null
-    })
+    }, { withCredentials: true })
+
+    // Trigger refresh of mainpage to reflect changes
+    globalUser.userProfile.age = selectedAge;
+    globalUser.userProfile.height = selectedHeight;
+    globalUser.userProfile.weight = selectedWeight;
+    globalUser.userProfile.sex = selectedGender;
+    globalUser.userProfile.activityLevel = selectedActivityLevel;
+    globalUser.userProfile.climate = selectedClimate;
+    console.log(globalUser)
+    setGlobalUser(globalUser);
 
     setOpen(true);
     setRefresh(refresh + 1);
@@ -197,7 +207,7 @@ const SettingsProfile = () => {
               type="number"
               value={selectedHeight}
               onChange={handleHeight}
-              InputProps={{ endAdornment: <InputAdornment position="end">cm</InputAdornment>, min: 1, max: 300 }}
+              InputProps={{ endAdornment: <InputAdornment position="end">cm</InputAdornment>, min: 9, max: 227 }}
               sx={{ width: 1 / 2 }}
             />
           </Box>
@@ -212,7 +222,7 @@ const SettingsProfile = () => {
               type="number"
               value={selectedWeight}
               onChange={handleWeight}
-              InputProps={{ endAdornment: <InputAdornment position="end">lbs</InputAdornment>, min: 1, max: 2000 }}
+              InputProps={{ endAdornment: <InputAdornment position="end">kg</InputAdornment>, min: 1, max: 227 }}
               sx={{ width: 1 / 2 }}
             />
           </Box>

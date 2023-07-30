@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, Box, Slider, Input } from '@mui/material';
 
-const HeightSliderMetric = ({selectedHeight, setSelectedHeight, handleHeightUnitToggle}) => {
+const HeightSliderMetric = ({ selectedHeight, setSelectedHeight, handleHeightUnitToggle }) => {
 
 
   const handleHeightChange = (event, Height) => {
@@ -21,7 +21,7 @@ const HeightSliderMetric = ({selectedHeight, setSelectedHeight, handleHeightUnit
   }
 
   return (
-    <Box style={{marginTop:'5vh'}}>
+    <Box style={{ marginTop: '5vh' }}>
 
       <Box style={{ display: 'flex', justifyContent: 'center', padding: '0 12vw' }}>
         <Slider
@@ -31,15 +31,15 @@ const HeightSliderMetric = ({selectedHeight, setSelectedHeight, handleHeightUnit
           max={227}
           step={1}
           marks={[
-            {value: 9, label: '9'},
-            {value: 227, label: '227'},
+            { value: 9, label: '9' },
+            { value: 227, label: '227' },
           ]}
         />
       </Box>
 
-      <Box style={{ display: 'flex', justifyContent: 'center', marginLeft: '28px'}}>
+      <Box style={{ display: 'flex', justifyContent: 'center', marginLeft: '28px' }}>
         <Input
-          style={{ width:'11em', backgroundColor:'#F5F5F5' }}
+          style={{ width: '11em', backgroundColor: '#F5F5F5' }}
           value={selectedHeight}
           onChange={handleInputChange}
           onBlur={handleBlur}
@@ -56,14 +56,14 @@ const HeightSliderMetric = ({selectedHeight, setSelectedHeight, handleHeightUnit
             }
           }}
         />
-        <h3 style={{ display:'flex',flexDirection:'column',justifyContent:'center', marginLeft:'10px'}}>
+        <h3 style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: '10px' }}>
           cm
         </h3>
       </Box>
 
-      <Box style={{display:'flex',justifyContent:'center',marginTop:'5px'}}>
+      <Box style={{ display: 'flex', justifyContent: 'center', marginTop: '5px' }}>
         <Link
-          style={{fontSize:'0.7rem'}}
+          style={{ fontSize: '0.7rem' }}
           component="button"
           variant="body2"
           onClick={handleHeightUnitToggle}

@@ -217,7 +217,8 @@ public class UserController {
   }
 
   @PatchMapping("/profile")
-  public User UserProfile(@RequestBody UserProfileRequest request, HttpServletResponse res) throws IOException {
+  public User UserProfile(@RequestBody UserProfileRequest request, HttpServletResponse res, HttpServletRequest req)
+      throws IOException {
 
     User user = userRepo.findById(request.uid()).orElse(null);
 
@@ -256,7 +257,27 @@ public class UserController {
     }
 
     userRepo.save(user);
+    req.getSession().setAttribute("session_user", user);
 
     return user;
+  }
+
+  @PatchMapping("/updateFirstLogin")
+  public void updateFirstLogin(@RequestBody UserRequest request, HttpServletResponse res, HttpServletRequest req)
+      throws IOException {
+    User user = userRepo.findById(request.uid()).orElse(null);
+
+    if (user == null) {
+      res.sendError(400, "User does not exist");
+      return;
+    }
+
+    user.setIsFirstLogin(false);
+    userRepo.save(user);
+
+    req.getSession().setAttribute("session_user", user);
+
+    res.setStatus(200);
+    return;
   }
 }
