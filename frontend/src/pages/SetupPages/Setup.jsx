@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Box, IconButton, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForwardIos';
@@ -52,7 +52,16 @@ const Setup = () => {
     navigate('/');
   };
 
+  const checkLogin = () => {
+    if (!globalUser) {
+      navigate('/login')
+    }
+  }
 
+  useEffect(() => {
+    checkLogin();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // Variables for all the user's input information
   const [selectedGender, setSelectedGender] = useState(null);
