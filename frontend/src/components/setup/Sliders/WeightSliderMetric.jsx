@@ -28,11 +28,11 @@ const WeightSliderMetric = ({ selectedWeight, setSelectedWeight, handleWeightUni
         <Slider
           value={selectedWeight}
           onChange={handleWeightChange}
-          min={9}
+          min={1}
           max={227}
           step={0.1}
           marks={[
-            { value: 9, label: '9' },
+            { value: 1, label: '1' },
             { value: 227, label: '227' },
           ]}
         />
@@ -46,7 +46,7 @@ const WeightSliderMetric = ({ selectedWeight, setSelectedWeight, handleWeightUni
           onBlur={handleBlur}
           type="number"
           inputProps={{
-            min: 9,
+            min: 1,
             max: 227,
             step: 0.1,
             style: {
