@@ -83,7 +83,7 @@ const Setup = () => {
 
     let ageAdjustment = 0;
     switch (age) {
-      case age <= 11:
+      case (age >= 4 && age <= 11):
         ageAdjustment = 100;
         break;
       case age <= 18:
