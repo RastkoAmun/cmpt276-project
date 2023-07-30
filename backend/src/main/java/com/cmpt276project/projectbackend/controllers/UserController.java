@@ -259,4 +259,20 @@ public class UserController {
 
     return user;
   }
+
+  @PatchMapping("/updateFirstLogin")
+  public void updateFirstLogin(@RequestParam UserRequest request, HttpServletResponse res) throws IOException {
+    User user = userRepo.findById(request.uid()).orElse(null);
+
+    if (user == null) {
+      res.sendError(400, "User does not exist");
+      return;
+    }
+
+    user.setIsFirstLogin(false);
+    userRepo.save(user);
+
+    res.setStatus(200);
+    return;
+  }
 }

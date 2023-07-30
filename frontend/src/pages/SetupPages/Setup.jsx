@@ -10,6 +10,8 @@ import ActivityLevel from '../../components/setup/ActivityLevel';
 import Climate from '../../components/setup/Climate';
 import Final from '../../components/setup/Final';
 import { UserContext } from '../../index';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Setup = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -18,9 +20,11 @@ const Setup = () => {
    when they haven't entered the required info. */
   const { globalUser } = useContext(UserContext);
 
+  const navigate = useNavigate();
+
   const handleNextPage = () => {
     setCurrentPage(currentPage + 1);
-    console.log(selectedAge + ', ' + selectedGender + ', ' + selectedWeight + currentWeightUnit + ', ' + selectedHeight + currentHeightUnit + ', ' + selectedActivityLevel + ', ' + selectedClimate);
+    console.log(selectedAgeGroup + ', ' + selectedGender + ', ' + selectedWeight + currentWeightUnit + ', ' + selectedHeight + currentHeightUnit + ', ' + selectedActivityLevel + ', ' + selectedClimate);
 
     if (frontPage === currentPage) {
       setFrontPage(frontPage + 1);
@@ -30,19 +34,30 @@ const Setup = () => {
     setCurrentPage(currentPage - 1);
   };
 
-  // BACKEND NEEDS TO IMPLEMENT
-  const finishSetup = () => {
-    // 1. SAVE VARIABLES TO DB
-    // 2. REDIRECT USER BACK TO MAIN PAGE
+  const finishSetup = async () => {
+    await axios.patch('http://localhost:8080/user/profile', {
+      "uid": globalUser.uid,
+      "age": selectedAgeGroup,
+      "height": selectedHeight,
+      "weight": selectedWeight,
+      "sex": selectedGender || null,
+      "activityLevel": selectedActivityLevel || null,
+      "climate": selectedClimate || null
+    })
 
-    console.log(`HERE: ${globalUser.uid}`);
+    await axios.patch('http://localhost:8080/user/updateFirstLogin', {
+      "uid": globalUser.uid
+    })
+
+    navigate('/');
   };
 
 
 
   // Variables for all the user's input information
   const [selectedGender, setSelectedGender] = useState(null);
-  const [selectedAge, setSelectedAge] = useState(null);                       //child, teenager, earlyadult, lateadult, elder
+  const [selectedAgeGroup, setselectedAgeGroup] = useState(null);                       //child, teenager, earlyadult, lateadult, elder
+  const [selectedAge, setSelectedAge] = useState(0);
   const [selectedWeight, setSelectedWeight] = useState(0);
   const [selectedHeight, setSelectedHeight] = useState(0);
   const [selectedActivityLevel, setSelectedActivityLevel] = useState(null);   //sedentary, light, moderate, heavy
@@ -150,22 +165,26 @@ const Setup = () => {
       break;
     case 2:
       cardContent = (
-        <Age selectedAge={selectedAge} setSelectedAge={setSelectedAge} handleNextPage={handleNextPage} />
+        <Age selectedAgeGroup={selectedAgeGroup} setselectedAgeGroup={setselectedAgeGroup} selectedAge={selectedAge}
+          setSelectedAge={setSelectedAge} handleNextPage={handleNextPage} />
       );
       break;
     case 3:
       cardContent = (
-        <Weight selectedWeight={selectedWeight} setSelectedWeight={setSelectedWeight} handleNextPage={handleNextPage} handleWeightUnitToggle={handleWeightUnitToggle} currentWeightUnit={currentWeightUnit} />
+        <Weight selectedWeight={selectedWeight} setSelectedWeight={setSelectedWeight} handleNextPage={handleNextPage}
+          handleWeightUnitToggle={handleWeightUnitToggle} currentWeightUnit={currentWeightUnit} />
       );
       break;
     case 4:
       cardContent = (
-        <Height selectedHeight={selectedHeight} setSelectedHeight={setSelectedHeight} handleNextPage={handleNextPage} handleHeightUnitToggle={handleHeightUnitToggle} currentHeightUnit={currentHeightUnit} />
+        <Height selectedHeight={selectedHeight} setSelectedHeight={setSelectedHeight} handleNextPage={handleNextPage}
+          handleHeightUnitToggle={handleHeightUnitToggle} currentHeightUnit={currentHeightUnit} />
       );
       break;
     case 5:
       cardContent = (
-        <ActivityLevel selectedActivityLevel={selectedActivityLevel} setSelectedActivityLevel={setSelectedActivityLevel} handleNextPage={handleNextPage} />
+        <ActivityLevel selectedActivityLevel={selectedActivityLevel} setSelectedActivityLevel={setSelectedActivityLevel}
+          handleNextPage={handleNextPage} />
       );
       break;
     case 6:
@@ -178,7 +197,7 @@ const Setup = () => {
       break;
     case 7:
       if (!estimatedGoal) {
-        setEstimatedGoal(calculateGoal(selectedGender, selectedAge, selectedWeight, selectedHeight, selectedActivityLevel, selectedClimate));
+        setEstimatedGoal(calculateGoal(selectedGender, selectedAgeGroup, selectedWeight, selectedHeight, selectedActivityLevel, selectedClimate));
       }
       cardContent = (
         <Final estimatedGoal={estimatedGoal} finishSetup={finishSetup} />
