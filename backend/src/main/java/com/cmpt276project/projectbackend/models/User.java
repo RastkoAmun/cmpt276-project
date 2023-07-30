@@ -20,6 +20,7 @@ public class User implements Comparable<User> {
   private String email;
   private Boolean isAdmin;
   private String resetToken;
+  private Boolean isFirstLogin;
 
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "up_id")
@@ -29,11 +30,12 @@ public class User implements Comparable<User> {
 
   }
 
-  public User(String username, String email, String password, Boolean isAdmin) {
+  public User(String username, String email, String password, Boolean isAdmin, Boolean isFirstLogin) {
     this.username = username;
     this.email = email;
     this.password = password;
     this.isAdmin = isAdmin;
+    this.isFirstLogin = isFirstLogin;
     this.userProfile = new UserProfile();
   }
 
@@ -61,6 +63,14 @@ public class User implements Comparable<User> {
     return isAdmin;
   }
 
+  public String getResetToken() {
+    return resetToken;
+  }
+
+  public Boolean getIsFirstLogin() {
+    return isFirstLogin;
+  }
+
   public void setUsername(String username) {
     this.username = username;
   }
@@ -77,19 +87,20 @@ public class User implements Comparable<User> {
     this.isAdmin = isAdmin;
   }
 
-  public String getResetToken() {
-    return resetToken;
+  public void setIsFirstLogin(Boolean isFirstLogin) {
+    this.isFirstLogin = isFirstLogin;
   }
 
   public void setResetToken(String resetToken) {
     this.resetToken = resetToken;
   }
-  
+
   public static class UserBuilder {
     private String username = "";
     private String password = "";
     private String email = "";
     private boolean isAdmin = false;
+    private boolean isFirstLogin = true;
 
     public UserBuilder setUsername(String username) {
       this.username = username;
@@ -106,14 +117,8 @@ public class User implements Comparable<User> {
       return this;
     }
 
-    UserBuilder setIsAdmin(boolean isAdmin) {
-      this.isAdmin = isAdmin;
-      return this;
-    }
-
     public User build() {
-      System.out.println(this.isAdmin);
-      return new User(username, email, password, isAdmin);
+      return new User(username, email, password, isAdmin, isFirstLogin);
     }
   }
 

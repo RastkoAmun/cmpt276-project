@@ -70,6 +70,10 @@ const CustomRouterProvider = () => {
           element: <Admin />
         },
         {
+          path: 'setup',
+          element: <Setup />
+        },
+        {
           path: 'settings',
           element: <SettingsMain />,
           children: [
@@ -106,10 +110,6 @@ const CustomRouterProvider = () => {
     {
       path: 'login',
       element: <Login />
-    },
-    {
-      path: 'setup',
-      element: <Setup />
     },
     {
       path: 'forgetpassword',

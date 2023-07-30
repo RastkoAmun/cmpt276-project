@@ -34,10 +34,17 @@ const Login = () => {
 
       if (userCredentials.status) {
         setLoginError(userCredentials.message);
+        return;
+      }
+
+      setGlobalUser(userCredentials);
+
+      if (userCredentials.isFirstLogin) {
+        navigate('/setup');
       } else {
-        setGlobalUser(userCredentials);
         navigate('/');
       }
+
     } catch (error) {
       console.log(error)
     }
@@ -54,6 +61,7 @@ const Login = () => {
       if (userCredentials.username) {
         console.log(userCredentials);
         setGlobalUser(userCredentials);
+        // Users using session login should have already seen the first time setup
         navigate('/');
       }
     } catch (e) {
