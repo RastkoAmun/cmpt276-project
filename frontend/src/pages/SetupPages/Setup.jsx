@@ -206,11 +206,14 @@ const Setup = () => {
   return (
     <div style={backGroundStyle}>
       <Box style={cardBoxStyle}>
-        <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           {/* Container for the progress bar + forwards and backwards arrow buttons */}
           <IconButton onClick={handlePrevPage} disabled={currentPage === 1} color="primary" aria-label="back">
             <ArrowBackIcon />
           </IconButton>
+          <Box>
+            <Typography variant="h4" sx={{ textDecoration: 'underline' }}>First Time Setup</Typography>
+          </Box>
           <IconButton onClick={handleNextPage} disabled={frontPage === currentPage} color="primary" aria-label="forward">
             <ArrowForwardIcon />
           </IconButton>
