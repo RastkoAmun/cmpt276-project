@@ -18,7 +18,7 @@ const SettingsProfile = () => {
   const [openHeightError, setOpenHeightError] = useState(false);
   const [openWeightError, setOpenWeightError] = useState(false);
 
-  const { globalUser } = useContext(UserContext);
+  const { globalUser, setGlobalUser } = useContext(UserContext);
 
   const handleGender = (event) => {
     setSelectedGender(event.target.value);
@@ -141,6 +141,16 @@ const SettingsProfile = () => {
       "activityLevel": selectedActivityLevel || null,
       "climate": selectedClimate || null
     })
+
+    // Trigger refresh of mainpage to reflect changes
+    globalUser.userProfile.age = selectedAge;
+    globalUser.userProfile.height = selectedHeight;
+    globalUser.userProfile.weight = selectedWeight;
+    globalUser.userProfile.sex = selectedGender;
+    globalUser.userProfile.activityLevel = selectedActivityLevel;
+    globalUser.userProfile.climate = selectedClimate;
+    console.log(globalUser)
+    setGlobalUser(globalUser);
 
     setOpen(true);
     setRefresh(refresh + 1);

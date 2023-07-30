@@ -84,6 +84,9 @@ const MainPage = () => {
     return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
   }
 
+  useEffect(() => {
+
+  }, [globalUser])
 
   return (
     <Box>
