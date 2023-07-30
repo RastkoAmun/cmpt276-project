@@ -103,28 +103,36 @@ public class UserController {
     }
   }
 
-  @PostMapping("/login")
-  public User login(@RequestBody UserRequest request, HttpServletResponse res, HttpServletRequest req,
-      HttpSession session)
+  private User methodUser(@RequestBody UserRequest request, HttpServletResponse res, HttpServletRequest req,
+      HttpSession session, User user)
       throws IOException {
-    String username = request.username();
     String password = request.password();
-
-    User user = userRepo.findByUsername(username);
-
-    if (user == null) {
-      res.sendError(400, "User does not exist");
-      return null;
-    }
-
     if (!password.equals(user.getPassword())) {
       res.sendError(401, "User password is wrong");
       // return new UserError("User password is incorrect");
       return null;
     }
-
     req.getSession().setAttribute("session_user", user);
     return user;
+  }
+
+  @PostMapping("/login")
+  public User login(@RequestBody UserRequest request, HttpServletResponse res, HttpServletRequest req,
+      HttpSession session)
+      throws IOException {
+    String username = request.username();
+
+    User userByUserName = userRepo.findByUsername(username);
+    User userByEmail = userRepo.findByEmail(username);
+
+    if (userByUserName != null) {
+      return methodUser(request, res, req, session, userByUserName);
+    } else if (userByEmail != null) {
+      return methodUser(request, res, req, session, userByEmail);
+    } else {
+      res.sendError(400, "User does not exist");
+      return null;
+    }
   }
 
   @GetMapping("/logout")
