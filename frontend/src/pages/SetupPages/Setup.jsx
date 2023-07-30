@@ -24,7 +24,7 @@ const Setup = () => {
 
   const handleNextPage = () => {
     setCurrentPage(currentPage + 1);
-    console.log(selectedAgeGroup + ', ' + selectedGender + ', ' + selectedWeight + currentWeightUnit + ', ' + selectedHeight + currentHeightUnit + ', ' + selectedActivityLevel + ', ' + selectedClimate);
+    console.log(selectedAge + ', ' + selectedGender + ', ' + selectedWeight + currentWeightUnit + ', ' + selectedHeight + currentHeightUnit + ', ' + selectedActivityLevel + ', ' + selectedClimate);
 
     if (frontPage === currentPage) {
       setFrontPage(frontPage + 1);
@@ -37,12 +37,12 @@ const Setup = () => {
   const finishSetup = async () => {
     await axios.patch('http://localhost:8080/user/profile', {
       "uid": globalUser.uid,
-      "age": selectedAgeGroup,
+      "age": selectedAge,
       "height": selectedHeight,
       "weight": selectedWeight,
-      "sex": selectedGender || null,
-      "activityLevel": selectedActivityLevel || null,
-      "climate": selectedClimate || null
+      "sex": selectedGender,
+      "activityLevel": selectedActivityLevel,
+      "climate": selectedClimate
     })
 
     await axios.patch('http://localhost:8080/user/updateFirstLogin', {
@@ -56,7 +56,6 @@ const Setup = () => {
 
   // Variables for all the user's input information
   const [selectedGender, setSelectedGender] = useState(null);
-  const [selectedAgeGroup, setselectedAgeGroup] = useState(null);                       //child, teenager, earlyadult, lateadult, elder
   const [selectedAge, setSelectedAge] = useState(0);
   const [selectedWeight, setSelectedWeight] = useState(0);
   const [selectedHeight, setSelectedHeight] = useState(0);
@@ -75,19 +74,19 @@ const Setup = () => {
 
     let ageAdjustment = 0;
     switch (age) {
-      case 'child':
+      case age <= 11:
         ageAdjustment = 100;
         break;
-      case 'teenager':
+      case age <= 18:
         ageAdjustment = 70;
         break;
-      case 'earlyadult':
+      case age <= 29:
         ageAdjustment = -35;
         break;
-      case 'lateadult':
+      case age <= 49:
         ageAdjustment = -30;
         break;
-      case 'elderly':
+      case age >= 50:
         ageAdjustment = -25;
         break;
       default:
@@ -165,8 +164,7 @@ const Setup = () => {
       break;
     case 2:
       cardContent = (
-        <Age selectedAgeGroup={selectedAgeGroup} setselectedAgeGroup={setselectedAgeGroup} selectedAge={selectedAge}
-          setSelectedAge={setSelectedAge} handleNextPage={handleNextPage} />
+        <Age selectedAge={selectedAge} setSelectedAge={setSelectedAge} handleNextPage={handleNextPage} />
       );
       break;
     case 3:
@@ -197,7 +195,7 @@ const Setup = () => {
       break;
     case 7:
       if (!estimatedGoal) {
-        setEstimatedGoal(calculateGoal(selectedGender, selectedAgeGroup, selectedWeight, selectedHeight, selectedActivityLevel, selectedClimate));
+        setEstimatedGoal(calculateGoal(selectedGender, selectedAge, selectedWeight, selectedHeight, selectedActivityLevel, selectedClimate));
       }
       cardContent = (
         <Final estimatedGoal={estimatedGoal} finishSetup={finishSetup} />
