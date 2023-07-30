@@ -261,7 +261,7 @@ public class UserController {
   }
 
   @PatchMapping("/updateFirstLogin")
-  public void updateFirstLogin(@RequestParam UserRequest request, HttpServletResponse res) throws IOException {
+  public void updateFirstLogin(@RequestBody UserRequest request, HttpServletResponse res) throws IOException {
     User user = userRepo.findById(request.uid()).orElse(null);
 
     if (user == null) {
