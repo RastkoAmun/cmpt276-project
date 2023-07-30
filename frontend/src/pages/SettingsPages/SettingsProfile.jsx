@@ -140,7 +140,7 @@ const SettingsProfile = () => {
       "sex": selectedGender || null,
       "activityLevel": selectedActivityLevel || null,
       "climate": selectedClimate || null
-    })
+    }, { withCredentials: true })
 
     // Trigger refresh of mainpage to reflect changes
     globalUser.userProfile.age = selectedAge;
