@@ -13,14 +13,14 @@ import Final from '../../components/setup/Final';
 const Setup = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [frontPage, setFrontPage] = useState(1);
-    /* This is here to prevent users from using the ArrowForwardIcon button to move to next card
-     when they haven't entered the required info. */
+  /* This is here to prevent users from using the ArrowForwardIcon button to move to next card
+   when they haven't entered the required info. */
 
   const handleNextPage = () => {
     setCurrentPage(currentPage + 1);
-    console.log(selectedAge+', '+selectedGender+', '+selectedWeight+currentWeightUnit+', '+selectedHeight+currentHeightUnit+', '+selectedActivityLevel+', '+selectedClimate);
+    console.log(selectedAge + ', ' + selectedGender + ', ' + selectedWeight + currentWeightUnit + ', ' + selectedHeight + currentHeightUnit + ', ' + selectedActivityLevel + ', ' + selectedClimate);
 
-    if (frontPage===currentPage) {
+    if (frontPage === currentPage) {
       setFrontPage(frontPage + 1);
     }
   };
@@ -35,7 +35,7 @@ const Setup = () => {
     console.log('OK')
   };
 
-  
+
 
   // Variables for all the user's input information
   const [selectedGender, setSelectedGender] = useState(null);
@@ -51,88 +51,88 @@ const Setup = () => {
 
   // Final calculated goal based on user input info 
   const [estimatedGoal, setEstimatedGoal] = useState(null);
-  
+
   function calculateGoal(gender, age, weight, height, activityLevel, climate) {
     const BWF = gender === 'male' ? 35 : 31;
 
     let ageAdjustment = 0;
     switch (age) {
       case 'child':
-        ageAdjustment=100;
+        ageAdjustment = 100;
         break;
       case 'teenager':
-        ageAdjustment=70;
+        ageAdjustment = 70;
         break;
       case 'earlyadult':
-        ageAdjustment=-35;
+        ageAdjustment = -35;
         break;
       case 'lateadult':
-        ageAdjustment=-30;
+        ageAdjustment = -30;
         break;
       case 'elderly':
-        ageAdjustment=-25;
+        ageAdjustment = -25;
         break;
       default:
-        ageAdjustment=0;
+        ageAdjustment = 0;
     }
-    
+
     const BWN = weight * BWF;
 
     let activityAdjustment = 0;
     switch (activityLevel) {
       case 'sedentary':
-        activityAdjustment=0;
+        activityAdjustment = 0;
         break;
       case 'light':
-        activityAdjustment=250;
+        activityAdjustment = 250;
         break;
       case 'moderate':
-        activityAdjustment=500;
+        activityAdjustment = 500;
         break;
       case 'heavy':
-        activityAdjustment=750;
+        activityAdjustment = 750;
         break;
       default:
-        activityAdjustment=0;
+        activityAdjustment = 0;
     }
 
 
     let climateAdjustment = 0;
     switch (climate) {
       case 'hot':
-        climateAdjustment=500;
+        climateAdjustment = 500;
         break;
       case 'temperate':
-        climateAdjustment=0;
+        climateAdjustment = 0;
         break;
       case 'cold':
-        climateAdjustment=-250;
+        climateAdjustment = -250;
         break;
       default:
-        climateAdjustment=0;
+        climateAdjustment = 0;
     }
 
-    const totalWaterGoal = (BWN+ageAdjustment+activityAdjustment+climateAdjustment);
+    const totalWaterGoal = (BWN + ageAdjustment + activityAdjustment + climateAdjustment);
     return Math.round(totalWaterGoal);
   }
 
 
   const handleWeightUnitToggle = () => {
-    if (currentWeightUnit==='metric') {
+    if (currentWeightUnit === 'metric') {
       setCurrentWeightUnit('imperial');
       console.log('SWITCH TO IMPERIAL');
     }
-    else if (currentWeightUnit==='imperial') {
+    else if (currentWeightUnit === 'imperial') {
       setCurrentWeightUnit('metric');
       console.log('SWITCH TO METRIC');
     }
   }
   const handleHeightUnitToggle = () => {
-    if (currentHeightUnit==='metric') {
+    if (currentHeightUnit === 'metric') {
       setCurrentHeightUnit('imperial');
       console.log('SWITCHING TO IMPERIAL (HEIGHT)');
     }
-    else if (currentHeightUnit==='imperial') {
+    else if (currentHeightUnit === 'imperial') {
       setCurrentHeightUnit('metric');
       console.log('SWITCHING TO METRIC (HEIGHT)');
     }
@@ -142,27 +142,27 @@ const Setup = () => {
   switch (currentPage) {
     case 1:
       cardContent = (
-        <Gender selectedGender={selectedGender} setSelectedGender={setSelectedGender} handleNextPage={handleNextPage}/>
+        <Gender selectedGender={selectedGender} setSelectedGender={setSelectedGender} handleNextPage={handleNextPage} />
       );
       break;
     case 2:
       cardContent = (
-        <Age selectedAge={selectedAge} setSelectedAge={setSelectedAge} handleNextPage={handleNextPage}/>
+        <Age selectedAge={selectedAge} setSelectedAge={setSelectedAge} handleNextPage={handleNextPage} />
       );
       break;
     case 3:
       cardContent = (
-        <Weight selectedWeight={selectedWeight} setSelectedWeight={setSelectedWeight} handleNextPage={handleNextPage} handleWeightUnitToggle={handleWeightUnitToggle} currentWeightUnit={currentWeightUnit}/>
+        <Weight selectedWeight={selectedWeight} setSelectedWeight={setSelectedWeight} handleNextPage={handleNextPage} handleWeightUnitToggle={handleWeightUnitToggle} currentWeightUnit={currentWeightUnit} />
       );
       break;
     case 4:
       cardContent = (
-        <Height selectedHeight={selectedHeight} setSelectedHeight={setSelectedHeight} handleNextPage={handleNextPage} handleHeightUnitToggle={handleHeightUnitToggle} currentHeightUnit={currentHeightUnit}/>
+        <Height selectedHeight={selectedHeight} setSelectedHeight={setSelectedHeight} handleNextPage={handleNextPage} handleHeightUnitToggle={handleHeightUnitToggle} currentHeightUnit={currentHeightUnit} />
       );
       break;
     case 5:
       cardContent = (
-        <ActivityLevel selectedActivityLevel={selectedActivityLevel} setSelectedActivityLevel={setSelectedActivityLevel} handleNextPage={handleNextPage}/>
+        <ActivityLevel selectedActivityLevel={selectedActivityLevel} setSelectedActivityLevel={setSelectedActivityLevel} handleNextPage={handleNextPage} />
       );
       break;
     case 6:
@@ -170,15 +170,15 @@ const Setup = () => {
         setEstimatedGoal(null);
       }
       cardContent = (
-        <Climate selectedClimate={selectedClimate} setSelectedClimate={setSelectedClimate} handleNextPage={handleNextPage}/>
+        <Climate selectedClimate={selectedClimate} setSelectedClimate={setSelectedClimate} handleNextPage={handleNextPage} />
       );
       break;
     case 7:
       if (!estimatedGoal) {
-        setEstimatedGoal(calculateGoal(selectedGender,selectedAge,selectedWeight,selectedHeight,selectedActivityLevel,selectedClimate));
+        setEstimatedGoal(calculateGoal(selectedGender, selectedAge, selectedWeight, selectedHeight, selectedActivityLevel, selectedClimate));
       }
       cardContent = (
-        <Final estimatedGoal={estimatedGoal} finishSetup={finishSetup}/>
+        <Final estimatedGoal={estimatedGoal} finishSetup={finishSetup} />
       );
       break;
     default:
@@ -204,23 +204,21 @@ const Setup = () => {
     <div style={backGroundStyle}>
       <Box style={cardBoxStyle}>
         <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
-        {/* Container for the progress bar + forwards and backwards arrow buttons */}
-          <IconButton onClick={handlePrevPage} disabled={currentPage===1} color="primary" aria-label="back">
+          {/* Container for the progress bar + forwards and backwards arrow buttons */}
+          <IconButton onClick={handlePrevPage} disabled={currentPage === 1} color="primary" aria-label="back">
             <ArrowBackIcon />
           </IconButton>
-          <IconButton onClick={handleNextPage} disabled={frontPage===currentPage} color="primary" aria-label="forward">
+          <IconButton onClick={handleNextPage} disabled={frontPage === currentPage} color="primary" aria-label="forward">
             <ArrowForwardIcon />
           </IconButton>
         </Box>
-        <Box style={{ display: 'flex', flexDirection:'column', justifyContent:'center', height:'80%' }}>
-        {/* This container holds the different card contents */}
-          <Typography variant="body2" style={{margin:'10px auto', color:'#4169e1'}}>
-            {currentPage <= 6 && (
-              <Typography>
-                {currentPage} of 6
-              </Typography>
-            )}
-          </Typography>
+        <Box style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '80%' }}>
+          {/* This container holds the different card contents */}
+          {currentPage <= 6 && (
+            <Typography variant="body2" style={{ margin: '10px auto', color: '#4169e1' }}>
+              {currentPage} of 6
+            </Typography>
+          )}
           {cardContent}
         </Box>
       </Box>
