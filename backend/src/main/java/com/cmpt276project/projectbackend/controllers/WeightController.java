@@ -2,6 +2,7 @@ package com.cmpt276project.projectbackend.controllers;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class WeightController {
   @Autowired
   private WeightRepository weightRepo;
 
-  record WeightRequest(int uid, int weightId, LocalDate date) {
+  record WeightRequest(int uid, int weightId, double weight, LocalDate date) {
   }
 
   record WeightResponseObject(List<Weight> weightHistory) {
@@ -29,13 +30,14 @@ public class WeightController {
   @PostMapping
   public WeightResponseObject getWeightHistory(@RequestBody WeightRequest request) {
     List<Weight> weightList = weightRepo.findAllByUid(request.uid());
+    Collections.sort(weightList, Collections.reverseOrder());
     return new WeightResponseObject(weightList);
   }
 
   @PostMapping("/add")
   public Weight addWeight(@RequestBody WeightRequest request, HttpServletResponse res) throws IOException {
     try {
-      Weight newWeight = new Weight(request.uid(), request.date());
+      Weight newWeight = new Weight(request.uid(), request.weight(), request.date());
       weightRepo.save(newWeight);
       return newWeight;
     } catch (Exception e) {
