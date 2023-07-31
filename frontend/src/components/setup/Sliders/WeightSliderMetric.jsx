@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, Box, Slider, Input } from '@mui/material';
 import { InputContainerStyle } from '../../../pages/SetupPages/SetupStyles';
 
-const WeightSliderMetric = ({selectedWeight, setSelectedWeight, handleWeightUnitToggle}) => {
+const WeightSliderMetric = ({ selectedWeight, setSelectedWeight, handleWeightUnitToggle }) => {
 
 
   const handleWeightChange = (event, weight) => {
@@ -22,31 +22,31 @@ const WeightSliderMetric = ({selectedWeight, setSelectedWeight, handleWeightUnit
   }
 
   return (
-    <Box style={{marginTop:'5vh'}}>
+    <Box style={{ marginTop: '5vh' }}>
 
       <Box style={{ display: 'flex', justifyContent: 'center', padding: '0 12vw' }}>
         <Slider
           value={selectedWeight}
           onChange={handleWeightChange}
-          min={9}
+          min={1}
           max={227}
           step={0.1}
           marks={[
-            {value: 9, label: '9'},
-            {value: 227, label: '227'},
+            { value: 1, label: '1' },
+            { value: 227, label: '227' },
           ]}
         />
       </Box>
 
       <Box style={InputContainerStyle}>
         <Input
-          style={{ width:'11em', backgroundColor:'#F5F5F5' }}
+          style={{ width: '11em', backgroundColor: '#F5F5F5' }}
           value={selectedWeight}
           onChange={handleInputChange}
           onBlur={handleBlur}
           type="number"
           inputProps={{
-            min: 9,
+            min: 1,
             max: 227,
             step: 0.1,
             style: {
@@ -57,14 +57,14 @@ const WeightSliderMetric = ({selectedWeight, setSelectedWeight, handleWeightUnit
             }
           }}
         />
-        <h3 style={{ display:'flex',flexDirection:'column',justifyContent:'center', marginLeft:'10px'}}>
+        <h3 style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: '10px' }}>
           kg
         </h3>
       </Box>
 
-      <Box style={{display:'flex',justifyContent:'center',marginTop:'5px'}}>
+      <Box style={{ display: 'flex', justifyContent: 'center', marginTop: '5px' }}>
         <Link
-          style={{fontSize:'0.7rem'}}
+          style={{ fontSize: '0.7rem' }}
           component="button"
           variant="body2"
           onClick={handleWeightUnitToggle}

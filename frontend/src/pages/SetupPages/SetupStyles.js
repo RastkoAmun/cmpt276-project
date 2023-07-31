@@ -1,11 +1,11 @@
 export const NextButtonContainerStyle = {
     marginTop: '10px',
     display: 'flex',
-    justifyContent: 'center' 
+    justifyContent: 'center'
 }
 
 export const NextButtonStyle = {
-    textTransform: 'none', 
+    textTransform: 'none',
     minWidth: '15em',
     color: 'white'
 }
@@ -13,7 +13,6 @@ export const NextButtonStyle = {
 export const InputContainerStyle = {
     display: 'flex',
     justifyContent: 'center',
-    marginLeft: '28px'
 }
 
 export const SelectionButtonStyle = {

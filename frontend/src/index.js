@@ -70,6 +70,10 @@ const CustomRouterProvider = () => {
           element: <Admin />
         },
         {
+          path: 'setup',
+          element: <Setup />
+        },
+        {
           path: 'settings',
           element: <SettingsMain />,
           children: [
@@ -108,10 +112,6 @@ const CustomRouterProvider = () => {
       element: <Login />
     },
     {
-      path: 'setup',
-      element: <Setup />
-    },
-    {
       path: 'forgetpassword',
       element: <ForgetPassword />
     },
@@ -122,7 +122,7 @@ const CustomRouterProvider = () => {
     {
       path: 'changepassword/:token',
       element: <ChangePassword />
-    },  
+    },
     {
       path: 'resetlink',
       element: <ResetLink />
