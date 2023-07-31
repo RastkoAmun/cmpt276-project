@@ -20,8 +20,11 @@ const SettingsMain = () => {
 
   const location = useLocation();
   const [currentHeader, setCurrentHeader] = useState(location.pathname);
+  const [activeButton, setActiveButton] = useState('');
 
   const handleHeaderChange = () => {
+    setActiveButton(location.pathname)
+
     switch (location.pathname) {
       case '/settings/profile':
         setCurrentHeader('Profile');
@@ -70,8 +73,14 @@ const SettingsMain = () => {
                     <ListItemButton 
                       onClick = {handleHeaderChange}
                       component={Link} to={item.path}
-                      sx={{ /*borderBottom: '1px solid black ',*/ color: 'light.grey', padding: '8px 16px', }}>
-                      <ListItemText primary={<Typography variant='body2' sx={{fontWeight: '400'}}>{item.title}</Typography>} />
+                      sx={{
+                        borderBottom: activeButton===item.path ? '2px solid' : 'none',
+                        borderColor: 'primary.main',
+                        color: activeButton===item.path ? 'black' : 'light.grey', 
+                        padding: '8px 16px', }}>
+                      <ListItemText primary={<Typography variant='body2' sx={{
+                        fontWeight: activeButton===item.path ? '500' : '400',
+                        }}>{item.title}</Typography>} />
                     </ListItemButton>
                   </ListItem>
                 ))}
