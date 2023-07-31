@@ -20,7 +20,7 @@ public class WeightController {
   @Autowired
   private WeightRepository weightRepo;
 
-  record WeightRequest(int uid, int weightId, double weight, LocalDate date) {
+  record WeightRequest(int uid, int weightId, double weight, boolean reverse, LocalDate date) {
   }
 
   record WeightResponseObject(List<Weight> weightHistory) {
@@ -30,7 +30,13 @@ public class WeightController {
   @PostMapping
   public WeightResponseObject getWeightHistory(@RequestBody WeightRequest request) {
     List<Weight> weightList = weightRepo.findAllByUid(request.uid());
-    Collections.sort(weightList, Collections.reverseOrder());
+
+    if (request.reverse() && request.reverse() == true) {
+      Collections.sort(weightList, Collections.reverseOrder());
+    } else {
+      Collections.sort(weightList);
+    }
+
     return new WeightResponseObject(weightList);
   }
 

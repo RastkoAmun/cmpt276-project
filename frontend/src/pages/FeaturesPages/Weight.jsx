@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useRef } from 'react'
+import React, { useState, useContext, useEffect, useNavigate } from 'react'
 import {
   Typography,
   Box,
@@ -70,6 +70,8 @@ const Weight = () => {
 
     setEntries(res.data.weightHistory);
     setCurrentWeight(res.data.weightHistory[0].weight)
+    setInitialWeight(res.data.weightHistory[res.data.weightHistory.length - 1].weight)
+    setWeightChange((res.data.weightHistory[0].weight - res.data.weightHistory[res.data.weightHistory.length - 1].weight).toFixed(2))
   }
 
   const fetchGraphData = async (length) => {
@@ -78,12 +80,6 @@ const Weight = () => {
     });
 
     setGraphData(res.data.weightHistory);
-    setInitialWeight(res.data.weightHistory[0].weight)
-
-  }
-
-  const updateProgress = () => {
-    setWeightChange(Math.round(currentWeight - initialWeight));
   }
 
   const handleWeightChange = (event) => {
@@ -97,9 +93,8 @@ const Weight = () => {
   useEffect(() => {
     fetchEntries();
     fetchGraphData();
-    updateProgress();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refresh])
+  }, [refresh, globalUser])
 
   return (
     <Box>
@@ -212,7 +207,7 @@ const Weight = () => {
               <Typography variant='h5'>History</Typography>
               <List>
                 {entries.map((entry) => (
-                  <ListItem key={entry.id}>
+                  <ListItem key={entry.weightId}>
                     <ListItemText primary={entry.date} secondary={`Weight: ${entry.weight} kg`} />
                   </ListItem>
                 ))}
