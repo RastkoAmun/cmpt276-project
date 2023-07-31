@@ -1,22 +1,17 @@
 import React, {useState, useEffect, useContext} from 'react'
 import { Typography, Card, Switch} from '@mui/material'
 import axios from 'axios';
-import { UserContext } from '../../index'
+import { UserContext, ThemeContext } from '../../index'
 
 
 const SettingsGeneral = () => {
   const { globalUser } = useContext(UserContext);
 
-  const [darkMode, setDarkMode] = useState(true);
+  const {darkMode, setDarkMode} = useContext(ThemeContext);
   const [refresh, setRefresh] = useState(0);
 
 
-  const fetchUser = async () => {
-    if (!globalUser) {
-      return;
-    }
-    setDarkMode(globalUser.darkMode);
-  }
+
 
   const handleDarkModeToggle = async () => {
     if (!globalUser) {
@@ -38,14 +33,7 @@ const SettingsGeneral = () => {
         }, {withCredentials: true});
       }
 
-
   };
-
-  useEffect(() => {
-    fetchUser();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refresh])
 
     return (
 

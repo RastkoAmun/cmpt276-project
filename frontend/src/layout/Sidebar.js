@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -16,14 +16,27 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SidebarDisplay from './SidebarDisplay';
 import { drawerWidth } from '../utils/constants'
-import { UserContext } from '../index'
+import { UserContext, ThemeContext } from '../index'
 import { ThemeProvider } from '@emotion/react';
 import lightTheme from '../utils/lightTheme';
+import darkTheme from '../utils/darkTheme'
 
 const Sidebar = (props) => {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const { globalUser, setGlobalUser } = useContext(UserContext);
+  const [refresh, setRefresh] = useState(0);
+
+
+  const {darkMode, setDarkMode} = useContext(ThemeContext)
+
+  const fetchUser = async () => {
+    if (!globalUser) {
+      return;
+    }
+    setDarkMode(globalUser.darkMode);
+  }
+
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -54,8 +67,16 @@ const Sidebar = (props) => {
     }
   }
 
+  useEffect(() => {
+    fetchUser();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refresh])
+
+
+
   return (
-    <ThemeProvider theme={lightTheme}>
+    <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <Box bgcolor="bg.main">
         <CssBaseline />
         <Box

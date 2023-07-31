@@ -29,12 +29,14 @@ import PasswordChanged from './pages/LoginPages/PasswordChanged';
 import ResetLink from './pages/LoginPages/ResetLink';
 import Admin from './pages/FeaturesPages/Admin';
 import { ThemeProvider } from '@mui/material';
-import theme from '../src/utils/lightTheme'
+import '@mui/material';
 
 export const UserContext = React.createContext(null);
+export const ThemeContext = React.createContext(null); 
 
 const CustomRouterProvider = () => {
   const [globalUser, setGlobalUser] = useState(null);
+  const [darkMode, setDarkMode] = useState(false);
 
   const router = createBrowserRouter([
     {
@@ -137,18 +139,20 @@ const CustomRouterProvider = () => {
     }
   ])
 
+
   return (
-    <UserContext.Provider value={{ globalUser: globalUser, setGlobalUser: setGlobalUser }}>
-      <RouterProvider router={router} />
+    <UserContext.Provider value={{ globalUser: globalUser, setGlobalUser: setGlobalUser}}>
+      <ThemeContext.Provider value={{ darkMode: darkMode, setDarkMode: setDarkMode }}>
+        <RouterProvider router={router} />
+      </ThemeContext.Provider>
     </UserContext.Provider>
   )
 }
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
       <CustomRouterProvider />
-    </ThemeProvider>
   </React.StrictMode>
 );
