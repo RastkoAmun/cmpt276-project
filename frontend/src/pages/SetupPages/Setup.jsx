@@ -19,7 +19,7 @@ const Setup = () => {
   const [frontPage, setFrontPage] = useState(1);
   /* This is here to prevent users from using the ArrowForwardIcon button to move to next card
    when they haven't entered the required info. */
-  const { globalUser } = useContext(UserContext);
+  const { globalUser, setGlobalUser } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -62,6 +62,15 @@ const Setup = () => {
     await axios.patch('http://localhost:8080/user/updateFirstLogin', {
       "uid": globalUser.uid
     })
+
+    // Trigger refresh of mainpage to reflect changes
+    globalUser.userProfile.age = selectedAge;
+    globalUser.userProfile.height = selectedHeight;
+    globalUser.userProfile.weight = selectedWeight;
+    globalUser.userProfile.sex = selectedGender;
+    globalUser.userProfile.activityLevel = selectedActivityLevel;
+    globalUser.userProfile.climate = selectedClimate;
+    setGlobalUser(globalUser);
 
     navigate('/');
   };

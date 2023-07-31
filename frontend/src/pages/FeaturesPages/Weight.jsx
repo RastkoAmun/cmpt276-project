@@ -40,7 +40,7 @@ const Weight = () => {
   const [currentWeight, setCurrentWeight] = useState(0);
   const [weightChange, setWeightChange] = useState(0);
   const [refresh, setRefresh] = useState(0);
-  const { globalUser } = useContext(UserContext);
+  const { globalUser, setGlobalUser } = useContext(UserContext);
 
 
   const handleOpen = () => {
@@ -57,6 +57,15 @@ const Weight = () => {
       "date": date,
       "weight": weight
     });
+
+    await axios.patch('http://localhost:8080/user/profile', {
+      "uid": globalUser.uid,
+      "weight": weight,
+    })
+
+    // Update main page
+    globalUser.userProfile.weight = weight;
+    setGlobalUser(globalUser);
 
     setRefresh(refresh + 1);
     handleClose();
@@ -90,7 +99,12 @@ const Weight = () => {
     setDate(event.target.value);
   };
 
+  const navigate = useNavigate();
   useEffect(() => {
+    if (!globalUser) {
+      navigate('/login')
+    }
+
     fetchEntries();
     fetchGraphData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
