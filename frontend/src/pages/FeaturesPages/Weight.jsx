@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useNavigate } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import {
   Typography,
   Box,
@@ -21,6 +21,7 @@ import { titleContainerStyle } from '../Style';
 import { UserContext } from '../../index';
 import axios from 'axios';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { useNavigate } from 'react-router-dom';
 
 const Weight = () => {
 
@@ -192,7 +193,7 @@ const Weight = () => {
           </Grid>
 
           <Grid item xs={8.5}>
-            <Card sx={cardStyle} style={{ height: '100%' }}>
+            <Card sx={cardStyle}>
               {/* <Typography component="span" variant='h5'>
                 <Link>30 days</Link>
                 <span> / </span>
@@ -200,8 +201,8 @@ const Weight = () => {
                 <span> / </span>
                 <Link>1 year</Link>
               </Typography> */}
-              <Box display='flex' justifyContent='center' alignItems='center' sx={{ minHeight: '100%', minWidth: '100%' }}>
-                <ResponsiveContainer height={700} width='100%'>
+              <Box display='flex' justifyContent='center' alignItems='center'>
+                <ResponsiveContainer height={600} width='100%'>
                   <LineChart data={graphData}>
                     <CartesianGrid strokeDasharray="5 5" />
                     <XAxis dataKey="date" />
@@ -217,7 +218,7 @@ const Weight = () => {
 
           <Grid item xs={3.5}>
             <Card sx={cardStyle}
-              style={{ maxHeight: '60vh', overflowY: 'scroll' }} >
+              style={{ maxHeight: '75vh', overflowY: 'scroll' }} >
               <Typography variant='h5'>History</Typography>
               <List>
                 {entries.map((entry) => (
