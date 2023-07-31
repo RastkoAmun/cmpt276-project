@@ -223,18 +223,6 @@ public class UserController {
     return user;
   }
 
-  @PostMapping("/general")
-  public User getUserGeneral(@RequestBody UserRequest request, HttpServletResponse res) throws IOException {
-    User user = userRepo.findById(request.uid()).orElse(null);
-
-    if (user == null) {
-      res.sendError(400, "User does not exist");
-      return null;
-    }
-
-    return user;
-  }
-
   @PostMapping("/profile")
   public User getUserAndProfile(@RequestBody UserRequest request, HttpServletResponse res) throws IOException {
     User user = userRepo.findById(request.uid()).orElse(null);

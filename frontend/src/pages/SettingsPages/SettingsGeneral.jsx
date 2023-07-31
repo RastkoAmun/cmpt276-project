@@ -15,11 +15,7 @@ const SettingsGeneral = () => {
     if (!globalUser) {
       return;
     }
-    const res = await axios.post('http://localhost:8080/user/profile', {
-      "uid": globalUser.uid
-    })
-
-    setDarkMode(res.data.darkMode);
+    setDarkMode(globalUser.darkMode);
   }
 
   const handleDarkModeToggle = async () => {
