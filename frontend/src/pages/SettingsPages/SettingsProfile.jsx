@@ -174,7 +174,7 @@ const SettingsProfile = () => {
 
           <Box display='flex' flexDirection='column'>
             <Typography variant='body2' component='div' p={1.5} pl={0} pb={1}
-              color={theme.palette.grey[700]}>
+              >
               Gender
             </Typography>
             <FormControl>
@@ -191,9 +191,9 @@ const SettingsProfile = () => {
 
           </Box>
 
-          <Box display='flex' flexDirection='column'>
+          <Box display='flex' flexDirection='column' >
             <Typography variant='body2' component='div' p={1.5} pl={0} pb={1}
-              color={theme.palette.grey[700]}>
+              >
               Age
             </Typography>
             <TextField
@@ -207,7 +207,7 @@ const SettingsProfile = () => {
 
           <Box display='flex' flexDirection='column'>
               <Typography variant='body2' component='div' p={1.5} pb={1} pl={0}
-                color={theme.palette.grey[700]}>
+                >
                 Height
               </Typography>
             <TextField
@@ -227,7 +227,7 @@ const SettingsProfile = () => {
 
           <Box display='flex' flexDirection='column'>
             <Typography variant='body2' component='div' p={1.5} pl={0} pb={1}
-              color={theme.palette.grey[700]}>
+              >
               Weight
             </Typography>
             <TextField
@@ -241,7 +241,7 @@ const SettingsProfile = () => {
 
           <Box display='flex' flexDirection='column'>
             <Typography variant='body2' component='div' p={1.5} pl={0} pb={1}
-              color={theme.palette.grey[700]}>
+              >
               Activity Level
             </Typography>
             <FormControl>
@@ -261,7 +261,7 @@ const SettingsProfile = () => {
 
           <Box display='flex' flexDirection='column'>
             <Typography variant='body2' component='div' p={1.5} pl={0} pb={1}
-              color={theme.palette.grey[700]}>
+              >
               Climate
             </Typography>
             <FormControl>

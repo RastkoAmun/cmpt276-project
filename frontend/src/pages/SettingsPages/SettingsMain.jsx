@@ -7,10 +7,6 @@ import { titleContainerStyle } from '../Style';
 const list = [
   { title: 'Profile', path: '/settings/profile' },
   { title: 'General', path: '/settings'},
-  { title: 'Food', path: '/settings/food'},
-  { title: 'Sleep', path: '/settings/sleep'},
-  { title: 'Exercise', path: '/settings/exercise'},
-  { title: 'Hydration', path: '/settings/hydration'},
 ]
 
 
@@ -31,18 +27,6 @@ const SettingsMain = () => {
         break;
       case '/settings':
         setCurrentHeader('General');
-        break;
-      case '/settings/food':
-        setCurrentHeader('Food');
-        break;
-      case '/settings/sleep':
-        setCurrentHeader('Sleep');
-        break;
-      case '/settings/exercise':
-        setCurrentHeader('Exercise');
-        break;
-      case '/settings/hydration':
-        setCurrentHeader('Hydration');
         break;
     } 
   }
@@ -76,7 +60,7 @@ const SettingsMain = () => {
                       sx={{
                         borderBottom: activeButton===item.path ? '2px solid' : 'none',
                         borderColor: 'primary.main',
-                        color: activeButton===item.path ? 'black' : 'light.grey', 
+                        color: activeButton===item.path ? 'text.primary' : 'light.grey', 
                         padding: '8px 16px', }}>
                       <ListItemText primary={<Typography variant='body2' sx={{
                         fontWeight: activeButton===item.path ? '500' : '400',

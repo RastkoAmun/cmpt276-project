@@ -14,10 +14,6 @@ import Weight from './pages/FeaturesPages/Weight';
 import SettingsMain from './pages/SettingsPages/SettingsMain';
 import SettingsGeneral from './pages/SettingsPages/SettingsGeneral';
 import SettingsProfile from './pages/SettingsPages/SettingsProfile';
-import SettingsExercise from './pages/SettingsPages/SettingsExercise';
-import SettingsFood from './pages/SettingsPages/SettingsFood';
-import SettingsHydration from './pages/SettingsPages/SettingsHydration';
-import SettingsSleep from './pages/SettingsPages/SettingsSleep';
 import MainPage from './pages/MainPage';
 import Login from './pages/LoginPages/Login';
 import Setup from './pages/SetupPages/Setup';
@@ -86,22 +82,6 @@ const CustomRouterProvider = () => {
             {
               path: 'profile',
               element: <SettingsProfile />
-            },
-            {
-              path: 'exercise',
-              element: <SettingsExercise />
-            },
-            {
-              path: 'food',
-              element: <SettingsFood />
-            },
-            {
-              path: 'hydration',
-              element: <SettingsHydration />
-            },
-            {
-              path: 'sleep',
-              element: <SettingsSleep />
             },
           ]
         },

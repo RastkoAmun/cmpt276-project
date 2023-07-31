@@ -26,9 +26,6 @@ const theme = createTheme({
     secondary: {
       main: '#233043',
     },
-    bg: {
-      main: 'rgb(248, 249, 253)',
-    },
     opaque: {
       main: 'rgba(0, 0, 0, 0.6)',
       heavy: 'rgba(0, 0, 0, 0.15)',
@@ -36,6 +33,12 @@ const theme = createTheme({
     light: {
       main: 'rgb(238, 238, 238)',
       grey: 'rgb(177, 182, 189)',
+    },
+    settingstext: {
+      main: '#616161',
+    },
+    background: {
+      default: 'rgb(248, 249, 253)',
     },
   },
 });
