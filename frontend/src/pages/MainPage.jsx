@@ -48,7 +48,9 @@ const MainPage = () => {
   useEffect(() => {
     if (globalUser) {
       setUsername(globalUser.username);
-    } else {
+    } else if (globalUser && globalUser.isFirstLogin) {
+      navigate('/setup');
+    }else {
       navigate("/login");
     }
   }, [navigate, globalUser]);
@@ -88,12 +90,6 @@ const MainPage = () => {
   const capitalizeCharacteristic = (word) => {
     return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
   }
-
-  useEffect(() => {
-    if (globalUser && globalUser.isFirstLogin) {
-      navigate('/setup');
-    }
-  }, [globalUser])
 
   return (
     <Box>

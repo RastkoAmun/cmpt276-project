@@ -81,9 +81,7 @@ const Setup = () => {
     globalUser.isFirstLogin = false;
     
     setGlobalUser(globalUser);
-
     navigate('/');
-
 
   };
 
