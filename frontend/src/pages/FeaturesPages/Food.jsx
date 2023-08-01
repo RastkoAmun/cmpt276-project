@@ -168,7 +168,7 @@ const Food = () => {
       };
 
       axios
-        .post('http://localhost:8080/foodsummary/add', foodSummary)
+        .post('/foodsummary/add', foodSummary)
         .then((response) => {
           console.log('Calorie goal added to food summary:', response.data);
           setEditingGoal(false);
@@ -185,7 +185,7 @@ const Food = () => {
 
   const getAddedFoods = () => {
     axios
-      .get(`http://localhost:8080/data/food/${globalUser.uid}/${formattedDate}`)
+      .get(`/data/food/${globalUser.uid}/${formattedDate}`)
       .then((response) => {
         const data = response.data;
         const completedFoods = data.map((food) => ({
@@ -202,7 +202,7 @@ const Food = () => {
 
   const getFoodSummary = () => {
     axios
-      .get(`http://localhost:8080/foodsummary/${globalUser.uid}/${formattedDate}`)
+      .get(`/foodsummary/${globalUser.uid}/${formattedDate}`)
       .then((response) => {
         const foodSummaryData = response.data;
         if (foodSummaryData) {
@@ -232,7 +232,7 @@ const Food = () => {
     };
     console.log(food);
 
-    axios.post('http://localhost:8080/data/food/add', food).then(() => {
+    axios.post('/data/food/add', food).then(() => {
       getAddedFoods();
     });
   };
@@ -246,7 +246,7 @@ const Food = () => {
     };
 
     axios
-      .post('http://localhost:8080/foodsummary/add', foodSummary)
+      .post('/foodsummary/add', foodSummary)
       .then((response) => {
         console.log('Food summary updated:', response.data);
       })
@@ -256,8 +256,8 @@ const Food = () => {
   };
 
   const handleDeleteFood = async (id) => {
-    const food = (await axios.get(`http://localhost:8080/data/food/${id}`)).data;
-    await axios.delete(`http://localhost:8080/data/food/${id}`);
+    const food = (await axios.get(`/data/food/${id}`)).data;
+    await axios.delete(`/data/food/${id}`);
 
     let newTotalCaloriesConsumed = totalCalories - food.calorie;
 
@@ -267,7 +267,7 @@ const Food = () => {
       consumedCalories: newTotalCaloriesConsumed,
       date: formattedDate,
     };
-    await axios.put(`http://localhost:8080/foodsummary/${globalUser.uid}/${formattedDate}`, updateSummary);
+    await axios.put(`/foodsummary/${globalUser.uid}/${formattedDate}`, updateSummary);
 
     setTotalCalories(newTotalCaloriesConsumed);
     getAddedFoods();

@@ -38,7 +38,7 @@ const Setup = () => {
   };
 
   const finishSetup = async () => {
-    await axios.patch('http://localhost:8080/user/profile', {
+    await axios.patch('/user/profile', {
       "uid": globalUser.uid,
       "age": selectedAge,
       "height": selectedHeight,
@@ -48,24 +48,24 @@ const Setup = () => {
       "climate": selectedClimate
     })
 
-    await axios.post('http://localhost:8080/weight/add', {
+    await axios.post('/weight/add', {
       "uid": globalUser.uid,
       "date": getCurrentDateInFormat(),
       "weight": selectedWeight
     })
 
-    await axios.post('http://localhost:8080/data/hydration', {
+    await axios.post('/data/hydration', {
       "uid": globalUser.uid,
       "goal": estimatedGoal,
       "intake": 0,
       "intakeDate": getDate()
     })
 
-    await axios.patch('http://localhost:8080/user/updateFirstLogin', {
+    await axios.patch('/user/updateFirstLogin', {
       "uid": globalUser.uid
     })
 
-    await axios.post('http://localhost:8080/foodsummary/add', {
+    await axios.post('/foodsummary/add', {
       "uid": globalUser.uid,
       "targetCalories": estimatedCals,
       "consumedCalories": 0,

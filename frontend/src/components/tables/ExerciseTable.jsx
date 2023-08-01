@@ -18,7 +18,7 @@ const HydrationTable = ({ globalUser }) => {
   useEffect(() => {
     if (globalUser) {
       axios
-        .get(`http://localhost:8080/exercisesummary/${globalUser.uid}`)
+        .get(`/exercisesummary/${globalUser.uid}`)
         .then((results) => {
           setExerciseData(results.data);
         });

@@ -20,14 +20,14 @@ const SettingsGeneral = () => {
     
       if (darkMode==true) {
         setDarkMode(false);
-        await axios.patch('http://localhost:8080/user/darkmode', {
+        await axios.patch('/user/darkmode', {
           "uid": globalUser.uid,
           "darkmode": false
         }, {withCredentials: true});
       }
       else {
         setDarkMode(true);
-        await axios.patch('http://localhost:8080/user/darkmode', {
+        await axios.patch('/user/darkmode', {
           "uid": globalUser.uid,
           "darkmode": true
         }, {withCredentials: true});

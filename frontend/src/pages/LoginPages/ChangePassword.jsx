@@ -52,7 +52,7 @@ const ChangePassword = () => {
     if (!invPassword && !passMismatch) {
       try {
         const body = {password }
-        const res = await fetch(`http://localhost:8080/user/changepassword/${token}`, {
+        const res = await fetch(`/user/changepassword/${token}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body)
@@ -73,7 +73,7 @@ const ChangePassword = () => {
 
   const checkToken = async () => {
     try {
-      const user = await fetch(`http://localhost:8080/user/changepassword/${token}`, {
+      const user = await fetch(`/user/changepassword/${token}`, {
         method: "GET",
         credentials: "include"
       })

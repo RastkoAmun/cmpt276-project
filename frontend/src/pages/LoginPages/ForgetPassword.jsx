@@ -44,7 +44,7 @@ const ForgetPassword = () => {
     if (!invEmail) {
       try {
         const body = {email}
-        const res = await fetch('http://localhost:8080/user/forgetpassword', {
+        const res = await fetch('/user/forgetpassword', {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body)

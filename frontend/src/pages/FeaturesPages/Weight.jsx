@@ -53,13 +53,13 @@ const Weight = () => {
   };
 
   const handleSubmit = async () => {
-    await axios.post('http://localhost:8080/weight/add', {
+    await axios.post('/weight/add', {
       "uid": globalUser.uid,
       "date": date,
       "weight": weight
     });
 
-    await axios.patch('http://localhost:8080/user/profile', {
+    await axios.patch('/user/profile', {
       "uid": globalUser.uid,
       "weight": weight,
     })
@@ -73,7 +73,7 @@ const Weight = () => {
   };
 
   const fetchEntries = async () => {
-    const res = await axios.post('http://localhost:8080/weight', {
+    const res = await axios.post('/weight', {
       "uid": globalUser.uid,
       "reverse": true
     });
@@ -86,7 +86,7 @@ const Weight = () => {
   }
 
   const fetchGraphData = async (length) => {
-    const res = await axios.post('http://localhost:8080/weight', {
+    const res = await axios.post('/weight', {
       "uid": globalUser.uid,
     });
 

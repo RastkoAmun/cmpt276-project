@@ -13,7 +13,7 @@ const Admin = () => {
   const [open, setOpen] = useState(false);
 
   const fetchData = () => {
-    axios.get('http://localhost:8080/admin/view')
+    axios.get('/admin/view')
       .then(res => {
         setUsers(res.data);
       })

@@ -59,7 +59,7 @@ const Sidebar = (props) => {
 
   const logout = async () => {
     try {
-      await fetch('http://localhost:8080/user/logout', {
+      await fetch('/user/logout', {
         method: "GET",
         credentials: "include"
       })

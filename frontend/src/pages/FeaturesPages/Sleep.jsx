@@ -39,7 +39,7 @@ const Sleep = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:8080/sleep/add', {
+      const response = await fetch('/sleep/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -67,7 +67,7 @@ const Sleep = () => {
 
   const fetchSleepData = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/sleep/sleep-data?uid=${globalUser.uid}`);
+      const response = await fetch(`/sleep/sleep-data?uid=${globalUser.uid}`);
 
       const data = await response.json();
       setSleepData(data);
