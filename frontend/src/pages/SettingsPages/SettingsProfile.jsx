@@ -285,10 +285,10 @@ const SettingsProfile = () => {
       </Box>
     
 
-      <Snackbar open={open} autoHideDuration={3000} message="User profile changes saved!" onClose={handleClose} action={action(handleClose)} ContentProps={{ sx: { backgroundColor: 'green' } }} />
-      <Snackbar open={openAgeError} autoHideDuration={3000} message="Age must be between 0 and 100." onClose={handleCloseAgeError} action={action(handleCloseAgeError)} ContentProps={{ sx: { backgroundColor: 'red' } }} />
-      <Snackbar open={openHeightError} autoHideDuration={3000} message="Height must be between 30 and 300." onClose={handleCloseHeightError} action={action(handleCloseHeightError)} ContentProps={{ sx: { backgroundColor: 'red' } }} />
-      <Snackbar open={openWeightError} autoHideDuration={3000} message="Weight must be between 1 and 2000." onClose={handleCloseWeightError} action={action(handleCloseWeightError)} ContentProps={{ sx: { backgroundColor: 'red' } }} />
+      <Snackbar open={open} autoHideDuration={3000} message="User profile changes saved!" onClose={handleClose} action={action(handleClose)} ContentProps={{ sx: { backgroundColor: 'success.main', color:'white' } }} />
+      <Snackbar open={openAgeError} autoHideDuration={3000} message="Age must be between 0 and 100." onClose={handleCloseAgeError} action={action(handleCloseAgeError)} ContentProps={{ sx: { backgroundColor: 'error.main', color:'white' } }} />
+      <Snackbar open={openHeightError} autoHideDuration={3000} message="Height must be between 30 and 300." onClose={handleCloseHeightError} action={action(handleCloseHeightError)} ContentProps={{ sx: { backgroundColor: 'error.main', color:'white' } }} />
+      <Snackbar open={openWeightError} autoHideDuration={3000} message="Weight must be between 1 and 2000." onClose={handleCloseWeightError} action={action(handleCloseWeightError)} ContentProps={{ sx: { backgroundColor: 'error.main', color:'white' } }} />
     </Card>
     </>
   )

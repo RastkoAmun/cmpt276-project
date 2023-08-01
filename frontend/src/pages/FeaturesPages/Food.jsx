@@ -59,7 +59,7 @@ const Food = () => {
   const cardStyle = {
     // bgcolor: 'lightgray',
     height: '100%',
-    p: 2,
+    p: 3,
   }
 
   useEffect(() => {
@@ -294,25 +294,23 @@ const Food = () => {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Add Food Entry</DialogTitle>
         <DialogContent>
-          <Box mt={2}>
-          <FormControl>
+          <Box mt={2} minWidth="400px">
+          <FormControl fullWidth>
             <TextField label="Enter a food item" value={foodQuery} onChange={handleFoodQueryChange} />
           </FormControl>
           </Box>
 
           <Box mt={2}>
             <Typography variant="body1">Selected Food: {selectedFood?.food.label}</Typography>
-            <Box mt={2}>
+            <Box mt={2} minWidth="400px">
               <TextField
                 type="number"
                 label="Weight (grams)"
                 value={weight}
                 onChange={handleWeightChange}
                 sx={{ marginRight: '10px' }}
+                fullWidth
               />
-              <Button variant="contained" onClick={handleAddFood} sx={{ mt: 2 }}>
-                Add Food
-              </Button>
             </Box>
           </Box>
 
@@ -337,7 +335,9 @@ const Food = () => {
 
         </DialogContent>
         <DialogActions>
-
+          <Button variant="contained" onClick={handleAddFood} sx={{ mt: 2 }}>
+                Add Food
+          </Button>
         </DialogActions>
       </Dialog>
 
@@ -366,7 +366,7 @@ const Food = () => {
                 </div>
               ) : (
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <Typography variant="h5" fontWeight="400">{calorieGoal} calories</Typography>
+                  <Typography variant="h5" fontWeight="400">{calorieGoal}.00 calories</Typography>
                   <IconButton  onClick={handleEditGoal} sx={{ marginLeft: '10px', color: 'primary' }}>
                     <EditIcon />
                   </IconButton>
@@ -395,7 +395,7 @@ const Food = () => {
         <Card sx={cardStyle} >
               <Box display="flex" flexDirection="column">
                 <Typography variant="ch1" fontWeight="400">Consumed</Typography>
-                <Typography variant="h5" fontWeight="400"> {totalCalories} calories</Typography>
+                <Typography variant="h5" fontWeight="400"> {totalCalories}.00 calories</Typography>
               </Box>
         </Card>
       </Grid>
@@ -404,35 +404,37 @@ const Food = () => {
         <Card sx={cardStyle}>
               <Box display="flex" flexDirection="column">
                 <Typography variant="ch1" fontWeight="400">Remaining</Typography>
-                <Typography variant="h5" fontWeight="400"> {calculateRemainingCalories()} calories</Typography>
+                <Typography variant="h5" fontWeight="400"> {calculateRemainingCalories()}.00 calories</Typography>
               </Box>
         </Card>
       </Grid>
 
       <Grid item xs={12}>
-        <Card sx={{p:6, pt: 5}} >
+        <Card sx={{px: 7, py: 5}} >
           <Box>
-            <Typography fontWeight='500' variant="h5">
-              Food List
+            <Typography fontWeight='500' variant="h5" marginBottom='30px'>
+              Food Log
             </Typography>
-            {completedFoods.length === 0 ? (
-              <Typography variant="body1">No foods added yet.</Typography>
-            ) : (
-              <ul style={{ paddingInlineStart: '20px' }}>
-                {completedFoods.map((food) => (
-                  <li key={food.id} style={{ padding: '3px 0' }}>
-                    <strong>{food.name}</strong> - Weight: {food.weight} grams
-                    <IconButton
-                      aria-label="delete"
-                      sx={{ p: 0, ml: 1 }}
-                      onClick={() => handleDeleteFood(food.id)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </li>
-                ))}
-              </ul>
-            )}
+            <Box>
+              {completedFoods.length === 0 ? (
+                <Typography variant="body1">No foods added yet.</Typography>
+              ) : (
+                <ul style={{ paddingInlineStart: '20px' }}>
+                  {completedFoods.map((food) => (
+                    <li key={food.id} style={{ padding: '3px 0' }}>
+                      <strong>{food.name}</strong> - Weight: {food.weight} grams
+                      <IconButton
+                        aria-label="delete"
+                        sx={{ p: 0, ml: 1 }}
+                        onClick={() => handleDeleteFood(food.id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </Box>
           </Box>
         </Card>
       </Grid>

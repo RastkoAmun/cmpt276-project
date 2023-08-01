@@ -12,12 +12,20 @@ import {
   Container,
   IconButton,
   Card,
+  Grid,
+  Fab,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { UserContext } from '../../index';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { titleContainerStyle } from '../Style';
+import AddIcon from '@mui/icons-material/Add';
+
 
 
 const Exercise = () => {
@@ -37,10 +45,20 @@ const Exercise = () => {
   const localDate = new Date(currentDate.getTime() - offset);
   const formattedDate = localDate.toISOString().split('T')[0]
 
+  const [open, setOpen] = useState(false);
+
+
   //Handler Functions
   const handleSelectedExercise = useCallback((event) => {
     setSelectedExercise(event.target.value)
   }, [])
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleDuration = useCallback((event) => {
     setDuration(parseInt(event.target.value))
@@ -55,6 +73,12 @@ const Exercise = () => {
       navigate('/login');
     }
   }, [globalUser, navigate]);
+
+  const cardStyle = {
+    // bgcolor: 'lightgray',
+    height: '100%',
+    p: 3,
+  }
 
   const getExercises = async () => {
     const cardioData = await axios
@@ -209,13 +233,18 @@ const Exercise = () => {
             Exercise Tracker
           </Typography>
         </Box>
+        <Box display="flex" alignItems='center' marginLeft="auto">
+          <Fab color="primary" aria-label="add" size="small" onClick={handleOpen} sx={{ zIndex: 1 }} >
+            <AddIcon />
+          </Fab>
+        </Box>
       </Box> 
 
-      <Card>
-      <Box p={10} pt={5}> 
-        <Box display="flex" alignItems="center" mt={5}>
-          <Box width='200px'>
-            <FormControl fullWidth size='small'>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Add Exercise Entry</DialogTitle>
+        <DialogContent>
+          <Box mt={2} minWidth="400px">
+            <FormControl fullWidth margin="normal">
               <InputLabel id="exercise-select">Exercise</InputLabel>
               <Select id="exercise-select"
                 value={selectedExercise}
@@ -230,15 +259,19 @@ const Exercise = () => {
               </Select>
             </FormControl>
           </Box>
-          <TextField
-            type="number"
-            label="Duration (minutes)"
-            value={duration.toString()}
-            onChange={handleDuration}
-            inputProps={{ min: 1 }}
-            size='small'
-            sx={{ mx: 1.5 }}
-          />
+          <Box mt={2} minWidth="400px">
+            <TextField
+              margin="normal"
+              fullWidth
+              type="number"
+              label="Duration (minutes)"
+              value={duration.toString()}
+              onChange={handleDuration}
+              inputProps={{ min: 1 }}
+            />
+          </Box>
+        </DialogContent>
+        <DialogActions>
           <Button
             variant="contained"
             color="primary"
@@ -246,51 +279,74 @@ const Exercise = () => {
             sx={{ boxShadow: 'none' }}>
             Add Exercise
           </Button>
-        </Box>
-        {error && (
+          {error && (
           <Typography variant='subtitle2' color="error" ml={1}>
             {error}
           </Typography>
-        )}
+          )}
+        </DialogActions>
+      </Dialog>
 
-        <Box mt={4} pl={2}>
-          <Typography variant='h4'>
-            Completed Exercises
-          </Typography>
-          {completedExercises.length === 0
-            ?
-            (
-              <Typography variant='body1'>
-                No exercises completed yet.
-              </Typography>
-            )
-            :
-            (
-              <ul style={{ paddingInlineStart: '20px' }}>
-                {completedExercises.map((exercise) => (
-                  <li key={exercise.id} style={{ padding: '3px 0' }}>
-                    <strong>{exercise.name}</strong> - Duration: {exercise.duration} minutes
-                    <IconButton aria-label="delete" sx={{ p: 0, ml: 1 }}
-                      onClick={() => handleDeleteExercise(exercise.id)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </li>
-                ))}
-              </ul>
-            )}
+    <Grid container spacing={4} >
+        <Box display="flex" alignItems="center" mt={5}>
+          
+
         </Box>
 
-        <Box mt={4} p={2}>
-          <Typography variant='h4'>Summary</Typography>
-          <Typography variant='body1' p={.5}>
-            <strong>Total Duration:</strong> {totalDuration} minutes
-          </Typography>
-          <Typography variant='body1' p={.5}>
-            <strong>Total Calories Burned:</strong> {totalCaloriesBurned.toFixed(2)}
-          </Typography>
+
+
+
+      <Grid item xs={6}>
+        <Card sx={cardStyle}>
+        <Box display="flex" flexDirection="column">
+          <Typography variant="ch1" fontWeight="400">Total duration</Typography>
+          <Typography variant="h5" fontWeight="400"> {totalDuration} minutes</Typography>
         </Box>
-      </Box>
-    </Card>
+        </Card>
+      </Grid>
+
+      <Grid item xs={6}>
+        <Card sx={cardStyle}>
+        <Box display="flex" flexDirection="column">
+          <Typography variant="ch1" fontWeight="400">Total calories burned</Typography>
+          <Typography variant="h5" fontWeight="400"> {totalCaloriesBurned.toFixed(2)} calories</Typography>
+        </Box>
+        </Card>
+      </Grid>
+
+      <Grid item xs={12}>
+        <Card sx={{px: 7, py: 5}}>
+        <Box>
+          <Typography variant='h5' fontWeight="500" marginBottom="20px">
+            Exercise Log
+          </Typography>
+          <Box>
+            {completedExercises.length === 0
+              ?
+              (
+                <Typography variant='body1'>
+                  No exercises completed yet.
+                </Typography>
+              )
+              :
+              (
+                <ul style={{ paddingInlineStart: '20px' }}>
+                  {completedExercises.map((exercise) => (
+                    <li key={exercise.id} style={{ padding: '3px 0' }}>
+                      <strong>{exercise.name}</strong> - Duration: {exercise.duration} minutes
+                      <IconButton aria-label="delete" sx={{ p: 0, ml: 1 }}
+                        onClick={() => handleDeleteExercise(exercise.id)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </li>
+                  ))}
+                </ul>
+              )}
+          </Box>
+        </Box>
+        </Card>
+      </Grid>
+    </Grid>
     </Box>
   );
 };
