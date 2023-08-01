@@ -9,6 +9,7 @@ import Height from '../../components/setup/Height';
 import ActivityLevel from '../../components/setup/ActivityLevel';
 import Climate from '../../components/setup/Climate';
 import Final from '../../components/setup/Final';
+import Calories from '../../components/setup/Calories';
 import { UserContext } from '../../index';
 import { useNavigate } from 'react-router-dom';
 import getDate from '../../../src/services/helperFunctions'
@@ -26,6 +27,7 @@ const Setup = () => {
   const handleNextPage = () => {
     setCurrentPage(currentPage + 1);
     console.log(selectedAge + ', ' + selectedGender + ', ' + selectedWeight + currentWeightUnit + ', ' + selectedHeight + currentHeightUnit + ', ' + selectedActivityLevel + ', ' + selectedClimate);
+    console.log(currentPage)
 
     if (frontPage === currentPage) {
       setFrontPage(frontPage + 1);
@@ -57,10 +59,16 @@ const Setup = () => {
       "uid": globalUser.uid
     })
 
-    if (globalUser && globalUser.isFirstLogin) {
-      console.log('cond1')
-      navigate('/');
-    }
+    await axios.post('http://localhost:8080/foodsummary/add', {
+      "uid": globalUser.uid,
+      "targetCalories": estimatedCals,
+      "consumedCalories": 0,
+      "date": '2023-08-01',
+    })
+
+    window.location.reload();
+
+
   };
 
   const checkLogin = () => {
@@ -89,6 +97,7 @@ const Setup = () => {
 
   // Final calculated goal based on user input info 
   const [estimatedGoal, setEstimatedGoal] = useState(null);
+  const [estimatedCals, setEstimatedCals] = useState(null);
 
   function calculateGoal(gender, age, weight, height, activityLevel, climate) {
     const BWF = gender === 'male' ? 35 : 31;
@@ -155,6 +164,30 @@ const Setup = () => {
     return Math.round(goalInCups);
   }
 
+  function calculateRecommendedCals(gender, age, weight, height, activityLevel, climate) {
+    const BMR = 10 * weight + 6.25 * height - 5 * age + 5;
+
+    let activityAdjustment = 0;
+    switch (activityLevel) {
+      case 'sedentary':
+        activityAdjustment = 1.2;
+        break;
+      case 'light':
+        activityAdjustment = 1.375;
+        break;
+      case 'moderate':
+        activityAdjustment = 1.55;
+        break;
+      case 'heavy':
+        activityAdjustment = 1.725;
+        break;
+      default:
+        activityAdjustment = 0;
+    }
+
+    return Math.round(BMR * activityAdjustment);
+  }
+
 
   const handleWeightUnitToggle = () => {
     if (currentWeightUnit === 'metric') {
@@ -211,11 +244,22 @@ const Setup = () => {
       if (estimatedGoal) {
         setEstimatedGoal(null);
       }
+      if (estimatedCals) {
+        setEstimatedCals(null);
+      }
       cardContent = (
         <Climate selectedClimate={selectedClimate} setSelectedClimate={setSelectedClimate} handleNextPage={handleNextPage} />
       );
       break;
     case 7:
+      if (!estimatedCals) {
+        setEstimatedCals(calculateRecommendedCals(selectedGender, selectedAge, selectedWeight, selectedHeight, selectedActivityLevel, selectedClimate));
+      }
+      cardContent = (
+        <Calories estimatedCals={estimatedCals} handleNextPage={handleNextPage} />
+      );
+      break;
+    case 8:
       if (!estimatedGoal) {
         setEstimatedGoal(calculateGoal(selectedGender, selectedAge, selectedWeight, selectedHeight, selectedActivityLevel, selectedClimate));
       }

@@ -17,6 +17,8 @@ import FoodTable from "../components/tables/FoodTable";
 import SleepTable from "../components/tables/SleepTable";
 import { useNavigate, Link } from "react-router-dom";
 import { titleContainerStyle } from './Style';
+import axios from 'axios';
+
 
 
 const buttonStyle = {
@@ -46,10 +48,7 @@ const MainPage = () => {
   useEffect(() => {
     if (globalUser) {
       setUsername(globalUser.username);
-      if (globalUser.isFirstLogin) {
-        console.log('cond3')
-        navigate('/setup');
-      }
+      
     } else {
       navigate("/login");
     }
@@ -91,8 +90,28 @@ const MainPage = () => {
     return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
   }
 
-  useEffect(() => {
+  const fetchUserIsFirstLogin = async () => {
+    if (globalUser) {
+      try {
+        const response = await axios.get('http://localhost:8080/user/setupstatus', {
+          params: { uid: globalUser.uid },
+        });
+        const isFirstLogin = response.data;
+  
+        if (isFirstLogin) {
+          navigate('/setup');
+        }
+  
+      } catch (error) {
+        console.error('Error fetching user isFirstLogin', error);
+        return null;
+      }
+    }
 
+  };
+
+  useEffect(() => {
+    fetchUserIsFirstLogin();
   }, [globalUser])
 
   return (
