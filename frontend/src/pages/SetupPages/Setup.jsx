@@ -12,7 +12,7 @@ import Final from '../../components/setup/Final';
 import Calories from '../../components/setup/Calories';
 import { UserContext } from '../../index';
 import { useNavigate } from 'react-router-dom';
-import getDate from '../../../src/services/helperFunctions'
+import { getDate, getCurrentDateInFormat } from '../../../src/services/helperFunctions'
 import axios from 'axios';
 
 const Setup = () => {
@@ -48,6 +48,12 @@ const Setup = () => {
       "climate": selectedClimate
     })
 
+    await axios.post('http://localhost:8080/weight/add', {
+      "uid": globalUser.uid,
+      "date": getCurrentDateInFormat(),
+      "weight": selectedWeight
+    })
+
     await axios.post('http://localhost:8080/data/hydration', {
       "uid": globalUser.uid,
       "goal": estimatedGoal,
@@ -66,7 +72,6 @@ const Setup = () => {
       "date": '2023-08-01',
     })
 
-    // Trigger refresh of mainpage to reflect changes
     globalUser.userProfile.age = selectedAge;
     globalUser.userProfile.height = selectedHeight;
     globalUser.userProfile.weight = selectedWeight;
@@ -74,8 +79,9 @@ const Setup = () => {
     globalUser.userProfile.activityLevel = selectedActivityLevel;
     globalUser.userProfile.climate = selectedClimate;
     globalUser.isFirstLogin = false;
-    setGlobalUser(globalUser);
     
+    setGlobalUser(globalUser);
+
     navigate('/');
 
 
@@ -310,13 +316,11 @@ const Setup = () => {
         </Box>
         <Box style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '80%' }}>
           {/* This container holds the different card contents */}
-          <Typography variant="body2" style={{ margin: '10px auto', color: '#4169e1' }}>
-            {currentPage <= 6 && (
-              <Typography>
-                {currentPage} of 6
-              </Typography>
-            )}
-          </Typography>
+          {currentPage <= 6 && (
+            <Typography variant="body2" style={{ margin: '10px auto', color: '#4169e1' }}>
+              {currentPage} of 6
+            </Typography>
+          )}
           {cardContent}
         </Box>
       </Box>

@@ -4,6 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
 import { UserContext } from '../../index'
 import { useTheme } from '@mui/material/styles'
+import { getCurrentDateInFormat } from '../../services/helperFunctions';
 
 const SettingsProfile = () => {
 
@@ -146,6 +147,12 @@ const SettingsProfile = () => {
       "climate": selectedClimate || null
     }, { withCredentials: true })
 
+    await axios.post('http://localhost:8080/weight/add', {
+      "uid": globalUser.uid,
+      "date": getCurrentDateInFormat(),
+      "weight": selectedWeight
+    })
+
     // Trigger refresh of mainpage to reflect changes
     globalUser.userProfile.age = selectedAge;
     globalUser.userProfile.height = selectedHeight;
@@ -153,7 +160,6 @@ const SettingsProfile = () => {
     globalUser.userProfile.sex = selectedGender;
     globalUser.userProfile.activityLevel = selectedActivityLevel;
     globalUser.userProfile.climate = selectedClimate;
-    console.log(globalUser)
     setGlobalUser(globalUser);
 
     setOpen(true);

@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
-import { Typography,
+import React, { useState, useContext, useEffect } from 'react'
+import {
+  Typography,
   Box,
   TextField,
   Grid,
@@ -14,53 +15,102 @@ import { Typography,
   DialogActions,
   Button,
   Link
-  } from '@mui/material'
+} from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import { titleContainerStyle } from '../Style';
-
+import { UserContext } from '../../index';
+import axios from 'axios';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { useNavigate } from 'react-router-dom';
 
 const Weight = () => {
 
-  const [selectedWeight, setSelectedWeight] = useState('500');
-  const initialWeight = 500
-  const weightChange = 5;
+  const [selectedWeight, setSelectedWeight] = useState('');
 
   const cardStyle = {
     // bgcolor: 'lightgray',
     p: 2,
   }
 
-
-  const entries = [
-    { id: 1, date: '2023-01-01', weight: 75 },
-    { id: 2, date: '2023-01-02', weight: 74.5 },
-    { id: 3, date: '2023-01-03', weight: 74 },
-  ]
-
   const [open, setOpen] = useState(false);
   const [weight, setWeight] = useState('');
   const [date, setDate] = useState('');
+  const [entries, setEntries] = useState([]);
+  const [graphData, setGraphData] = useState([]);
+  const [initialWeight, setInitialWeight] = useState(0);
+  const [currentWeight, setCurrentWeight] = useState(0);
+  const [weightChange, setWeightChange] = useState(0);
+  const [refresh, setRefresh] = useState(0);
+  const { globalUser, setGlobalUser } = useContext(UserContext);
+
 
   const handleOpen = () => {
     setOpen(true);
   };
+
   const handleClose = () => {
     setOpen(false);
   };
-  const handleSubmit = () => {
-    // Perform submit logic here
-    console.log('Weight:', weight);
-    console.log('Date:', date);
+
+  const handleSubmit = async () => {
+    await axios.post('http://localhost:8080/weight/add', {
+      "uid": globalUser.uid,
+      "date": date,
+      "weight": weight
+    });
+
+    await axios.patch('http://localhost:8080/user/profile', {
+      "uid": globalUser.uid,
+      "weight": weight,
+    })
+
+    // Update main page
+    globalUser.userProfile.weight = weight;
+    setGlobalUser(globalUser);
+
+    setRefresh(refresh + 1);
     handleClose();
   };
+
+  const fetchEntries = async () => {
+    const res = await axios.post('http://localhost:8080/weight', {
+      "uid": globalUser.uid,
+      "reverse": true
+    });
+
+    setEntries(res.data.weightHistory);
+
+    setCurrentWeight((res.data.weightHistory && res.data.weightHistory[0]) ? res.data.weightHistory[0].weight : null)
+    setInitialWeight((res.data.weightHistory && res.data.weightHistory[0]) ? res.data.weightHistory[res.data.weightHistory.length - 1].weight : null)
+    setWeightChange((res.data.weightHistory && res.data.weightHistory[0]) ? (res.data.weightHistory[0].weight - res.data.weightHistory[res.data.weightHistory.length - 1].weight).toFixed(2) : null)
+  }
+
+  const fetchGraphData = async (length) => {
+    const res = await axios.post('http://localhost:8080/weight', {
+      "uid": globalUser.uid,
+    });
+
+    setGraphData(res.data.weightHistory);
+  }
+
   const handleWeightChange = (event) => {
     setWeight(event.target.value);
   };
+
   const handleDateChange = (event) => {
     setDate(event.target.value);
   };
 
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!globalUser) {
+      navigate('/login')
+    }
 
+    fetchEntries();
+    fetchGraphData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refresh, globalUser])
 
   return (
     <Box>
@@ -105,7 +155,7 @@ const Weight = () => {
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handleSubmit} variant="contained" color="primary">
-            Submit TO DB
+            Submit
           </Button>
         </DialogActions>
       </Dialog>
@@ -119,7 +169,9 @@ const Weight = () => {
               <Typography variant='h5'>Initial weight</Typography>
               <Box>
                 <Typography>
-                  {initialWeight} kg
+                  {
+                    initialWeight ? `${initialWeight} kg` : "N/A"
+                  }
                 </Typography>
               </Box>
             </Card>
@@ -129,7 +181,9 @@ const Weight = () => {
             <Card sx={cardStyle} >
               <Typography variant='h5'>Current weight</Typography>
               <Typography>
-                {selectedWeight} kg
+                {
+                  currentWeight ? `${initialWeight} kg` : "N/A"
+                }
               </Typography>
             </Card>
           </Grid>
@@ -137,39 +191,49 @@ const Weight = () => {
           <Grid item xs={4}>
             <Card sx={cardStyle} >
               <Typography variant='h5'>Change</Typography>
-                <Typography>
-                  {weightChange} %
-                </Typography>
+              <Typography>
+                {
+                  weightChange ? `${weightChange} %` : "N/A"
+                }
+              </Typography>
             </Card>
           </Grid>
 
           <Grid item xs={8.5}>
-            <Card sx={cardStyle} >
-              <Typography component="span" variant='h5'>
+            <Card sx={cardStyle}>
+              {/* <Typography component="span" variant='h5'>
                 <Link>30 days</Link>
                 <span> / </span>
                 <Link>90 days</Link>
                 <span> / </span>
                 <Link>1 year</Link>
-              </Typography>
-              <Box display='flex' justifyContent='center' alignItems='center'
-              sx={{ height: 500 }}>
-              <Typography> Graph will go here </Typography>
+              </Typography> */}
+              <Box display='flex' justifyContent='center' alignItems='center'>
+                <ResponsiveContainer height={600} width='100%'>
+                  <LineChart data={graphData}>
+                    <CartesianGrid strokeDasharray="5 5" />
+                    <XAxis dataKey="date" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="weight" stroke="#8884d8" />
+                  </LineChart>
+                </ResponsiveContainer>
               </Box>
             </Card>
           </Grid>
 
           <Grid item xs={3.5}>
             <Card sx={cardStyle}
-            style={{height: '100%'}} >
-              <Typography variant='h5'>Entries (render from db)</Typography>
+              style={{ maxHeight: '75vh', overflowY: 'scroll' }} >
+              <Typography variant='h5'>History</Typography>
               <List>
-              {entries.map((entry) => (
-                <ListItem key={entry.id}>
-                  <ListItemText primary={entry.date} secondary={`Weight: ${entry.weight} kg`} />
-                </ListItem>
-              ))}
-            </List>
+                {entries.map((entry) => (
+                  <ListItem key={entry.weightId}>
+                    <ListItemText primary={entry.date} secondary={`Weight: ${entry.weight} kg`} />
+                  </ListItem>
+                ))}
+              </List>
             </Card>
           </Grid>
 
