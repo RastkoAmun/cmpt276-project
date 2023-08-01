@@ -79,9 +79,10 @@ const Weight = () => {
     });
 
     setEntries(res.data.weightHistory);
-    setCurrentWeight(res.data.weightHistory[0].weight)
-    setInitialWeight(res.data.weightHistory[res.data.weightHistory.length - 1].weight)
-    setWeightChange((res.data.weightHistory[0].weight - res.data.weightHistory[res.data.weightHistory.length - 1].weight).toFixed(2))
+
+    setCurrentWeight((res.data.weightHistory && res.data.weightHistory[0]) ? res.data.weightHistory[0].weight : null)
+    setInitialWeight((res.data.weightHistory && res.data.weightHistory[0]) ? res.data.weightHistory[res.data.weightHistory.length - 1].weight : null)
+    setWeightChange((res.data.weightHistory && res.data.weightHistory[0]) ? (res.data.weightHistory[0].weight - res.data.weightHistory[res.data.weightHistory.length - 1].weight).toFixed(2) : null)
   }
 
   const fetchGraphData = async (length) => {
@@ -168,7 +169,9 @@ const Weight = () => {
               <Typography variant='h5'>Initial weight</Typography>
               <Box>
                 <Typography>
-                  {initialWeight} kg
+                  {
+                    initialWeight ? `${initialWeight} kg` : "N/A"
+                  }
                 </Typography>
               </Box>
             </Card>
@@ -178,7 +181,9 @@ const Weight = () => {
             <Card sx={cardStyle} >
               <Typography variant='h5'>Current weight</Typography>
               <Typography>
-                {currentWeight} kg
+                {
+                  currentWeight ? `${initialWeight} kg` : "N/A"
+                }
               </Typography>
             </Card>
           </Grid>
@@ -187,7 +192,9 @@ const Weight = () => {
             <Card sx={cardStyle} >
               <Typography variant='h5'>Change</Typography>
               <Typography>
-                {weightChange} %
+                {
+                  weightChange ? `${weightChange} %` : "N/A"
+                }
               </Typography>
             </Card>
           </Grid>
