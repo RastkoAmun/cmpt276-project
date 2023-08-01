@@ -46,6 +46,10 @@ const MainPage = () => {
   useEffect(() => {
     if (globalUser) {
       setUsername(globalUser.username);
+      if (globalUser.isFirstLogin) {
+        console.log('cond3')
+        navigate('/setup');
+      }
     } else {
       navigate("/login");
     }

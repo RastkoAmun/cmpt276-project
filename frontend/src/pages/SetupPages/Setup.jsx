@@ -57,11 +57,15 @@ const Setup = () => {
       "uid": globalUser.uid
     })
 
-    navigate('/');
+    if (globalUser && globalUser.isFirstLogin) {
+      console.log('cond1')
+      navigate('/');
+    }
   };
 
   const checkLogin = () => {
     if (!globalUser) {
+      console.log('cond2')
       navigate('/login')
     }
   }
@@ -246,9 +250,6 @@ const Setup = () => {
           <IconButton onClick={handlePrevPage} disabled={currentPage === 1} color="primary" aria-label="back">
             <ArrowBackIcon />
           </IconButton>
-          <Box>
-            <Typography variant="h4" sx={{ textDecoration: 'underline' }}>First Time Setup</Typography>
-          </Box>
           <IconButton onClick={handleNextPage} disabled={frontPage === currentPage} color="primary" aria-label="forward">
             <ArrowForwardIcon />
           </IconButton>
