@@ -270,13 +270,11 @@ const Setup = () => {
         </Box>
         <Box style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '80%' }}>
           {/* This container holds the different card contents */}
-          <Typography variant="body2" style={{ margin: '10px auto', color: '#4169e1' }}>
-            {currentPage <= 6 && (
-              <Typography>
-                {currentPage} of 6
-              </Typography>
-            )}
-          </Typography>
+          {currentPage <= 6 && (
+            <Typography variant="body2" style={{ margin: '10px auto', color: '#4169e1' }}>
+              {currentPage} of 6
+            </Typography>
+          )}
           {cardContent}
         </Box>
       </Box>
