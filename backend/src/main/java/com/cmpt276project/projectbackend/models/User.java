@@ -21,6 +21,7 @@ public class User implements Comparable<User> {
   private Boolean isAdmin;
   private String resetToken;
   private Boolean isFirstLogin;
+  private Boolean darkMode;
 
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "up_id")
@@ -71,6 +72,10 @@ public class User implements Comparable<User> {
     return isFirstLogin;
   }
 
+  public Boolean getDarkMode() {
+    return darkMode;
+  }
+
   public void setUsername(String username) {
     this.username = username;
   }
@@ -93,6 +98,10 @@ public class User implements Comparable<User> {
 
   public void setResetToken(String resetToken) {
     this.resetToken = resetToken;
+  }
+
+  public void setDarkMode(Boolean darkMode) {
+    this.darkMode = darkMode;
   }
 
   public static class UserBuilder {

@@ -14,10 +14,6 @@ import Weight from './pages/FeaturesPages/Weight';
 import SettingsMain from './pages/SettingsPages/SettingsMain';
 import SettingsGeneral from './pages/SettingsPages/SettingsGeneral';
 import SettingsProfile from './pages/SettingsPages/SettingsProfile';
-import SettingsExercise from './pages/SettingsPages/SettingsExercise';
-import SettingsFood from './pages/SettingsPages/SettingsFood';
-import SettingsHydration from './pages/SettingsPages/SettingsHydration';
-import SettingsSleep from './pages/SettingsPages/SettingsSleep';
 import MainPage from './pages/MainPage';
 import Login from './pages/LoginPages/Login';
 import Setup from './pages/SetupPages/Setup';
@@ -29,12 +25,14 @@ import PasswordChanged from './pages/LoginPages/PasswordChanged';
 import ResetLink from './pages/LoginPages/ResetLink';
 import Admin from './pages/FeaturesPages/Admin';
 import { ThemeProvider } from '@mui/material';
-import theme from '../src/utils/lightTheme'
+import '@mui/material';
 
 export const UserContext = React.createContext(null);
+export const ThemeContext = React.createContext(null); 
 
 const CustomRouterProvider = () => {
   const [globalUser, setGlobalUser] = useState(null);
+  const [darkMode, setDarkMode] = useState(false);
 
   const router = createBrowserRouter([
     {
@@ -70,10 +68,6 @@ const CustomRouterProvider = () => {
           element: <Admin />
         },
         {
-          path: 'setup',
-          element: <Setup />
-        },
-        {
           path: 'settings',
           element: <SettingsMain />,
           children: [
@@ -85,28 +79,15 @@ const CustomRouterProvider = () => {
               path: 'profile',
               element: <SettingsProfile />
             },
-            {
-              path: 'exercise',
-              element: <SettingsExercise />
-            },
-            {
-              path: 'food',
-              element: <SettingsFood />
-            },
-            {
-              path: 'hydration',
-              element: <SettingsHydration />
-            },
-            {
-              path: 'sleep',
-              element: <SettingsSleep />
-            },
           ]
         },
 
       ]
     },
-
+    {
+      path: 'setup',
+      element: <Setup />
+    },
     {
       path: 'login',
       element: <Login />
@@ -137,18 +118,20 @@ const CustomRouterProvider = () => {
     }
   ])
 
+
   return (
-    <UserContext.Provider value={{ globalUser: globalUser, setGlobalUser: setGlobalUser }}>
-      <RouterProvider router={router} />
+    <UserContext.Provider value={{ globalUser: globalUser, setGlobalUser: setGlobalUser}}>
+      <ThemeContext.Provider value={{ darkMode: darkMode, setDarkMode: setDarkMode }}>
+        <RouterProvider router={router} />
+      </ThemeContext.Provider>
     </UserContext.Provider>
   )
 }
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
       <CustomRouterProvider />
-    </ThemeProvider>
   </React.StrictMode>
 );

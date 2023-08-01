@@ -134,17 +134,6 @@ const SidebarDisplay = () => {
         </List>
 
         <Box sx={{ flexGrow: 1 }} />
-
-
-        {
-          globalUser ?
-            <Box sx={{ display: 'flex', justifyContent: 'center' }} p={4}>
-              <Button variant='contained' size='large' color='inherit' onClick={logout}>
-                Logout
-              </Button>
-            </Box>
-            : null
-        }
       </>
     </ThemeProvider>
   )

@@ -1,11 +1,15 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { Typography, Box, FormControl, Button, Select, MenuItem, TextField, InputAdornment, Snackbar, IconButton } from '@mui/material';
+import { Typography, Box, FormControl, Button, Select, MenuItem, TextField, InputAdornment, Snackbar, IconButton, Card } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
 import { UserContext } from '../../index'
+import { useTheme } from '@mui/material/styles'
 import { getCurrentDateInFormat } from '../../services/helperFunctions';
 
 const SettingsProfile = () => {
+
+  const theme = useTheme();
+
   // Obtain default values from user !!
   const [selectedGender, setSelectedGender] = useState("");
   const [selectedAge, setSelectedAge] = useState("");
@@ -169,16 +173,19 @@ const SettingsProfile = () => {
 
   return (
     <>
-      <Box display="flex" sx={{ flexDirection: 'column', alignItems: 'start' }}>
-        <Box display="flex" sx={{ flexDirection: 'column' }}>
-          <Box display="flex">
-            <Box display='flex' sx={{ alignItems: 'center', justifyContent: 'center', width: 1 / 2 }}>
-              <Typography>
-                Gender
-              </Typography>
-            </Box>
+    <Card sx={{p: 5}}>
+      <Box display="flex" justifyContent="center">
+      
+        <Box display="flex" sx={{ flexDirection: 'column', width: '40%', marginRight: '50px'}}>
+
+          <Box display='flex' flexDirection='column'>
+            <Typography variant='body2' component='div' p={1.5} pl={0} pb={1}
+              >
+              Gender
+            </Typography>
             <FormControl>
               <Select
+                size="small"
                 id="dropdown-input"
                 value={selectedGender}
                 onChange={handleGender}
@@ -187,15 +194,16 @@ const SettingsProfile = () => {
                 <MenuItem value="female">Female</MenuItem>
               </Select>
             </FormControl>
+
           </Box>
 
-          <Box display='flex'>
-            <Box display='flex' sx={{ alignItems: 'center', justifyContent: 'center', width: 1 / 2 }}>
-              <Typography>
-                Age
-              </Typography>
-            </Box>
+          <Box display='flex' flexDirection='column' >
+            <Typography variant='body2' component='div' p={1.5} pl={0} pb={1}
+              >
+              Age
+            </Typography>
             <TextField
+              size="small"
               type="number"
               value={selectedAge}
               onChange={handleAge}
@@ -203,44 +211,48 @@ const SettingsProfile = () => {
             />
           </Box>
 
-          <Box display="flex">
-            <Box display='flex' sx={{ alignItems: 'center', justifyContent: 'center', width: 1 / 2 }}>
-              <Typography>
+          <Box display='flex' flexDirection='column'>
+              <Typography variant='body2' component='div' p={1.5} pb={1} pl={0}
+                >
                 Height
               </Typography>
-            </Box>
             <TextField
+              size="small"
               type="number"
               value={selectedHeight}
               onChange={handleHeight}
               InputProps={{ endAdornment: <InputAdornment position="end">cm</InputAdornment>, min: 9, max: 227 }}
-              sx={{ width: 1 / 2 }}
             />
           </Box>
+          <Button variant='contained' color='primary' onClick={submit} sx={{ fontSize: '1rem', mb: '2vh',mt: '7vh', width: '150px',textTransform: 'none', padding: '10px' }}>
+            Save
+          </Button>
+        </Box>
 
-          <Box display="flex">
-            <Box display='flex' sx={{ alignItems: 'center', justifyContent: 'center', width: 1 / 2 }}>
-              <Typography>
-                Weight
-              </Typography>
-            </Box>
+        <Box display="flex" sx={{ flexDirection: 'column', width: '40%', marginLeft:'50px' }}>
+
+          <Box display='flex' flexDirection='column'>
+            <Typography variant='body2' component='div' p={1.5} pl={0} pb={1}
+              >
+              Weight
+            </Typography>
             <TextField
+              size="small"
               type="number"
               value={selectedWeight}
               onChange={handleWeight}
               InputProps={{ endAdornment: <InputAdornment position="end">kg</InputAdornment>, min: 1, max: 227 }}
-              sx={{ width: 1 / 2 }}
             />
           </Box>
 
-          <Box display="flex">
-            <Box display='flex' sx={{ alignItems: 'center', justifyContent: 'center', width: 1 / 2 }}>
-              <Typography>
-                Activity Level
-              </Typography>
-            </Box>
+          <Box display='flex' flexDirection='column'>
+            <Typography variant='body2' component='div' p={1.5} pl={0} pb={1}
+              >
+              Activity Level
+            </Typography>
             <FormControl>
               <Select
+                size="small"
                 id="dropdown-input"
                 value={selectedActivityLevel}
                 onChange={handleActivityLevel}
@@ -253,14 +265,14 @@ const SettingsProfile = () => {
             </FormControl>
           </Box>
 
-          <Box display="flex">
-            <Box display='flex' sx={{ alignItems: 'center', justifyContent: 'center', width: 1 / 2 }}>
-              <Typography>
-                Climate
-              </Typography>
-            </Box>
+          <Box display='flex' flexDirection='column'>
+            <Typography variant='body2' component='div' p={1.5} pl={0} pb={1}
+              >
+              Climate
+            </Typography>
             <FormControl>
               <Select
+                size="small"
                 id="dropdown-input"
                 value={selectedClimate}
                 onChange={handleClimate}
@@ -272,15 +284,18 @@ const SettingsProfile = () => {
             </FormControl>
           </Box>
 
-          <Button onClick={submit} sx={{ fontSize: '1.5rem', my: '3vh' }}>
-            Save changes
-          </Button>
+
         </Box>
+
+    
       </Box>
-      <Snackbar open={open} autoHideDuration={3000} message="User profile changes saved!" onClose={handleClose} action={action(handleClose)} ContentProps={{ sx: { backgroundColor: 'green' } }} />
-      <Snackbar open={openAgeError} autoHideDuration={3000} message="Age must be between 0 and 100." onClose={handleCloseAgeError} action={action(handleCloseAgeError)} ContentProps={{ sx: { backgroundColor: 'red' } }} />
-      <Snackbar open={openHeightError} autoHideDuration={3000} message="Height must be between 30 and 300." onClose={handleCloseHeightError} action={action(handleCloseHeightError)} ContentProps={{ sx: { backgroundColor: 'red' } }} />
-      <Snackbar open={openWeightError} autoHideDuration={3000} message="Weight must be between 1 and 2000." onClose={handleCloseWeightError} action={action(handleCloseWeightError)} ContentProps={{ sx: { backgroundColor: 'red' } }} />
+    
+
+      <Snackbar open={open} autoHideDuration={3000} message="User profile changes saved!" onClose={handleClose} action={action(handleClose)} ContentProps={{ sx: { backgroundColor: 'success.main', color:'white' } }} />
+      <Snackbar open={openAgeError} autoHideDuration={3000} message="Age must be between 0 and 100." onClose={handleCloseAgeError} action={action(handleCloseAgeError)} ContentProps={{ sx: { backgroundColor: 'error.main', color:'white' } }} />
+      <Snackbar open={openHeightError} autoHideDuration={3000} message="Height must be between 30 and 300." onClose={handleCloseHeightError} action={action(handleCloseHeightError)} ContentProps={{ sx: { backgroundColor: 'error.main', color:'white' } }} />
+      <Snackbar open={openWeightError} autoHideDuration={3000} message="Weight must be between 1 and 2000." onClose={handleCloseWeightError} action={action(handleCloseWeightError)} ContentProps={{ sx: { backgroundColor: 'error.main', color:'white' } }} />
+    </Card>
     </>
   )
 }

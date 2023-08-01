@@ -124,7 +124,7 @@ const Weight = () => {
           </Typography>
         </Box>
         <Box display="flex" alignItems='center' marginLeft="auto">
-          <Fab color="primary" aria-label="add" size="small" onClick={handleOpen} >
+          <Fab color="primary" aria-label="add" size="small" onClick={handleOpen} sx={{ zIndex: 1 }} >
             <AddIcon />
           </Fab>
         </Box>

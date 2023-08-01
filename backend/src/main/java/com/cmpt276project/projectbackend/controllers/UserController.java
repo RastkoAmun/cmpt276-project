@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.rsocket.server.RSocketServer.Transport;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpServerErrorException;
 
 import com.cmpt276project.projectbackend.enums.ActivityLevel;
 import com.cmpt276project.projectbackend.enums.Climate;
@@ -33,7 +34,7 @@ public class UserController {
   @Autowired
   private UserRepository userRepo;
 
-  record UserRequest(int uid, String username, String password, String email) {
+  record UserRequest(int uid, String username, String password, String email, Boolean darkmode) {
   }
 
   record UserProfileRequest(int uid, Integer age, Double weight, Double height, String activityLevel,
@@ -203,6 +204,25 @@ public class UserController {
 
     return newUser;
   }
+
+  @PatchMapping("/darkmode")
+  public User UserDarkMode(@RequestBody UserRequest request, HttpServletResponse res, HttpServletRequest req) throws IOException {
+    User user = userRepo.findById(request.uid()).orElse(null);
+
+    if (user == null) {
+      res.sendError(400, "User does not exist");
+      return null;
+    }
+
+    if (request.darkmode() != null)
+      user.setDarkMode(request.darkmode());
+    
+    userRepo.save(user);
+    req.getSession().setAttribute("session_user", user);
+
+    return user;
+  }
+
 
   @PostMapping("/profile")
   public User getUserAndProfile(@RequestBody UserRequest request, HttpServletResponse res) throws IOException {

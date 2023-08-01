@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -14,16 +14,32 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import EditIcon from '@mui/icons-material/Edit';
+import SettingsIcon from '@mui/icons-material/Settings';
+import LogoutIcon from '@mui/icons-material/Logout';
 import SidebarDisplay from './SidebarDisplay';
 import { drawerWidth } from '../utils/constants'
-import { UserContext } from '../index'
+import { UserContext, ThemeContext } from '../index'
 import { ThemeProvider } from '@emotion/react';
 import lightTheme from '../utils/lightTheme';
+import darkTheme from '../utils/darkTheme'
 
 const Sidebar = (props) => {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const { globalUser, setGlobalUser } = useContext(UserContext);
+  const [refresh, setRefresh] = useState(0);
+
+
+  const {darkMode, setDarkMode} = useContext(ThemeContext)
+
+  const fetchUser = async () => {
+    if (!globalUser) {
+      return;
+    }
+    setDarkMode(globalUser.darkMode);
+  }
+
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -54,9 +70,17 @@ const Sidebar = (props) => {
     }
   }
 
+  useEffect(() => {
+    fetchUser();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refresh])
+
+
+
   return (
-    <ThemeProvider theme={lightTheme}>
-      <Box bgcolor="bg.main">
+    <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
+      <Box>
         <CssBaseline />
         <Box
           component="nav"
@@ -93,7 +117,9 @@ const Sidebar = (props) => {
             flexGrow: 1,
             width: { md: `calc(100% - ${drawerWidth}px)` },
             marginLeft: { sm: 0, md: `${drawerWidth}px` },
-            backgroundColor: 'white'
+            backgroundColor: 'navbar.main',
+            position: 'fixed',
+            zIndex: 999,
           }}
         >
           <Toolbar >
@@ -134,17 +160,16 @@ const Sidebar = (props) => {
                 sx: { boxShadow: 'none', backgroundColor: 'secondary.main', color: 'rgb(238, 238, 238)', padding: '0 1vw' },
               }}
             >
-              <Typography>{globalUser ? <>Hello, {globalUser.username} </> : <></>}</Typography>
-              <MenuItem component={Link} to='/settings/profile' onClick={handleMenuClose}>Edit Profile</MenuItem>
-              <MenuItem component={Link} to='/settings' onClick={handleMenuClose}>Settings</MenuItem>
-              <MenuItem onClick={logout}>Log out</MenuItem>
+              <Typography p={1}>{globalUser ? <>{globalUser.username} </> : <></>}</Typography>
+              <MenuItem sx={{fontSize: 'small'}} component={Link} to='/settings/profile' onClick={handleMenuClose}><EditIcon fontSize="small" sx={{marginRight: '10px'}} />Edit Profile</MenuItem>
+              <MenuItem sx={{fontSize: 'small'}} component={Link} to='/settings' onClick={handleMenuClose}><SettingsIcon fontSize="small" sx={{marginRight: '10px'}}/>Settings</MenuItem>
+              <MenuItem sx={{fontSize: 'small'}} onClick={logout}><LogoutIcon fontSize="small" sx={{marginRight: '10px'}}/>Log out</MenuItem>
 
             </Menu>
 
           </Toolbar>
-          <Divider />
         </Box>
-        <Box ml={`${drawerWidth}px`} p={8}>
+        <Box ml={`${drawerWidth}px`} p={8} pt={14}>
           <Outlet />
         </Box>
       </Box>

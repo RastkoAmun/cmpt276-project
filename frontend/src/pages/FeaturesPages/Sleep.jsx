@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Typography, TextField, Button, Grid, Select, MenuItem } from '@mui/material';
+import { Typography, TextField, Button, Grid, Select, MenuItem, Box, Card } from '@mui/material';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { UserContext } from '../../index';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
+import { titleContainerStyle } from '../Style';
 
 const Sleep = () => {
   const [sleepData, setSleepData] = useState([]);
@@ -108,7 +109,18 @@ const Sleep = () => {
 
   return (
     <>
-      <Typography variant="h3">Sleep</Typography>
+      <Box display="flex" sx={titleContainerStyle} paddingBottom="30px">
+        <Box display="flex" flexDirection="column">
+          <Typography variant="fh2">
+            Sleep
+          </Typography>
+          <Typography variant="fh1">
+            Sleep Tracker
+          </Typography>
+        </Box>
+      </Box> 
+      <Card sx={{padding:"50px"}}>
+
       <Grid container spacing={2} alignItems="center" justifyContent="center">
         <Grid item xs={12} sm={3}>
           <Typography variant="subtitle1">Bed Time</Typography>
@@ -184,6 +196,7 @@ const Sleep = () => {
           </div>
         </Grid>
       </Grid>
+      </Card>
     </>
   );
 };

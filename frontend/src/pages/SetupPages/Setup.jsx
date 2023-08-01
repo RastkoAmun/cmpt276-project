@@ -9,6 +9,7 @@ import Height from '../../components/setup/Height';
 import ActivityLevel from '../../components/setup/ActivityLevel';
 import Climate from '../../components/setup/Climate';
 import Final from '../../components/setup/Final';
+import Calories from '../../components/setup/Calories';
 import { UserContext } from '../../index';
 import { useNavigate } from 'react-router-dom';
 import { getDate, getCurrentDateInFormat } from '../../../src/services/helperFunctions'
@@ -26,6 +27,7 @@ const Setup = () => {
   const handleNextPage = () => {
     setCurrentPage(currentPage + 1);
     console.log(selectedAge + ', ' + selectedGender + ', ' + selectedWeight + currentWeightUnit + ', ' + selectedHeight + currentHeightUnit + ', ' + selectedActivityLevel + ', ' + selectedClimate);
+    console.log(currentPage)
 
     if (frontPage === currentPage) {
       setFrontPage(frontPage + 1);
@@ -63,20 +65,31 @@ const Setup = () => {
       "uid": globalUser.uid
     })
 
-    // Trigger refresh of mainpage to reflect changes
+    await axios.post('http://localhost:8080/foodsummary/add', {
+      "uid": globalUser.uid,
+      "targetCalories": estimatedCals,
+      "consumedCalories": 0,
+      "date": '2023-08-01',
+    })
+
     globalUser.userProfile.age = selectedAge;
     globalUser.userProfile.height = selectedHeight;
     globalUser.userProfile.weight = selectedWeight;
     globalUser.userProfile.sex = selectedGender;
     globalUser.userProfile.activityLevel = selectedActivityLevel;
     globalUser.userProfile.climate = selectedClimate;
+    globalUser.isFirstLogin = false;
+    
     setGlobalUser(globalUser);
 
     navigate('/');
+
+
   };
 
   const checkLogin = () => {
     if (!globalUser) {
+      console.log('cond2')
       navigate('/login')
     }
   }
@@ -100,6 +113,7 @@ const Setup = () => {
 
   // Final calculated goal based on user input info 
   const [estimatedGoal, setEstimatedGoal] = useState(null);
+  const [estimatedCals, setEstimatedCals] = useState(null);
 
   function calculateGoal(gender, age, weight, height, activityLevel, climate) {
     const BWF = gender === 'male' ? 35 : 31;
@@ -166,6 +180,30 @@ const Setup = () => {
     return Math.round(goalInCups);
   }
 
+  function calculateRecommendedCals(gender, age, weight, height, activityLevel, climate) {
+    const BMR = 10 * weight + 6.25 * height - 5 * age + 5;
+
+    let activityAdjustment = 0;
+    switch (activityLevel) {
+      case 'sedentary':
+        activityAdjustment = 1.2;
+        break;
+      case 'light':
+        activityAdjustment = 1.375;
+        break;
+      case 'moderate':
+        activityAdjustment = 1.55;
+        break;
+      case 'heavy':
+        activityAdjustment = 1.725;
+        break;
+      default:
+        activityAdjustment = 0;
+    }
+
+    return Math.round(BMR * activityAdjustment);
+  }
+
 
   const handleWeightUnitToggle = () => {
     if (currentWeightUnit === 'metric') {
@@ -222,11 +260,22 @@ const Setup = () => {
       if (estimatedGoal) {
         setEstimatedGoal(null);
       }
+      if (estimatedCals) {
+        setEstimatedCals(null);
+      }
       cardContent = (
         <Climate selectedClimate={selectedClimate} setSelectedClimate={setSelectedClimate} handleNextPage={handleNextPage} />
       );
       break;
     case 7:
+      if (!estimatedCals) {
+        setEstimatedCals(calculateRecommendedCals(selectedGender, selectedAge, selectedWeight, selectedHeight, selectedActivityLevel, selectedClimate));
+      }
+      cardContent = (
+        <Calories estimatedCals={estimatedCals} handleNextPage={handleNextPage} />
+      );
+      break;
+    case 8:
       if (!estimatedGoal) {
         setEstimatedGoal(calculateGoal(selectedGender, selectedAge, selectedWeight, selectedHeight, selectedActivityLevel, selectedClimate));
       }
@@ -261,9 +310,6 @@ const Setup = () => {
           <IconButton onClick={handlePrevPage} disabled={currentPage === 1} color="primary" aria-label="back">
             <ArrowBackIcon />
           </IconButton>
-          <Box>
-            <Typography variant="h4" sx={{ textDecoration: 'underline' }}>First Time Setup</Typography>
-          </Box>
           <IconButton onClick={handleNextPage} disabled={frontPage === currentPage} color="primary" aria-label="forward">
             <ArrowForwardIcon />
           </IconButton>
