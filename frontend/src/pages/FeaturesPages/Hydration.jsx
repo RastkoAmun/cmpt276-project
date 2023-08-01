@@ -21,7 +21,7 @@ import {
 } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
-import getDate from '../../../src/services/helperFunctions'
+import { getDate } from '../../../src/services/helperFunctions'
 
 const Hydration = () => {
   const [goal, setGoal] = useState(0);

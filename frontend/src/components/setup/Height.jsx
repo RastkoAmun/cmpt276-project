@@ -2,30 +2,28 @@ import React from 'react';
 import { Typography, Button, Box } from '@mui/material';
 import SliderMetric from '../../components/setup/Sliders/HeightSliderMetric';
 import SliderImperial from '../../components/setup/Sliders/HeightSliderImperial';
-import { NextButtonStyle, NextButtonContainerStyle} from '../../pages/SetupPages/SetupStyles';
-import { ThemeProvider } from '@emotion/react';
-import lightTheme from '../../utils/lightTheme';
+import { NextButtonStyle, NextButtonContainerStyle } from '../../pages/SetupPages/SetupStyles';
 
-const Height = ({selectedHeight, setSelectedHeight, handleNextPage, handleHeightUnitToggle, currentHeightUnit}) => {
+const Height = ({ selectedHeight, setSelectedHeight, handleNextPage, handleHeightUnitToggle, currentHeightUnit }) => {
 
   const handleNextButtonClick = () => {
     if (selectedHeight) {
       handleNextPage();
     }
   };
-  
+
 
 
   let sliderContent;
   switch (currentHeightUnit) {
     case 'metric':
       sliderContent = (
-        <SliderMetric selectedHeight={selectedHeight} setSelectedHeight={setSelectedHeight} handleHeightUnitToggle={handleHeightUnitToggle}/>
+        <SliderMetric selectedHeight={selectedHeight} setSelectedHeight={setSelectedHeight} handleHeightUnitToggle={handleHeightUnitToggle} />
       );
       break;
     case 'imperial':
       sliderContent = (
-        <SliderImperial selectedHeight={selectedHeight} setSelectedHeight={setSelectedHeight} handleHeightUnitToggle={handleHeightUnitToggle}/>
+        <SliderImperial selectedHeight={selectedHeight} setSelectedHeight={setSelectedHeight} handleHeightUnitToggle={handleHeightUnitToggle} />
       );
       break;
     default:
@@ -33,37 +31,37 @@ const Height = ({selectedHeight, setSelectedHeight, handleNextPage, handleHeight
   };
 
   return (
-    <ThemeProvider theme={lightTheme}>
-    <Box>
-      {/* #1 Container for text */}
-      <Box style={{ padding: '0 10vw' }}>
-        <Typography variant="h5" align="center" mb={2} fontWeight="bold" style={{ marginBottom: '5px' }}>
-          Choose your height
-        </Typography>
-        <Typography color="lightText.main" variant="body2" align="center" mb={2} style={{ margin: '0 auto 16px', maxWidth: '250px'}}>
-          Tell us more about you so we can tailor the experience to suit your needs.
-        </Typography>
-      </Box>
+    <>
+      <Box>
+        {/* #1 Container for text */}
+        <Box style={{ padding: '0 10vw' }}>
+          <Typography variant="h5" align="center" mb={2} fontWeight="bold" style={{ marginBottom: '5px' }}>
+            Choose your height
+          </Typography>
+          <Typography color="lightText.main" variant="body2" align="center" mb={2} style={{ margin: '0 auto 16px', maxWidth: '250px' }}>
+            Tell us more about you so we can tailor the experience to suit your needs.
+          </Typography>
+        </Box>
 
-      {/* #2 Container for sliders and inputs */}
-      {sliderContent}
+        {/* #2 Container for sliders and inputs */}
+        {sliderContent}
 
-      {/* #3 Container for 'next' button */}
-      <Box style={NextButtonContainerStyle}>
-        <Button
-          style={NextButtonStyle}
-          sx={{
-            backgroundColor: selectedHeight ? '#4169e1' : '#D3D3D3',
-            mt: 2
-          }}
-          onClick={handleNextButtonClick}
-          disabled={!selectedHeight}
-        >
-          Next
-        </Button>
+        {/* #3 Container for 'next' button */}
+        <Box style={NextButtonContainerStyle}>
+          <Button
+            style={NextButtonStyle}
+            sx={{
+              backgroundColor: selectedHeight ? '#4169e1' : '#D3D3D3',
+              mt: 2
+            }}
+            onClick={handleNextButtonClick}
+            disabled={!selectedHeight}
+          >
+            Next
+          </Button>
+        </Box>
       </Box>
-    </Box>
-    </ThemeProvider>
+    </>
   )
 }
 

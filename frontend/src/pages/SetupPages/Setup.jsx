@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Box, IconButton, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForwardIos';
@@ -9,12 +9,19 @@ import Height from '../../components/setup/Height';
 import ActivityLevel from '../../components/setup/ActivityLevel';
 import Climate from '../../components/setup/Climate';
 import Final from '../../components/setup/Final';
+import { UserContext } from '../../index';
+import { useNavigate } from 'react-router-dom';
+import { getDate, getCurrentDateInFormat } from '../../../src/services/helperFunctions'
+import axios from 'axios';
 
 const Setup = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [frontPage, setFrontPage] = useState(1);
   /* This is here to prevent users from using the ArrowForwardIcon button to move to next card
    when they haven't entered the required info. */
+  const { globalUser, setGlobalUser } = useContext(UserContext);
+
+  const navigate = useNavigate();
 
   const handleNextPage = () => {
     setCurrentPage(currentPage + 1);
@@ -28,18 +35,60 @@ const Setup = () => {
     setCurrentPage(currentPage - 1);
   };
 
-  // BACKEND NEEDS TO IMPLEMENT
-  const finishSetup = () => {
-    // 1. SAVE VARIABLES TO DB
-    // 2. REDIRECT USER BACK TO MAIN PAGE
-    console.log('OK')
+  const finishSetup = async () => {
+    await axios.patch('http://localhost:8080/user/profile', {
+      "uid": globalUser.uid,
+      "age": selectedAge,
+      "height": selectedHeight,
+      "weight": selectedWeight,
+      "sex": selectedGender,
+      "activityLevel": selectedActivityLevel,
+      "climate": selectedClimate
+    })
+
+    await axios.post('http://localhost:8080/weight/add', {
+      "uid": globalUser.uid,
+      "date": getCurrentDateInFormat(),
+      "weight": selectedWeight
+    })
+
+    await axios.post('http://localhost:8080/data/hydration', {
+      "uid": globalUser.uid,
+      "goal": estimatedGoal,
+      "intake": 0,
+      "intakeDate": getDate()
+    })
+
+    await axios.patch('http://localhost:8080/user/updateFirstLogin', {
+      "uid": globalUser.uid
+    })
+
+    // Trigger refresh of mainpage to reflect changes
+    globalUser.userProfile.age = selectedAge;
+    globalUser.userProfile.height = selectedHeight;
+    globalUser.userProfile.weight = selectedWeight;
+    globalUser.userProfile.sex = selectedGender;
+    globalUser.userProfile.activityLevel = selectedActivityLevel;
+    globalUser.userProfile.climate = selectedClimate;
+    setGlobalUser(globalUser);
+
+    navigate('/');
   };
 
+  const checkLogin = () => {
+    if (!globalUser) {
+      navigate('/login')
+    }
+  }
 
+  useEffect(() => {
+    checkLogin();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // Variables for all the user's input information
   const [selectedGender, setSelectedGender] = useState(null);
-  const [selectedAge, setSelectedAge] = useState(null);                       //child, teenager, earlyadult, lateadult, elder
+  const [selectedAge, setSelectedAge] = useState(0);
   const [selectedWeight, setSelectedWeight] = useState(0);
   const [selectedHeight, setSelectedHeight] = useState(0);
   const [selectedActivityLevel, setSelectedActivityLevel] = useState(null);   //sedentary, light, moderate, heavy
@@ -57,19 +106,19 @@ const Setup = () => {
 
     let ageAdjustment = 0;
     switch (age) {
-      case 'child':
+      case (age >= 4 && age <= 11):
         ageAdjustment = 100;
         break;
-      case 'teenager':
+      case age <= 18:
         ageAdjustment = 70;
         break;
-      case 'earlyadult':
+      case age <= 29:
         ageAdjustment = -35;
         break;
-      case 'lateadult':
+      case age <= 49:
         ageAdjustment = -30;
         break;
-      case 'elderly':
+      case age >= 50:
         ageAdjustment = -25;
         break;
       default:
@@ -113,7 +162,8 @@ const Setup = () => {
     }
 
     const totalWaterGoal = (BWN + ageAdjustment + activityAdjustment + climateAdjustment);
-    return Math.round(totalWaterGoal);
+    const goalInCups = totalWaterGoal / 250;
+    return Math.round(goalInCups);
   }
 
 
@@ -152,17 +202,20 @@ const Setup = () => {
       break;
     case 3:
       cardContent = (
-        <Weight selectedWeight={selectedWeight} setSelectedWeight={setSelectedWeight} handleNextPage={handleNextPage} handleWeightUnitToggle={handleWeightUnitToggle} currentWeightUnit={currentWeightUnit} />
+        <Weight selectedWeight={selectedWeight} setSelectedWeight={setSelectedWeight} handleNextPage={handleNextPage}
+          handleWeightUnitToggle={handleWeightUnitToggle} currentWeightUnit={currentWeightUnit} />
       );
       break;
     case 4:
       cardContent = (
-        <Height selectedHeight={selectedHeight} setSelectedHeight={setSelectedHeight} handleNextPage={handleNextPage} handleHeightUnitToggle={handleHeightUnitToggle} currentHeightUnit={currentHeightUnit} />
+        <Height selectedHeight={selectedHeight} setSelectedHeight={setSelectedHeight} handleNextPage={handleNextPage}
+          handleHeightUnitToggle={handleHeightUnitToggle} currentHeightUnit={currentHeightUnit} />
       );
       break;
     case 5:
       cardContent = (
-        <ActivityLevel selectedActivityLevel={selectedActivityLevel} setSelectedActivityLevel={setSelectedActivityLevel} handleNextPage={handleNextPage} />
+        <ActivityLevel selectedActivityLevel={selectedActivityLevel} setSelectedActivityLevel={setSelectedActivityLevel}
+          handleNextPage={handleNextPage} />
       );
       break;
     case 6:
@@ -203,11 +256,14 @@ const Setup = () => {
   return (
     <div style={backGroundStyle}>
       <Box style={cardBoxStyle}>
-        <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           {/* Container for the progress bar + forwards and backwards arrow buttons */}
           <IconButton onClick={handlePrevPage} disabled={currentPage === 1} color="primary" aria-label="back">
             <ArrowBackIcon />
           </IconButton>
+          <Box>
+            <Typography variant="h4" sx={{ textDecoration: 'underline' }}>First Time Setup</Typography>
+          </Box>
           <IconButton onClick={handleNextPage} disabled={frontPage === currentPage} color="primary" aria-label="forward">
             <ArrowForwardIcon />
           </IconButton>
