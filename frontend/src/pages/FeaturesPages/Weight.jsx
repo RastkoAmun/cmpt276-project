@@ -182,7 +182,7 @@ const Weight = () => {
               <Typography variant='h5'>Current weight</Typography>
               <Typography>
                 {
-                  currentWeight ? `${initialWeight} kg` : "N/A"
+                  currentWeight ? `${currentWeight} kg` : "N/A"
                 }
               </Typography>
             </Card>
