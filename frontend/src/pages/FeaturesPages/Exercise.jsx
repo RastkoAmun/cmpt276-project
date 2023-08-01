@@ -10,12 +10,15 @@ import {
   Button,
   Box,
   Container,
-  IconButton
+  IconButton,
+  Card,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { UserContext } from '../../index';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { titleContainerStyle } from '../Style';
+
 
 const Exercise = () => {
   const [exercises, setExercises] = useState([]);
@@ -196,87 +199,99 @@ const Exercise = () => {
   }
 
   return (
-    <Container>
-      <Typography variant='h2'>
-        Exercise
-      </Typography>
-      <Box display="flex" alignItems="center" mt={5}>
-        <Box width='200px'>
-          <FormControl fullWidth size='small'>
-            <InputLabel id="exercise-select">Exercise</InputLabel>
-            <Select id="exercise-select"
-              value={selectedExercise}
-              onChange={handleSelectedExercise}
-              label="Exercise"
-            >
-              {exercises.map((exercise, index) => (
-                <MenuItem key={index} value={exercise}>
-                  {exercise}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+    <Box>
+      <Box display="flex" sx={titleContainerStyle} paddingBottom="30px">
+        <Box display="flex" flexDirection="column">
+          <Typography variant="fh2">
+            Exercise
+          </Typography>
+          <Typography variant="fh1">
+            Exercise Tracker
+          </Typography>
         </Box>
-        <TextField
-          type="number"
-          label="Duration (minutes)"
-          value={duration.toString()}
-          onChange={handleDuration}
-          inputProps={{ min: 1 }}
-          size='small'
-          sx={{ mx: 1.5 }}
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleAddExercise}
-          sx={{ boxShadow: 'none' }}>
-          Add Exercise
-        </Button>
-      </Box>
-      {error && (
-        <Typography variant='subtitle2' color="error" ml={1}>
-          {error}
-        </Typography>
-      )}
+      </Box> 
 
-      <Box mt={4} pl={2}>
-        <Typography variant='h4'>
-          Completed Exercises
-        </Typography>
-        {completedExercises.length === 0
-          ?
-          (
-            <Typography variant='body1'>
-              No exercises completed yet.
-            </Typography>
-          )
-          :
-          (
-            <ul style={{ paddingInlineStart: '20px' }}>
-              {completedExercises.map((exercise) => (
-                <li key={exercise.id} style={{ padding: '3px 0' }}>
-                  <strong>{exercise.name}</strong> - Duration: {exercise.duration} minutes
-                  <IconButton aria-label="delete" sx={{ p: 0, ml: 1 }}
-                    onClick={() => handleDeleteExercise(exercise.id)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </li>
-              ))}
-            </ul>
-          )}
-      </Box>
+      <Card>
+      <Box p={10} pt={5}> 
+        <Box display="flex" alignItems="center" mt={5}>
+          <Box width='200px'>
+            <FormControl fullWidth size='small'>
+              <InputLabel id="exercise-select">Exercise</InputLabel>
+              <Select id="exercise-select"
+                value={selectedExercise}
+                onChange={handleSelectedExercise}
+                label="Exercise"
+              >
+                {exercises.map((exercise, index) => (
+                  <MenuItem key={index} value={exercise}>
+                    {exercise}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+          <TextField
+            type="number"
+            label="Duration (minutes)"
+            value={duration.toString()}
+            onChange={handleDuration}
+            inputProps={{ min: 1 }}
+            size='small'
+            sx={{ mx: 1.5 }}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleAddExercise}
+            sx={{ boxShadow: 'none' }}>
+            Add Exercise
+          </Button>
+        </Box>
+        {error && (
+          <Typography variant='subtitle2' color="error" ml={1}>
+            {error}
+          </Typography>
+        )}
 
-      <Box mt={4} p={2}>
-        <Typography variant='h4'>Summary</Typography>
-        <Typography variant='body1' p={.5}>
-          <strong>Total Duration:</strong> {totalDuration} minutes
-        </Typography>
-        <Typography variant='body1' p={.5}>
-          <strong>Total Calories Burned:</strong> {totalCaloriesBurned.toFixed(2)}
-        </Typography>
+        <Box mt={4} pl={2}>
+          <Typography variant='h4'>
+            Completed Exercises
+          </Typography>
+          {completedExercises.length === 0
+            ?
+            (
+              <Typography variant='body1'>
+                No exercises completed yet.
+              </Typography>
+            )
+            :
+            (
+              <ul style={{ paddingInlineStart: '20px' }}>
+                {completedExercises.map((exercise) => (
+                  <li key={exercise.id} style={{ padding: '3px 0' }}>
+                    <strong>{exercise.name}</strong> - Duration: {exercise.duration} minutes
+                    <IconButton aria-label="delete" sx={{ p: 0, ml: 1 }}
+                      onClick={() => handleDeleteExercise(exercise.id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </li>
+                ))}
+              </ul>
+            )}
+        </Box>
+
+        <Box mt={4} p={2}>
+          <Typography variant='h4'>Summary</Typography>
+          <Typography variant='body1' p={.5}>
+            <strong>Total Duration:</strong> {totalDuration} minutes
+          </Typography>
+          <Typography variant='body1' p={.5}>
+            <strong>Total Calories Burned:</strong> {totalCaloriesBurned.toFixed(2)}
+          </Typography>
+        </Box>
       </Box>
-    </Container>
+    </Card>
+    </Box>
   );
 };
 

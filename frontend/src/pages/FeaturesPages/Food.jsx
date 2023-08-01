@@ -10,13 +10,26 @@ import {
   ListItemText,
   ListItemButton,
   IconButton,
+  Card,
+  Grid,
+  Fab,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions
 } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { UserContext } from '../../index';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { titleContainerStyle } from '../Style';
+import EditIcon from '@mui/icons-material/Edit';
+
+
 
 const Food = () => {
+  const [open, setOpen] = useState(false);
   const [foodQuery, setFoodQuery] = useState('');
   const [foods, setFoods] = useState([]);
   const [selectedFood, setSelectedFood] = useState(null);
@@ -35,6 +48,19 @@ const Food = () => {
   const offset = currentDate.getTimezoneOffset() * 60000;
   const localDate = new Date(currentDate.getTime() - offset);
   const formattedDate = localDate.toISOString().split('T')[0]
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const cardStyle = {
+    // bgcolor: 'lightgray',
+    height: '100%',
+    p: 2,
+  }
 
   useEffect(() => {
     if (globalUser) {
@@ -249,45 +275,48 @@ const Food = () => {
 
   return (
     <div>
-      <Typography variant="h2">Food</Typography>
+      <Box display="flex" sx={titleContainerStyle} paddingBottom="30px">
+        <Box display="flex" flexDirection="column">
+          <Typography variant="fh2">
+            Food
+          </Typography>
+          <Typography variant="fh1">
+            Calorie Tracker
+          </Typography>
+        </Box>
+        <Box display="flex" alignItems='center' marginLeft="auto">
+          <Fab color="primary" aria-label="add" size="small" onClick={handleOpen} sx={{ zIndex: 1 }} >
+            <AddIcon />
+          </Fab>
+        </Box>
+      </Box>  
 
-      <Box mt={4} display="flex" alignItems="center">
-        <label style={{ marginRight: '10px', fontWeight: 'bold', fontSize: '1.2rem' }}>Calorie Goal:</label>
-        {editingGoal ? (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <TextField
-              type="number"
-              label="Calorie Goal"
-              value={calorieGoal}
-              onChange={handleCalorieGoalChange}
-              sx={{ marginLeft: '10px', width: '200px' }}
-            />
-            <Button variant="contained" onClick={handleSaveCalorieGoal} sx={{ marginLeft: '10px' }}>
-              Save Goal
-            </Button>
-          </div>
-        ) : (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <span style={{ fontSize: '1.2rem' }}>{calorieGoal}</span>
-            <Button variant="outlined" onClick={handleEditGoal} sx={{ marginLeft: '10px', color: 'blue' }}>
-              Edit Goal
-            </Button>
-          </div>
-        )}
-      </Box>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Add Food Entry</DialogTitle>
+        <DialogContent>
+          <Box mt={2}>
+          <FormControl>
+            <TextField label="Enter a food item" value={foodQuery} onChange={handleFoodQueryChange} />
+          </FormControl>
+          </Box>
 
-      {errorGoal && (
-        <Typography variant="body1" color="error">
-          {errorGoal}
-        </Typography>
-      )}
+          <Box mt={2}>
+            <Typography variant="body1">Selected Food: {selectedFood?.food.label}</Typography>
+            <Box mt={2}>
+              <TextField
+                type="number"
+                label="Weight (grams)"
+                value={weight}
+                onChange={handleWeightChange}
+                sx={{ marginRight: '10px' }}
+              />
+              <Button variant="contained" onClick={handleAddFood} sx={{ mt: 2 }}>
+                Add Food
+              </Button>
+            </Box>
+          </Box>
 
-      <Box mt={2}>
-        <FormControl>
-          <TextField label="Enter a food item" value={foodQuery} onChange={handleFoodQueryChange} />
-        </FormControl>
-      </Box>
-
+          
       {error && (
         <Typography variant="body1" color="error">
           {error}
@@ -306,60 +335,112 @@ const Food = () => {
         </Box>
       )}
 
-      <Box mt={2}>
-        <Typography variant="body1">Selected Food: {selectedFood?.food.label}</Typography>
-        <Box mt={2}>
-          <TextField
-            type="number"
-            label="Weight (grams)"
-            value={weight}
-            onChange={handleWeightChange}
-            sx={{ marginRight: '10px' }}
-          />
-          <Button variant="contained" onClick={handleAddFood} sx={{ mt: 2 }}>
-            Add Food
-          </Button>
-        </Box>
-      </Box>
+        </DialogContent>
+        <DialogActions>
 
-      <Box mt={4}>
-        <Typography variant="h4">
-          <strong>Food List</strong>
-        </Typography>
-        {completedFoods.length === 0 ? (
-          <Typography variant="body1">No foods added yet.</Typography>
-        ) : (
-          <ul style={{ paddingInlineStart: '20px' }}>
-            {completedFoods.map((food) => (
-              <li key={food.id} style={{ padding: '3px 0' }}>
-                <strong>{food.name}</strong> - Weight: {food.weight} grams
-                <IconButton
-                  aria-label="delete"
-                  sx={{ p: 0, ml: 1 }}
-                  onClick={() => handleDeleteFood(food.id)}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </li>
-            ))}
-          </ul>
-        )}
-      </Box>
+        </DialogActions>
+      </Dialog>
 
-      <Box mt={4}>
-        <Typography variant="h4">
-          <strong>Energy Summary</strong>
-        </Typography>
-        <Box display="flex" alignItems="center" mt={2}>
-          <Box flex="1" mr={2}>
-            <Typography variant="body1">Consumed: {totalCalories} calories</Typography>
+
+      <Grid container spacing={4} >
+
+      {/* <Box p={10} pt={5}> */}
+
+      <Grid item xs={4}>
+        <Card sx={cardStyle} >
+          <Box display="flex" flexDirection="column">
+            <Typography fontWeight="400"variant='ch1'>Calorie goal</Typography>
+
+              {editingGoal ? (
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <TextField
+                    type="number"
+                    label="Calorie Goal"
+                    value={calorieGoal}
+                    onChange={handleCalorieGoalChange}
+                    sx={{ marginLeft: '10px', width: '200px', }}
+                  />
+                  <Button variant="contained" onClick={handleSaveCalorieGoal} sx={{ marginLeft: '10px' }}>
+                    Save Goal
+                  </Button>
+                </div>
+              ) : (
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <Typography variant="h5" fontWeight="400">{calorieGoal} calories</Typography>
+                  <IconButton  onClick={handleEditGoal} sx={{ marginLeft: '10px', color: 'primary' }}>
+                    <EditIcon />
+                  </IconButton>
+                </div>
+              )}
+
           </Box>
 
-          <Box flex="1">
-            <Typography variant="body1">Remaining: {calculateRemainingCalories()} calories</Typography>
+          {errorGoal && (
+          <Typography variant="body1" color="error">
+            {errorGoal}
+          </Typography>
+          )}
+        </Card>
+      </Grid>
+
+
+
+
+
+
+
+
+
+      <Grid item xs={4}>
+        <Card sx={cardStyle} >
+              <Box display="flex" flexDirection="column">
+                <Typography variant="ch1" fontWeight="400">Consumed</Typography>
+                <Typography variant="h5" fontWeight="400"> {totalCalories} calories</Typography>
+              </Box>
+        </Card>
+      </Grid>
+
+      <Grid item xs={4}>
+        <Card sx={cardStyle}>
+              <Box display="flex" flexDirection="column">
+                <Typography variant="ch1" fontWeight="400">Remaining</Typography>
+                <Typography variant="h5" fontWeight="400"> {calculateRemainingCalories()} calories</Typography>
+              </Box>
+        </Card>
+      </Grid>
+
+      <Grid item xs={12}>
+        <Card sx={{p:6, pt: 5}} >
+          <Box>
+            <Typography fontWeight='500' variant="h5">
+              Food List
+            </Typography>
+            {completedFoods.length === 0 ? (
+              <Typography variant="body1">No foods added yet.</Typography>
+            ) : (
+              <ul style={{ paddingInlineStart: '20px' }}>
+                {completedFoods.map((food) => (
+                  <li key={food.id} style={{ padding: '3px 0' }}>
+                    <strong>{food.name}</strong> - Weight: {food.weight} grams
+                    <IconButton
+                      aria-label="delete"
+                      sx={{ p: 0, ml: 1 }}
+                      onClick={() => handleDeleteFood(food.id)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </li>
+                ))}
+              </ul>
+            )}
           </Box>
-        </Box>
-      </Box>
+        </Card>
+      </Grid>
+
+      {/* </Box> */}
+
+      </Grid>
+
     </div>
   );
 };

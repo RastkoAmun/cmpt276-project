@@ -1,6 +1,15 @@
 import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
+  components: {
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          boxShadow: 'rgba(50, 50, 93, 0.024) 0px 2px 5px -1px, rgba(0, 0, 0, 0.05) 0px 1px 3px -1px',
+        }
+      }
+    }
+  },
   typography: {
     fh1: {
       fontWeight:'500', 
@@ -13,6 +22,11 @@ const theme = createTheme({
       color: 'rgb(177,182,189)',
       textTransform: 'uppercase',
       letterSpacing: '0.6em'
+    },
+    ch1: {
+      fontWeight: '400',
+      fontSize: '1rem',
+      marginBottom: '12px',
     }
     
   },
@@ -34,11 +48,11 @@ const theme = createTheme({
       main: 'rgb(238, 238, 238)',
       grey: 'rgb(177, 182, 189)',
     },
-    settingstext: {
-      main: '#616161',
-    },
     background: {
       default: 'rgb(248, 249, 253)',
+    },
+    navbar: {
+      main: 'white'
     },
   },
 });

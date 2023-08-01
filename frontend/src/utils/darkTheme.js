@@ -10,10 +10,15 @@ const theme = createTheme({
     fh2: {
       fontWeight:'500',
       fontSize: '12px',
-      color: 'rgb(177,182,189)',
+      color: 'rgba(177,182,189,0.4)',
       textTransform: 'uppercase',
       letterSpacing: '0.6em'
     },
+    ch1: {
+      fontWeight: '400',
+      fontSize: '1rem',
+      marginBottom: '12px',
+    }
   },
 
   // Add the dark mode configuration as a separate object
@@ -35,12 +40,12 @@ const theme = createTheme({
         main: 'rgb(62, 62, 62)',
         grey: 'rgb(144, 144, 144)',
       },
-      settingstext: {
-        main: 'rgb(177, 182, 189)',
-      },
       background: {
         default: 'rgb(27, 38, 53)',
         paper: '#233043',
+      },
+      navbar: {
+        default: 'rgb(27, 38, 53)',
       },
     },
 });

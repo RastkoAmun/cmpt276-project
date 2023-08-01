@@ -6,6 +6,7 @@ import {
   Menu,
   MenuItem,
   Paper,
+  Card,
   Typography,
 } from "@mui/material";
 import { UserContext } from "../index";
@@ -15,6 +16,8 @@ import ExerciseTable from "../components/tables/ExerciseTable";
 import FoodTable from "../components/tables/FoodTable";
 import SleepTable from "../components/tables/SleepTable";
 import { useNavigate, Link } from "react-router-dom";
+import { titleContainerStyle } from './Style';
+
 
 const buttonStyle = {
   p: 0,
@@ -90,7 +93,17 @@ const MainPage = () => {
 
   return (
     <Box>
-      <Typography variant="h3">Welcome, {username}</Typography>
+      <Box display="flex" sx={titleContainerStyle} paddingBottom="30px">
+        <Box display="flex" flexDirection="column">
+          <Typography variant="fh2">
+            Dashboard
+          </Typography>
+          <Typography variant="fh1">
+            Welcome, {username}
+          </Typography>
+        </Box>
+      </Box>  
+      
       <Grid container spacing={5} mt={1}>
         <Grid item xs={8}>
           <Button
@@ -106,8 +119,8 @@ const MainPage = () => {
           // sx={{ textTransform: 'capitalize' }}
           >
             {/* {currentTable} */}
-            {currentTable !== "Select Table" ? currentTable
-              : "Select which table you want to check"}
+            {currentTable !== "Select Table" ? currentTable 
+              : "Select"}
           </Button>
           <Menu
             id="demo-customized-menu"
@@ -135,12 +148,12 @@ const MainPage = () => {
             </MenuItem>
           </Menu>
           <Typography variant="body1" textAlign="center" mt={3} mb={1}>
-            Displaying your history for {currentTable !== "Select Table" ? currentTable : "specific"} feature
+            {currentTable !== "Select Table" ? "Displaying your "+currentTable+" history" : ""} 
           </Typography>
           {displayTable()}
         </Grid>
         <Grid item xs={4}>
-          <Paper sx={{ p: 2 }}>
+          <Card sx={{ p: 2 }}>
             <Box display="flex" justifyContent="space-between">
               <Typography variant="h5"> Profile </Typography>
               <Button variant="contained" sx={buttonStyle} component={Link} to='/settings/profile'>
@@ -176,7 +189,7 @@ const MainPage = () => {
                   : null}
               </Typography>
             </Box>
-          </Paper>
+          </Card>
         </Grid>
       </Grid>
     </Box>
