@@ -54,6 +54,6 @@ public class Weight implements Comparable<Weight> {
 
   @Override
   public int compareTo(Weight arg0) {
-    return this.getWeightId().compareTo(arg0.getWeightId());
+    return this.getDate().compareTo(arg0.getDate());
   }
 }
