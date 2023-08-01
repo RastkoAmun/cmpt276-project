@@ -48,7 +48,6 @@ const MainPage = () => {
   useEffect(() => {
     if (globalUser) {
       setUsername(globalUser.username);
-      
     } else {
       navigate("/login");
     }
@@ -90,28 +89,10 @@ const MainPage = () => {
     return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
   }
 
-  const fetchUserIsFirstLogin = async () => {
-    if (globalUser) {
-      try {
-        const response = await axios.get('http://localhost:8080/user/setupstatus', {
-          params: { uid: globalUser.uid },
-        });
-        const isFirstLogin = response.data;
-  
-        if (isFirstLogin) {
-          navigate('/setup');
-        }
-  
-      } catch (error) {
-        console.error('Error fetching user isFirstLogin', error);
-        return null;
-      }
-    }
-
-  };
-
   useEffect(() => {
-    fetchUserIsFirstLogin();
+    if (globalUser && globalUser.isFirstLogin) {
+      navigate('/setup');
+    }
   }, [globalUser])
 
   return (

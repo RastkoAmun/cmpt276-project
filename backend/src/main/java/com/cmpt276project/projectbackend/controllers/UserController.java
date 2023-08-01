@@ -223,17 +223,6 @@ public class UserController {
     return user;
   }
 
-  @GetMapping("/setupstatus")
-  public Boolean getUserIsFirstLogin(@RequestParam("uid") Integer uid) throws IOException {
-    User user = userRepo.findById(uid).orElse(null);
-
-    if (user != null) {
-      return user.getIsFirstLogin();
-    }
-
-    return null;
-  }
-
 
   @PostMapping("/profile")
   public User getUserAndProfile(@RequestBody UserRequest request, HttpServletResponse res) throws IOException {
