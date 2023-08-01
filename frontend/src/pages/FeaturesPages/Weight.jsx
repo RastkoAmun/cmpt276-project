@@ -82,7 +82,9 @@ const Weight = () => {
 
     setCurrentWeight((res.data.weightHistory && res.data.weightHistory[0]) ? res.data.weightHistory[0].weight : null)
     setInitialWeight((res.data.weightHistory && res.data.weightHistory[0]) ? res.data.weightHistory[res.data.weightHistory.length - 1].weight : null)
-    setWeightChange((res.data.weightHistory && res.data.weightHistory[0]) ? (res.data.weightHistory[0].weight - res.data.weightHistory[res.data.weightHistory.length - 1].weight).toFixed(2) : null)
+    setWeightChange((res.data.weightHistory && res.data.weightHistory[0])
+      ? (((res.data.weightHistory[0].weight - res.data.weightHistory[res.data.weightHistory.length - 1].weight)) / res.data.weightHistory[0].weight * 100).toFixed(2)
+      : null)
   }
 
   const fetchGraphData = async (length) => {
