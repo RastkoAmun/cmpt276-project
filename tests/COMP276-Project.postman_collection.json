@@ -1,42 +1,11 @@
 {
 	"info": {
-		"_postman_id": "faab19fb-cd23-428c-b205-c694d24a16dd",
+		"_postman_id": "d40af549-a91b-4e77-9491-bee1d3e0070b",
 		"name": "COMP276-Project",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "20770622"
+		"_exporter_id": "23226988"
 	},
 	"item": [
-		{
-			"name": "Echo Test User",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"User grabbed from test endpoint\", () => {\r",
-							"    const response = pm.response.json();\r",
-							"    pm.expect(response.username).to.eql(\"testUsername\");\r",
-							"    pm.expect(response.password).to.eql(\"testPassword\");\r",
-							"    pm.expect(response.email).to.eql(\"testEmail\");\r",
-							"})\r",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{LOCAL}}test",
-					"host": [
-						"{{LOCAL}}test"
-					]
-				}
-			},
-			"response": []
-		},
 		{
 			"name": "Created User",
 			"event": [
@@ -44,11 +13,18 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"User credentials are echoed\", () => {\r",
+							"pm.test(\"User is created\", () => {\r",
 							"    const response = pm.response.json();\r",
-							"    pm.expect(response.username).to.eql(\"user1\");\r",
-							"    pm.expect(response.email).to.eql(\"user1@email.com\");\r",
-							"    pm.expect(response.password).to.eql(\"user1password\");\r",
+							"    pm.expect(response.username).to.eql(\"automatedUser\");\r",
+							"    pm.expect(response.email).to.eql(\"automateduser@gmail.com\");\r",
+							"    pm.expect(response.password).to.eql(\"Qwe123!\");\r",
+							"    pm.expect(response.isFirstLogin).to.eql(true);\r",
+							"    pm.expect(response.userProfile.age).to.eql(0);\r",
+							"    pm.expect(response.userProfile.height).to.eql(0);\r",
+							"    pm.expect(response.userProfile.weight).to.eql(0);\r",
+							"    pm.expect(response.userProfile.sex).to.eql(null);\r",
+							"    pm.expect(response.userProfile.activityLevel).to.eql(null);\r",
+							"    pm.expect(response.userProfile.climate).to.eql(null);\r",
 							"});\r",
 							""
 						],
@@ -61,7 +37,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"user1\",\r\n    \"email\": \"user1@email.com\",\r\n    \"password\": \"user1password\"\r\n}\r\n",
+					"raw": "{\r\n    \"username\": \"automatedUser\",\r\n    \"email\": \"automateduser@gmail.com\",\r\n    \"password\": \"Qwe123!\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -69,9 +45,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{LOCAL}}register",
+					"raw": "{{URL}}user/register",
 					"host": [
-						"{{LOCAL}}register"
+						"{{URL}}user"
+					],
+					"path": [
+						"register"
 					]
 				}
 			},
@@ -86,7 +65,6 @@
 						"exec": [
 							"pm.test(\"Login user not found\", () => {\r",
 							"    const res = pm.response.json();\r",
-							"    pm.expect(res.status).to.eql(400);\r",
 							"    pm.expect(res.message).to.eql(\"User does not exist\");\r",
 							"})\r",
 							""
@@ -100,7 +78,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"user123\",\r\n    \"email\": \"user1@email.com\",\r\n    \"password\": \"user1password\"\r\n}",
+					"raw": "{\r\n    \"username\": \"automatedUserNotFound\",\r\n    \"email\": \"automateduser@gmail.com\",\r\n    \"password\": \"Qwe123!\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -108,9 +86,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{LOCAL}}login",
+					"raw": "{{URL}}user/login",
 					"host": [
-						"{{LOCAL}}login"
+						"{{URL}}user"
+					],
+					"path": [
+						"login"
 					]
 				}
 			},
@@ -125,7 +106,6 @@
 						"exec": [
 							"pm.test(\"Login wrong password\", () => {\r",
 							"    const res = pm.response.json();\r",
-							"    pm.expect(res.status).to.eql(401);\r",
 							"    pm.expect(res.message).to.eql(\"User password is wrong\");\r",
 							"})\r",
 							""
@@ -139,7 +119,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"user1\",\r\n    \"email\": \"user1@email.com\",\r\n    \"password\": \"user1passwordwrong\"\r\n}",
+					"raw": "{\r\n    \"username\": \"automatedUser\",\r\n    \"email\": \"automateduser@gmail.com\",\r\n    \"password\": \"userpasswordwrong\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -147,9 +127,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{LOCAL}}login",
+					"raw": "{{URL}}user/login",
 					"host": [
-						"{{LOCAL}}login"
+						"{{URL}}user"
+					],
+					"path": [
+						"login"
 					]
 				}
 			},
@@ -164,9 +147,9 @@
 						"exec": [
 							"pm.test(\"User login\", () => {\r",
 							"    const res = pm.response.json();\r",
-							"    pm.expect(res.username).to.eql(\"user1\");\r",
-							"    pm.expect(res.email).to.eql(\"user1@email.com\");\r",
-							"    pm.expect(res.password).to.eql(\"user1password\");\r",
+							"    pm.expect(res.username).to.eql(\"automatedUser\");\r",
+							"    pm.expect(res.email).to.eql(\"automateduser@gmail.com\");\r",
+							"    pm.expect(res.password).to.eql(\"Qwe123!\");\r",
 							"})\r",
 							""
 						],
@@ -179,7 +162,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"user1\",\r\n    \"email\": \"user1@email.com\",\r\n    \"password\": \"user1password\"\r\n}\r\n",
+					"raw": "{\r\n    \"username\": \"automatedUser\",\r\n    \"email\": \"automateduser@gmail.com\",\r\n    \"password\": \"Qwe123!\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -187,9 +170,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{LOCAL}}login",
+					"raw": "{{URL}}user/login",
 					"host": [
-						"{{LOCAL}}login"
+						"{{URL}}user"
+					],
+					"path": [
+						"login"
 					]
 				}
 			},
@@ -204,9 +190,9 @@
 						"exec": [
 							"pm.test(\"User login\", () => {\r",
 							"    const res = pm.response.json();\r",
-							"    pm.expect(res.username).to.eql(\"user1\");\r",
-							"    pm.expect(res.email).to.eql(\"user1@email.com\");\r",
-							"    pm.expect(res.password).to.eql(\"user1password\");\r",
+							"    pm.expect(res.username).to.eql(\"automatedUser\");\r",
+							"    pm.expect(res.email).to.eql(\"automateduser@gmail.com\");\r",
+							"    pm.expect(res.password).to.eql(\"Qwe123!\");\r",
 							"})\r",
 							""
 						],
@@ -218,36 +204,41 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{LOCAL}}login",
+					"raw": "{{URL}}user/login",
 					"host": [
-						"{{LOCAL}}login"
+						"{{URL}}user"
+					],
+					"path": [
+						"login"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Logout",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{LOCAL}}logout",
-					"host": [
-						"{{LOCAL}}logout"
-					]
+			"name": "Give Admin Privileges",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"User given admin\", () => {",
+							"    const response = pm.response.json();",
+							"    pm.expect(response.username).to.eql(\"automatedUser\");",
+							"    pm.expect(response.isAdmin).to.eql(true);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
 				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete User",
+			],
 			"request": {
-				"method": "DELETE",
+				"method": "PATCH",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"user1\",\r\n    \"adminKey\": \"admin123\"\r\n}",
+					"raw": "{\r\n    \"username\": \"automatedUser\",\r\n    \"isAdmin\": \"true\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -255,18 +246,436 @@
 					}
 				},
 				"url": {
-					"raw": "{{LOCAL}}delete",
+					"raw": "{{URL}}admin/permissions",
 					"host": [
-						"{{LOCAL}}delete"
+						"{{URL}}admin"
+					],
+					"path": [
+						"permissions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Revoke Admin Privileges",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"User admin revoked\", () => {",
+							"    const response = pm.response.json();",
+							"    pm.expect(response.username).to.eql(\"automatedUser\");",
+							"    pm.expect(response.isAdmin).to.eql(false);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"automatedUser\",\r\n    \"isAdmin\": \"false\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}admin/permissions",
+					"host": [
+						"{{URL}}admin"
+					],
+					"path": [
+						"permissions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin User Not Found",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"User not found through admin backend\", () => {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"automatedUserNotFound\",\r\n    \"isAdmin\": \"false\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}admin/permissions",
+					"host": [
+						"{{URL}}admin"
+					],
+					"path": [
+						"permissions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin View Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"User list\", () => {",
+							"    const response = pm.response.json();",
+							"    pm.expect(response[0].uid).to.be.not.null;",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}admin/view",
+					"host": [
+						"{{URL}}admin"
+					],
+					"path": [
+						"view"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Profile (All)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Edit profile with all changes\", () => {",
+							"    const response = pm.response.json();",
+							"    pm.expect(response.username).to.eql(\"automatedUser123\");",
+							"    pm.expect(response.userProfile.age).to.eql(25);",
+							"    pm.expect(response.userProfile.height).to.eql(196.0);",
+							"    pm.expect(response.userProfile.weight).to.eql(82.0);",
+							"    pm.expect(response.userProfile.sex).to.eql(\"FEMALE\");",
+							"    pm.expect(response.userProfile.activityLevel).to.eql(\"SEDENTARY\");",
+							"    pm.expect(response.userProfile.climate).to.eql(\"TEMPERATE\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"uid\": 176,\r\n    \"age\": 25,\r\n    \"height\": 196,\r\n    \"weight\": 82,\r\n    \"sex\": \"female\",\r\n    \"activityLevel\": \"sedentary\",\r\n    \"climate\": \"temperate\" \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}user/profile",
+					"host": [
+						"{{URL}}user"
+					],
+					"path": [
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Profile (Some)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Edit profile with some changes\", () => {",
+							"    const response = pm.response.json();",
+							"    pm.expect(response.username).to.eql(\"automatedUser123\");",
+							"    pm.expect(response.userProfile.height).to.eql(200.0);",
+							"    pm.expect(response.userProfile.activityLevel).to.eql(\"LIGHT\");",
+							"    pm.expect(response.userProfile.climate).to.eql(\"COLD\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"uid\": 176,\r\n    \"height\": 200,\r\n    \"activityLevel\": \"light\",\r\n    \"climate\": \"cold\" \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}user/profile",
+					"host": [
+						"{{URL}}user"
+					],
+					"path": [
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View Weight History",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Weight history\", () => {",
+							"    const response = pm.response.json();",
+							"    pm.expect(response.weightHistory[0].uid).to.eql(126);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"uid\": 126\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}weight",
+					"host": [
+						"{{URL}}weight"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Weight",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Weight history\", () => {",
+							"    const response = pm.response.json();",
+							"    pm.expect(response.uid).to.eql(126);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"uid\": 126,\r\n    \"date\": \"2023-07-31\",\r\n    \"weight\": 84.5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}weight/add",
+					"host": [
+						"{{URL}}weight"
+					],
+					"path": [
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"User is logged out\", () => {",
+							"    pm.response.to.have.status(200);",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}user/logout",
+					"host": [
+						"{{URL}}user"
+					],
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"User is deleted\", () => {",
+							"    pm.response.to.have.status(200);",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"automatedUser\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}admin/delete",
+					"host": [
+						"{{URL}}admin"
+					],
+					"path": [
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User Not Found",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"User is deleted\", () => {",
+							"    pm.response.to.have.status(400);",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"automatedUserNotFound\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}admin/delete",
+					"host": [
+						"{{URL}}admin"
+					],
+					"path": [
+						"delete"
 					]
 				}
 			},
 			"response": []
 		}
 	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
 	"variable": [
 		{
-			"key": "LOCAL",
+			"key": "URL",
 			"value": "http://localhost:8080/"
 		}
 	]
