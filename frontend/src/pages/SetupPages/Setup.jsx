@@ -69,7 +69,7 @@ const Setup = () => {
       "uid": globalUser.uid,
       "targetCalories": estimatedCals,
       "consumedCalories": 0,
-      "date": '2023-08-01',
+      "date": getCurrentDateInFormat()
     })
 
     globalUser.userProfile.age = selectedAge;
